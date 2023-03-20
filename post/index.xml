@@ -1,4 +1,134 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts | The Journeyman Modeler</title><link>https://jmodeler.github.io/post/</link><atom:link href="https://jmodeler.github.io/post/index.xml" rel="self" type="application/rss+xml"/><description>Posts</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 20 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Posts</title><link>https://jmodeler.github.io/post/</link></image><item><title>The Homotopy Principle: Simple Examples</title><link>https://jmodeler.github.io/post/the-homotopy-principle-simple-examples/</link><pubDate>Mon, 20 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/the-homotopy-principle-simple-examples/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts | The Journeyman Modeler</title><link>https://jmodeler.github.io/post/</link><atom:link href="https://jmodeler.github.io/post/index.xml" rel="self" type="application/rss+xml"/><description>Posts</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Mon, 20 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Posts</title><link>https://jmodeler.github.io/post/</link></image><item><title>Numerical Integration with Sparse Grids</title><link>https://jmodeler.github.io/post/numerical-integration-with-sparse-grids/</link><pubDate>Mon, 20 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/numerical-integration-with-sparse-grids/</guid><description>
+&lt;p>I recently read a paper &lt;span class="citation">(&lt;a href="#ref-heiss2008likelihood" role="doc-biblioref">Heiss and Winschel 2008&lt;/a>)&lt;/span> that advocated the use of certain techniques (Sparse Grids, SG henceforth) in numerical integration to calculate likelihood functions, as opposed to using Monte Carlo (MC henceforth) methods for the same. While approximating integrals with MC methods are simpler to implement, they might lead to integral values with considerable simulation error &lt;span class="citation">(&lt;a href="#ref-skrainka2011high" role="doc-biblioref">Skrainka and Judd 2011&lt;/a>)&lt;/span>. This post attempts to demonstrate the claim in &lt;span class="citation">Skrainka and Judd (&lt;a href="#ref-skrainka2011high" role="doc-biblioref">2011&lt;/a>)&lt;/span> using two very simple integrals, to which we already know the value. I attempt to compare the outcomes from using MC and SG.&lt;/p>
+&lt;p>The integrals I’ll be evaluating are:&lt;/p>
+&lt;p>&lt;span class="math display" id="eq:sumint">\[\begin{equation}
+\int_{-\infty}^{\infty} \left( \sum_{i=1}^{5} x_i \right) dF_{X} \tag{1}
+\end{equation}\]&lt;/span>&lt;/p>
+&lt;p>and
+&lt;span class="math display" id="eq:prodint">\[\begin{equation}
+\int_{-\infty}^{\infty} \left( \prod_{i=1}^{5} x_i^2 \right) dF_{X} \tag{2}
+\end{equation}\]&lt;/span>&lt;/p>
+&lt;p>where &lt;span class="math inline">\(X = \{x_i\}_{i=1}^{5}\)&lt;/span> is a five dimensional random variable, which is distributed according to the multivariate standard normal:
+&lt;span class="math display">\[
+X \sim N\left( \left[ \begin{array}
+{r}
+0 \\
+0 \\
+0 \\
+0 \\
+0 \\
+\end{array}\right], \left[ \begin{array}
+{rrrrr}
+1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 &amp;amp; 0 \\
+0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 0 &amp;amp; 1 \\
+\end{array}\right] \right)
+\]&lt;/span>&lt;/p>
+&lt;p>Given the distribution of &lt;span class="math inline">\(X\)&lt;/span>, the values of the integrals above are easily obtained from standard results (the value of &lt;a href="#eq:sumint">(1)&lt;/a> is &lt;span class="math inline">\(0\)&lt;/span> and that of &lt;a href="#eq:prodint">(2)&lt;/a> is &lt;span class="math inline">\(1\)&lt;/span>) respectively.&lt;/p>
+&lt;p>I write some utility functions in R to compute the integrands above:&lt;/p>
+&lt;pre class="r">&lt;code>#function to compute the sum of components of the random vector
+s &amp;lt;- function(x)
+{
+return(sum(x))
+}
+#function to compute the square product of the components of the random vector
+p &amp;lt;- function(x)
+{
+return(prod(x^2))
+}&lt;/code>&lt;/pre>
+&lt;p>I now write a function that:&lt;/p>
+&lt;ul>
+&lt;li>Simulates a certain number of draws from the distribution of the random variable &lt;span class="math inline">\(X\)&lt;/span>&lt;/li>
+&lt;li>Computes the integrand function using each of these draws as input&lt;/li>
+&lt;li>Takes the average of the values computed in the previous step&lt;/li>
+&lt;/ul>
+&lt;p>This function, in effect, would give us the approximate value of the integral via MC methodology.&lt;/p>
+&lt;p>The code is provided below, note that I use the &lt;tt>&lt;a href="https://cran.r-project.org/web/packages/mvtnorm/index.html">mvtnorm&lt;/a>&lt;/tt> package to create random draws.&lt;/p>
+&lt;pre class="r">&lt;code>library(mvtnorm)
+#Function to calculate the MC approximation for the integral
+mc_int &amp;lt;- function(s, n, mu, sigma)
+{
+#generate random draws
+x &amp;lt;- rmvnorm(n, mean = mu, sigma = sigma)
+#now get the integral
+mc_int_n &amp;lt;- mean(apply(x, 1, s))
+return(mc_int_n)
+}
+set.seed(100)
+n &amp;lt;- 1000
+mc_val &amp;lt;- mc_int(s, n, mu = rep(0,5), sigma = diag(5))
+mc_val&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 0.007150433&lt;/code>&lt;/pre>
+&lt;p>The result, 0.00715 is not far off from the true value of &lt;span class="math inline">\(0\)&lt;/span> at first glance, however, we need to compare this to the result from the SG approach.&lt;/p>
+&lt;p>R has a package that generates sparse grids for numerical integration as described in &lt;span class="citation">Heiss and Winschel (&lt;a href="#ref-heiss2008likelihood" role="doc-biblioref">2008&lt;/a>)&lt;/span>, called &lt;tt>&lt;a href="https://cran.r-project.org/web/packages/SparseGrid/index.html">SparseGrid&lt;/a>&lt;/tt>. We now use the nodes and weights generated from this package to approximate the first integral.
+I re-use some of the code provided in the documentation for the &lt;tt>&lt;a href="https://cran.r-project.org/web/packages/SparseGrid/vignettes/SparseGrid.pdf">SparseGrid&lt;/a>&lt;/tt> package in R.&lt;/p>
+&lt;pre class="r">&lt;code>library(SparseGrid)
+#generate sparse grids for a 5 dimensional RV with accuracy level 2
+sg &amp;lt;- createSparseGrid(type=&amp;#39;KPN&amp;#39;, dimension=5, k=2)
+sg_int &amp;lt;- function(func, sg, ...)
+{
+gx &amp;lt;- apply(sg$nodes, 1, function(x) {func(x, ...)})
+return(sum(gx * sg$weights))
+}
+sg_val &amp;lt;- sg_int(s, sg)
+sg_val&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 0&lt;/code>&lt;/pre>
+&lt;p>The result here is exactly 0. In light of this finding, the value obtained from the MC approach, in comparison, is a little off, and tends to show a high variance in output:&lt;/p>
+&lt;pre class="r">&lt;code>set.seed(100)
+mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 0.007150433&lt;/code>&lt;/pre>
+&lt;pre class="r">&lt;code>mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 0.03162326&lt;/code>&lt;/pre>
+&lt;pre class="r">&lt;code>mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] -0.1287932&lt;/code>&lt;/pre>
+&lt;pre class="r">&lt;code>mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 0.01040134&lt;/code>&lt;/pre>
+&lt;pre class="r">&lt;code>mc_int(s, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] -0.03798655&lt;/code>&lt;/pre>
+&lt;p>In the third case, there is a &lt;span class="math inline">\(-12\%\)&lt;/span> error(!) in the value of the computed integral when compared to the result from the SG approach. The SG approach, in addition, shows no such variation in repeated runs, since the grid values and weights are fixed for a given accuracy level and dimension (of the variable being integrated).&lt;/p>
+&lt;p>I repeat the calculations for the second integral, as shown below&lt;/p>
+&lt;p>MC approach:&lt;/p>
+&lt;pre class="r">&lt;code>set.seed(100)
+n &amp;lt;- 1000
+mc_val &amp;lt;- mc_int(p, n, mu = rep(0,5), sigma = diag(5))
+mc_val&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 1.001089&lt;/code>&lt;/pre>
+&lt;p>SG approach:&lt;/p>
+&lt;pre class="r">&lt;code>#generate sparse grids for a 5 dimensional RV with accuracy level 6
+sg &amp;lt;- createSparseGrid(type=&amp;#39;KPN&amp;#39;, dimension=5, k=6)
+sg_val &amp;lt;- sg_int(p, sg)
+sg_val&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 1&lt;/code>&lt;/pre>
+&lt;p>Once again, the SG approach gives us an exact value (note that the value of &lt;span class="math inline">\(k\)&lt;/span>, the accuracy level, has gone up, since the integrand is a higher order function). Again, the difference of the results between the two approaches doesn’t seem that large. However, variability of the results from the MC approach is still a concern, as shown below:&lt;/p>
+&lt;pre class="r">&lt;code>set.seed(100)
+mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 1.001089&lt;/code>&lt;/pre>
+&lt;pre class="r">&lt;code>mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 0.4672555&lt;/code>&lt;/pre>
+&lt;pre class="r">&lt;code>mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 1.14692&lt;/code>&lt;/pre>
+&lt;pre class="r">&lt;code>mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 1.062975&lt;/code>&lt;/pre>
+&lt;pre class="r">&lt;code>mc_int(p, n, mu = rep(0,5), sigma = diag(5))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## [1] 0.9112416&lt;/code>&lt;/pre>
+&lt;p>In the second case, there is a roughly &lt;span class="math inline">\(53\%\)&lt;/span> (!!) error when compared to the true value of the integral. This variability could be worse with more complicated integrands. One suggestion to reduce variability in MC methods is to increase the number of draws, but that would entail a lot of calculations and result in longer runtimes.&lt;/p>
+&lt;p>To conclude, we have shown with this simple example how results from numerical integration using MC methods have high variability, and more often than not, it would be good idea to increase the number of draws being used to approximate an integral, or use a different method altogether (SG).&lt;/p>
+&lt;div id="references" class="section level2 unnumbered">
+&lt;h2>References&lt;/h2>
+&lt;div id="refs" class="references csl-bib-body hanging-indent">
+&lt;div id="ref-mvt" class="csl-entry">
+Genz, Alan, Frank Bretz, Tetsuhisa Miwa, Xuefei Mi, Friedrich Leisch, Fabian Scheipl, and Torsten Hothorn. 2019. &lt;em>&lt;span class="nocase">mvtnorm&lt;/span>: Multivariate Normal and t Distributions&lt;/em>. &lt;a href="https://CRAN.R-project.org/package=mvtnorm">https://CRAN.R-project.org/package=mvtnorm&lt;/a>.
+&lt;/div>
+&lt;div id="ref-heiss2008likelihood" class="csl-entry">
+Heiss, Florian, and Viktor Winschel. 2008. &lt;span>“Likelihood Approximation by Numerical Integration on Sparse Grids.”&lt;/span> &lt;em>Journal of Econometrics&lt;/em> 144 (1): 62–80.
+&lt;/div>
+&lt;div id="ref-skrainka2011high" class="csl-entry">
+Skrainka, Benjamin S, and Kenneth L Judd. 2011. &lt;span>“High Performance Quadrature Rules: How Numerical Integration Affects a Popular Model of Product Differentiation.”&lt;/span> &lt;em>Available at SSRN 1870703&lt;/em>.
+&lt;/div>
+&lt;/div>
+&lt;/div></description></item><item><title>The Homotopy Principle: Simple Examples</title><link>https://jmodeler.github.io/post/the-homotopy-principle-simple-examples/</link><pubDate>Mon, 20 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/the-homotopy-principle-simple-examples/</guid><description>
 &lt;p>This post presents 2 simple examples of the homotopy principle applied to (fairly easy) linear and nonlinear systems of equations. At a very abstract level, given a system of equations for which a solution is needed, we convert this system to one whose solution we already know (or is easy to find out), and then bend this system till we get the solution to the original set of equations. These methods have very broad applications &lt;span class="citation">(&lt;a href="#ref-garciapathways" role="doc-biblioref">Garcia and Zangwill 1981&lt;/a>)&lt;/span>, and have been applied in the context of finding equlibria in Static Games &lt;span class="citation">(&lt;a href="#ref-Bajari2010" role="doc-biblioref">Bajari et al. 2010&lt;/a>)&lt;/span> and Dynamic Games &lt;span class="citation">(&lt;a href="#ref-Borkovsky2010" role="doc-biblioref">Borkovsky, Doraszelski, and Kryukov 2010&lt;/a>)&lt;/span>.&lt;/p>
 &lt;div id="example-1-linear-system" class="section level2">
 &lt;h2>Example 1: Linear System&lt;/h2>
