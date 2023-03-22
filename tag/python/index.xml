@@ -1,4 +1,75 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python | The Journeyman Modeler</title><link>https://jmodeler.github.io/tag/python/</link><atom:link href="https://jmodeler.github.io/tag/python/index.xml" rel="self" type="application/rss+xml"/><description>Python</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 21 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Python</title><link>https://jmodeler.github.io/tag/python/</link></image><item><title>Setting up Python to Run on Rmarkdown</title><link>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</link><pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python | The Journeyman Modeler</title><link>https://jmodeler.github.io/tag/python/</link><atom:link href="https://jmodeler.github.io/tag/python/index.xml" rel="self" type="application/rss+xml"/><description>Python</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Wed, 22 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Python</title><link>https://jmodeler.github.io/tag/python/</link></image><item><title>Resolving Install Errors with MineRL</title><link>https://jmodeler.github.io/post/resolving-install-errors-with-minerl/</link><pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/resolving-install-errors-with-minerl/</guid><description>
+&lt;p>In this post, I’ll resolve an error that one might face when trying to install the &lt;code>minerl&lt;/code> Python package. The instructions to install this package can be &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/index.html">found here&lt;/a>.&lt;/p>
+&lt;ol style="list-style-type: decimal">
+&lt;li>Using the instructions above, when I used the install command (&lt;code>pip3 install git+https://github.com/minerllabs/minerl&lt;/code>), I got the following error (only the relevant part is shown here):&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code> Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+Note: Some input files use unchecked or unsafe operations.
+Note: Recompile with -Xlint:unchecked for details.
+100 errors
+only showing the first 100 errors, of 2866 total; use -Xmaxerrs if you would like to see more
+&amp;gt; Task :compileJava FAILED
+FAILURE: Build failed with an exception.
+* What went wrong:
+Execution failed for task &amp;#39;:compileJava&amp;#39;.
+&amp;gt; Compilation failed; see the compiler error output for details.
+* Try:
+Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+* Get more help at https://help.gradle.org
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+Use &amp;#39;--warning-mode all&amp;#39; to show the individual deprecation warnings.
+See https://docs.gradle.org/6.8.1/userguide/command_line_interface.html#sec:command_line_warnings
+BUILD FAILED in 21s
+10 actionable tasks: 10 executed
+Traceback (most recent call last):
+File &amp;quot;&amp;lt;string&amp;gt;&amp;quot;, line 2, in &amp;lt;module&amp;gt;
+File &amp;quot;&amp;lt;pip-setuptools-caller&amp;gt;&amp;quot;, line 34, in &amp;lt;module&amp;gt;
+File &amp;quot;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&amp;quot;, line 214, in &amp;lt;module&amp;gt;
+prep_mcp()
+File &amp;quot;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&amp;quot;, line 198, in prep_mcp
+subprocess.check_call(&amp;#39;{} clean build shadowJar&amp;#39;.format(gradlew).split(&amp;#39; &amp;#39;), cwd=workdir)
+File &amp;quot;/Users/&amp;lt;username&amp;gt;/.pyenv/versions/3.11.2/lib/python3.11/subprocess.py&amp;quot;, line 413, in check_call
+raise CalledProcessError(retcode, cmd)
+subprocess.CalledProcessError: Command &amp;#39;[&amp;#39;./gradlew&amp;#39;, &amp;#39;clean&amp;#39;, &amp;#39;build&amp;#39;, &amp;#39;shadowJar&amp;#39;]&amp;#39; returned non-zero exit status 1.
+[end of output]
+note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed&lt;/code>&lt;/pre>
+&lt;ol start="2" style="list-style-type: decimal">
+&lt;li>Searching for the error message (&lt;code>error: metadata-generation-failed&lt;/code>) took me to a bunch of websites that provided other options to try:
+&lt;ul>
+&lt;li>From the &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/index.html">install page&lt;/a>, I tried providing the &lt;code>--user&lt;/code> option in the install command, that did not work, and I got the same error. This was the command I used: &lt;code>pip3 install git+https://github.com/minerllabs/minerl --user&lt;/code>&lt;/li>
+&lt;li>From &lt;a href="https://stackoverflow.com/questions/74188013/python-pygame-not-installing">this stackoverflow page&lt;/a>, I used the &lt;code>--pre&lt;/code> option in the install command, that didn’t work either. This was the command I used: &lt;code>pip3 install git+https://github.com/minerllabs/minerl --pre&lt;/code>&lt;/li>
+&lt;li>From &lt;a href="https://bobbyhadz.com/blog/python-error-metadata-generation-failed-encountered-error">this page&lt;/a>, I learnt about using the &lt;code>--use-deprecated&lt;/code> option, but that did not work too. This was the command I used: &lt;code>pip3 install git+https://github.com/minerllabs/minerl --use-deprecated=legacy-resolver&lt;/code>&lt;/li>
+&lt;/ul>&lt;/li>
+&lt;li>Going back to the &lt;code>minerl&lt;/code> &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/index.html">install page&lt;/a>, I checked the Java version, hoping that this was the issue:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code> $ java -version
+openjdk version &amp;quot;14.0.2&amp;quot; 2020-07-14
+OpenJDK Runtime Environment (build 14.0.2+12-46)
+OpenJDK 64-Bit Server VM (build 14.0.2+12-46, mixed mode, sharing)&lt;/code>&lt;/pre>
+&lt;ol start="4" style="list-style-type: decimal">
+&lt;li>My system was using the wrong version of Java! I used the &lt;a href="https://gist.github.com/schnell18/bcb9833f725be22f6acd01f94b486392">instructions here&lt;/a>, to remove the other version of Java. These were the exact commands I used:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code> $ sudo rm -fr /Library/Java/JavaVirtualMachines/openjdk-14.0.2.jdk/
+$ sudo rm -fr /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
+$ sudo rm -fr /Library/PreferencePanes/JavaControlPanel.prefPane&lt;/code>&lt;/pre>
+&lt;ol start="5" style="list-style-type: decimal">
+&lt;li>&lt;p>If you encounter this error on a macOS, and the Java version is the cause, check your Java version using the &lt;code>java -version&lt;/code> command on terminal, and navigate to the &lt;code>/Library/Java/JavaVirtualMachines/&lt;/code> folder to find the other versions of Java on your machine. Then use the &lt;code>sudo&lt;/code> commands above to delete the appropriate folders.&lt;/p>&lt;/li>
+&lt;li>&lt;p>After doing this, the install command (&lt;code>pip3 install git+https://github.com/minerllabs/minerl&lt;/code>), worked fine on the terminal. I did see some error messages (around installation of the Python package &lt;code>gym&lt;/code>), but it didn’t appear to affect the installation:&lt;/p>&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code> Failed to build gym
+Installing collected packages: PyWavelets, Pyro4, opencv-python, matplotlib-inline, lxml,
+jinja2, jedi, inflection, idna, humanfriendly, flaky, dill, decorator, cloudpickle, charset-normalizer,
+certifi, asttokens, stack-data, requests, imagehash, gym, coloredlogs, ipython, minerl
+Running setup.py install for gym ... done
+DEPRECATION: gym was installed using the legacy &amp;#39;setup.py install&amp;#39;
+method, because a wheel could not be built for it. pip 23.1 will enforce this behaviour change.
+A possible replacement is to fix the wheel build issue reported above.
+Discussion can be found at https://github.com/pypa/pip/issues/8368&lt;/code>&lt;/pre>
+&lt;ol start="8" style="list-style-type: decimal">
+&lt;li>Create your &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html">first agent&lt;/a> and check if everything is working properly.&lt;/li>
+&lt;/ol></description></item><item><title>Setting up Python to Run on Rmarkdown</title><link>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</link><pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</guid><description>
 &lt;p>I use the &lt;a href="https://github.com/wowchemy/starter-hugo-academic">Hugo academic template&lt;/a> along with Rstudio’s &lt;a href="https://github.com/rstudio/blogdown">Blogdown&lt;/a> package to generate and deploy this website to &lt;a href="https://pages.github.com/">github pages&lt;/a>. I use this setup to generate blog posts (via &lt;a href="https://rmarkdown.rstudio.com/">Rmarkdown&lt;/a>) that render &lt;span class="math inline">\(\LaTeX\)&lt;/span> math and output from R code.&lt;/p>
 &lt;p>Sometimes, I’d like to run Python code inside Rmarkdown too, and this is &lt;a href="https://bookdown.org/yihui/rmarkdown-cookbook/eng-python.html">supported&lt;/a>, via the &lt;a href="https://cran.r-project.org/web/packages/reticulate/index.html">reticulate&lt;/a> package. That said, the following steps need to be followed to make sure everything runs smoothly (all of these steps worked on a macOS Ventura operating system)&lt;/p>
 &lt;ol style="list-style-type: decimal">
