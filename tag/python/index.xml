@@ -11,7 +11,7 @@ library(reticulate)
 use_python(&amp;quot;/Users/&amp;lt;username&amp;gt;/.pyenv/shims/python&amp;quot;)&lt;/code>&lt;/pre>
 &lt;ol start="2" style="list-style-type: decimal">
 &lt;li>&lt;p>Note: In the chunk above, replace &lt;code>&amp;lt;username&amp;gt;&lt;/code> with your username. In addition, I use &lt;code>pyenv&lt;/code> to manage python versions on my system, as &lt;a href="https://blog.teclado.com/how-to-use-pyenv-manage-python-versions/">explained here&lt;/a>. If you don’t have &lt;code>pyenv&lt;/code> already, be sure to set it up using the instructions in the previous link.&lt;/p>&lt;/li>
-&lt;li>&lt;p>You might hit an error when you insert a code chunk with python code:&lt;/p>&lt;/li>
+&lt;li>&lt;p>You might hit an error when you run a python code chunk in Rmarkdown:&lt;/p>&lt;/li>
 &lt;/ol>
 &lt;pre>&lt;code> Error: &amp;#39;/Users/&amp;lt;username&amp;gt;/.pyenv/shims/python&amp;#39; was not built with a shared library.
 reticulate can only bind to copies of Python built with &amp;#39;--enable-shared&amp;#39;.
@@ -54,5 +54,5 @@ Error : Failed to render content/post/&amp;lt;name_of_post&amp;gt;/index.en.Rmd&
 &lt;pre>&lt;code> pyenv versions&lt;/code>&lt;/pre>
 &lt;ol start="10" style="list-style-type: decimal">
 &lt;li>&lt;p>If you’re using python packages (i.e. &lt;code>numpy&lt;/code>, &lt;code>pandas&lt;/code>, etc.) in your code chunks, make sure to install them first (i.e. by using &lt;code>pip3 install numpy&lt;/code>, &lt;code>pip3 install pandas&lt;/code>, etc. in the terminal)&lt;/p>&lt;/li>
-&lt;li>&lt;p>With all of this setup, you should no longer see the error above when you knit Rmarkdown documents with Python code chunks in them.&lt;/p>&lt;/li>
+&lt;li>&lt;p>With all of this set up, you should no longer see the error above when you knit Rmarkdown documents with Python code chunks in them.&lt;/p>&lt;/li>
 &lt;/ol></description></item></channel></rss>
