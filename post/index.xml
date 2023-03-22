@@ -55,8 +55,14 @@ OpenJDK 64-Bit Server VM (build 14.0.2+12-46, mixed mode, sharing)&lt;/code>&lt;
 $ sudo rm -fr /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
 $ sudo rm -fr /Library/PreferencePanes/JavaControlPanel.prefPane&lt;/code>&lt;/pre>
 &lt;ol start="5" style="list-style-type: decimal">
-&lt;li>&lt;p>If you encounter this error on a macOS, and the Java version is the cause, check your Java version using the &lt;code>java -version&lt;/code> command on terminal, and navigate to the &lt;code>/Library/Java/JavaVirtualMachines/&lt;/code> folder to find the other versions of Java on your machine. Then use the &lt;code>sudo&lt;/code> commands above to delete the appropriate folders.&lt;/p>&lt;/li>
-&lt;li>&lt;p>After doing this, the install command (&lt;code>pip3 install git+https://github.com/minerllabs/minerl&lt;/code>), worked fine on the terminal. I did see some error messages (around installation of the Python package &lt;code>gym&lt;/code>), but it didn’t appear to affect the installation:&lt;/p>&lt;/li>
+&lt;li>If you encounter this error on a macOS, and the Java version is the cause, check your Java version using the &lt;code>java -version&lt;/code> command on terminal, and navigate to the &lt;code>/Library/Java/JavaVirtualMachines/&lt;/code> folder to find the other versions of Java on your machine. Then use the &lt;code>sudo&lt;/code> commands above to delete the appropriate folders. After deleting the other Java folder on my machine, typing &lt;code>java -version&lt;/code> in my terminal gave me the following result:&lt;/li>
+&lt;/ol>
+&lt;pre>&lt;code> $ java -version
+openjdk version &amp;quot;1.8.0_292&amp;quot;
+OpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_292-b10)
+OpenJDK 64-Bit Server VM (AdoptOpenJDK)(build 25.292-b10, mixed mode)&lt;/code>&lt;/pre>
+&lt;ol start="6" style="list-style-type: decimal">
+&lt;li>After doing this, the install command (&lt;code>pip3 install git+https://github.com/minerllabs/minerl&lt;/code>), worked fine on the terminal. I did see some error messages (around installation of the Python package &lt;code>gym&lt;/code>), but it didn’t appear to affect the installation:&lt;/li>
 &lt;/ol>
 &lt;pre>&lt;code> Failed to build gym
 Installing collected packages: PyWavelets, Pyro4, opencv-python, matplotlib-inline, lxml,
