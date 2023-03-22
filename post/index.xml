@@ -1,4 +1,63 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts | The Journeyman Modeler</title><link>https://jmodeler.github.io/post/</link><atom:link href="https://jmodeler.github.io/post/index.xml" rel="self" type="application/rss+xml"/><description>Posts</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 21 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Posts</title><link>https://jmodeler.github.io/post/</link></image><item><title>Setting up Python to Run on Rmarkdown</title><link>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</link><pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts | The Journeyman Modeler</title><link>https://jmodeler.github.io/post/</link><atom:link href="https://jmodeler.github.io/post/index.xml" rel="self" type="application/rss+xml"/><description>Posts</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Tue, 21 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Posts</title><link>https://jmodeler.github.io/post/</link></image><item><title>Distributions with Thin and Fat Tails</title><link>https://jmodeler.github.io/post/distributions-with-thin-and-fat-tails/</link><pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/distributions-with-thin-and-fat-tails/</guid><description>
+&lt;p>In this post, we’ll explore a key difference between thin and fat tailed distributions, and what this means in the world of insurance and risk management. These results are from Chapter 3 of &lt;span class="citation">Taleb (&lt;a href="#ref-taleb2020fattails" role="doc-biblioref">2020&lt;/a>)&lt;/span>.&lt;/p>
+&lt;p>In the world of thin tails (i.e. data that are Gaussian distributed), as the sample of data gets larger, no single data point can change the properties of the entire sample (Taleb calls this “Mediocristan”). Conversely, in data from fat tailed distributions (i.e. data from a distribution whose tail decays like a &lt;a href="https://en.wikipedia.org/wiki/Power_law">power law&lt;/a>), a single data point (or rare events) can disproportionately impact the properties of a sample (Taleb calls this “Extremistan”). The next section explores data from a standard normal distribution, and how likely it is to observe a tail event in such data.&lt;/p>
+&lt;div id="gaussian-data-mediocristan" class="section level2">
+&lt;h2>Gaussian Data (Mediocristan)&lt;/h2>
+&lt;p>&lt;strong>Summary:&lt;/strong> In data that are normally (Gaussian) distributed, it is more likely to observe several smaller “bad” events that one massive “tail” event. For insurability, the losses need to come from many smaller bad events than a single tail event. This is true in the case of Gaussian data.&lt;/p>
+&lt;p>Taleb gives the example of checking the total height of two individuals randomly drawn from a sample of people (the heights are assumed to be normally distributed, or our sample is from Mediocristan). If the total height is 4.1m, (a tail event), it is more likely that the individual heights are 2.05m each than one being 10cm and the other being 4m.&lt;/p>
+&lt;p>Mathematically stated, if &lt;span class="math inline">\(X\)&lt;/span> is a large value generated from a Gaussian distribution (Mediocristan), it is more likely to observe a value greater than this twice, than observing a random value that is greater than &lt;span class="math inline">\(2X\)&lt;/span>. Let us verify this by drawing a few sample values from the standard normal distribution.&lt;/p>
+&lt;pre class="python">&lt;code>
+import scipy.stats as dist
+# standard normal distribution
+st_norm = dist.norm(0,1)
+# get the probability of observing a value that is more than 3 standard
+# deviations away from the mean, i.e. 3
+p_x = 1 - st_norm.cdf(3)
+# get the probability of observing a value that is more than 6 = 3*2 standard
+# deviations away from the mean
+p_2x = 1 - st_norm.cdf(6)
+# print the probability of values
+print(&amp;quot;Probability of observing two values that are 3 standard deviations away\
+from the mean: {0:.3E}&amp;quot;.format(p_x * p_x))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## Probability of observing two values that are 3 standard deviations away from the mean: 1.822E-06&lt;/code>&lt;/pre>
+&lt;pre class="python">&lt;code>print(&amp;quot;Probability of observing a single value that is 6 standard deviations\
+away from the mean: {0:.3E}&amp;quot;.format(p_2x))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## Probability of observing a single value that is 6 standard deviations away from the mean: 9.866E-10&lt;/code>&lt;/pre>
+&lt;p>As expected, in the Gaussian world, it is more likely to observe a series of smaller tail events, than a single large tail event, that modifies the properties of the data sample. If these tail events are associated with losses, then for insurability, the losses need to come from many (smaller) events than a single (large) one, which leads to financial ruin. The formal conditions for this were discussed in &lt;span class="citation">Cramér (&lt;a href="#ref-cramer1959mathematical" role="doc-biblioref">1959&lt;/a>)&lt;/span>.&lt;/p>
+&lt;/div>
+&lt;div id="data-from-a-pareto-distribution-extremistan" class="section level2">
+&lt;h2>Data from a Pareto Distribution (Extremistan)&lt;/h2>
+&lt;p>&lt;strong>Summary:&lt;/strong> In data that are from &lt;a href="https://en.wikipedia.org/wiki/Heavy-tailed_distribution">subexponential distributions&lt;/a> (like the &lt;a href="https://en.wikipedia.org/wiki/Pareto_distribution">pareto&lt;/a>), it is more likely to observe one massive “tail” event than several smaller “bad” events. These are not insurable, since there is a risk of catastrophe.&lt;/p>
+&lt;p>Let’s repeat the probability calculation exercise we did earlier, but now for the pareto distribution:&lt;/p>
+&lt;pre class="python">&lt;code>
+# set the shape parameter for the pareto distribution
+b = 3
+# get the pareto distribution object from dist, alias for scipy.stats
+st_pareto = dist.pareto(b)
+# get the probability of observing a value that is thrice the mean, i.e. 4.5
+p_x = 1 - st_pareto.cdf(4.5)
+# get the probability of observing a value that is 6 times the mean, i.e. 9
+p_2x = 1 - st_pareto.cdf(9)
+# print the probability of values
+print(&amp;quot;Probability of observing two values that are thrice the mean: {0:.3E}&amp;quot;.format(p_x * p_x))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## Probability of observing two values that are thrice the mean: 1.204E-04&lt;/code>&lt;/pre>
+&lt;pre class="python">&lt;code>print(&amp;quot;Probability of observing a single value that is 6 times the mean: {0:.3E}&amp;quot;.format(p_2x))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## Probability of observing a single value that is 6 times the mean: 1.372E-03&lt;/code>&lt;/pre>
+&lt;p>Note that the &lt;code>pareto()&lt;/code> method in &lt;code>scipy&lt;/code> takes the shape parameter &lt;code>b&lt;/code> as input, as &lt;a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pareto.html">explained here&lt;/a>.&lt;/p>
+&lt;p>As we can see, the probability of observing a single large tail event is higher than observing a series of smaller tail events. If large tail events are considered to be bad and lead to financial ruin, this makes such cases uninsurable.&lt;/p>
+&lt;p>To drive the point home, Taleb gives another example of checking the total income of two individuals randomly drawn from a sample of people (the incomes are assumed to be subexponentially distributed, or our sample is from Extremistan). If the total income is &lt;code>$36 Million&lt;/code>, (a tail event), it is more likely that the individual incomes are &lt;code>$35,999,000&lt;/code> and &lt;code>$1000&lt;/code> than both incomes being &lt;code>$18 Million&lt;/code> each.&lt;/p>
+&lt;/div>
+&lt;div id="references" class="section level2 unnumbered">
+&lt;h2>References&lt;/h2>
+&lt;div id="refs" class="references csl-bib-body hanging-indent">
+&lt;div id="ref-cramer1959mathematical" class="csl-entry">
+Cramér, Harald. 1959. &lt;em>On the Mathematical Theory of Risk&lt;/em>. Centraltryckeriet.
+&lt;/div>
+&lt;div id="ref-taleb2020fattails" class="csl-entry">
+Taleb, Nassim Nicholas. 2020. &lt;span>“Statistical Consequences of Fat Tails: Real World Preasymptotics, Epistemology, and Applications.”&lt;/span> &lt;em>arXiv Preprint arXiv:2001.10488&lt;/em>.
+&lt;/div>
+&lt;/div>
+&lt;/div></description></item><item><title>Setting up Python to Run on Rmarkdown</title><link>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</link><pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</guid><description>
 &lt;p>I use the &lt;a href="https://github.com/wowchemy/starter-hugo-academic">Hugo academic template&lt;/a> along with Rstudio’s &lt;a href="https://github.com/rstudio/blogdown">Blogdown&lt;/a> package to generate and deploy this website to &lt;a href="https://pages.github.com/">github pages&lt;/a>. I use this setup to generate blog posts (via &lt;a href="https://rmarkdown.rstudio.com/">Rmarkdown&lt;/a>) that render &lt;span class="math inline">\(\LaTeX\)&lt;/span> math and output from R code.&lt;/p>
 &lt;p>Sometimes, I’d like to run Python code inside Rmarkdown too, and this is &lt;a href="https://bookdown.org/yihui/rmarkdown-cookbook/eng-python.html">supported&lt;/a>, via the &lt;a href="https://cran.r-project.org/web/packages/reticulate/index.html">reticulate&lt;/a> package. That said, the following steps need to be followed to make sure everything runs smoothly (all of these steps worked on a macOS Ventura operating system)&lt;/p>
 &lt;ol style="list-style-type: decimal">
