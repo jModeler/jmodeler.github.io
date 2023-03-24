@@ -146,12 +146,12 @@ p_x = 1 - st_norm.cdf(3)
 # deviations away from the mean
 p_2x = 1 - st_norm.cdf(6)
 # print the probability of values
-print(&amp;quot;Probability of observing two values that are 3 standard deviations away\
-from the mean: {0:.3E}&amp;quot;.format(p_x * p_x))&lt;/code>&lt;/pre>
-&lt;pre>&lt;code>## Probability of observing two values that are 3 standard deviations away from the mean: 1.822E-06&lt;/code>&lt;/pre>
-&lt;pre class="python">&lt;code>print(&amp;quot;Probability of observing a single value that is 6 standard deviations\
-away from the mean: {0:.3E}&amp;quot;.format(p_2x))&lt;/code>&lt;/pre>
-&lt;pre>&lt;code>## Probability of observing a single value that is 6 standard deviations away from the mean: 9.866E-10&lt;/code>&lt;/pre>
+print(&amp;quot;Probability of observing two values that are 3 standard deviations \n away from the mean: {0:.3E}&amp;quot;.format(p_x * p_x))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## Probability of observing two values that are 3 standard deviations
+## away from the mean: 1.822E-06&lt;/code>&lt;/pre>
+&lt;pre class="python">&lt;code>print(&amp;quot;Probability of observing a single value that is 6 standard deviations \n away from the mean: {0:.3E}&amp;quot;.format(p_2x))&lt;/code>&lt;/pre>
+&lt;pre>&lt;code>## Probability of observing a single value that is 6 standard deviations
+## away from the mean: 9.866E-10&lt;/code>&lt;/pre>
 &lt;p>As expected, in the Gaussian world, it is more likely to observe a series of smaller tail events, than a single large tail event, that modifies the properties of the data sample. If these tail events are associated with losses, then for insurability, the losses need to come from many (smaller) events than a single (large) one, which leads to financial ruin. The formal conditions for this were discussed in &lt;span class="citation">Cramér (&lt;a href="#ref-cramer1959mathematical" role="doc-biblioref">1959&lt;/a>)&lt;/span>.&lt;/p>
 &lt;/div>
 &lt;div id="data-from-a-pareto-distribution-extremistan" class="section level2">
