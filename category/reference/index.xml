@@ -1,4 +1,45 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reference | The Journeyman Modeler</title><link>https://jmodeler.github.io/category/reference/</link><atom:link href="https://jmodeler.github.io/category/reference/index.xml" rel="self" type="application/rss+xml"/><description>Reference</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Wed, 22 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Reference</title><link>https://jmodeler.github.io/category/reference/</link></image><item><title>Resolving Install Errors with MineRL</title><link>https://jmodeler.github.io/post/resolving-install-errors-with-minerl/</link><pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/resolving-install-errors-with-minerl/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reference | The Journeyman Modeler</title><link>https://jmodeler.github.io/category/reference/</link><atom:link href="https://jmodeler.github.io/category/reference/index.xml" rel="self" type="application/rss+xml"/><description>Reference</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Thu, 23 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Reference</title><link>https://jmodeler.github.io/category/reference/</link></image><item><title>Resolving Errors when Creating Your First MineRL Agent</title><link>https://jmodeler.github.io/post/resolving-errors-when-creating-your-first-minerl-agent/</link><pubDate>Thu, 23 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/resolving-errors-when-creating-your-first-minerl-agent/</guid><description>
+&lt;p>In this post, I lay out the steps to follow to resolve the errors you see when creating your &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html">first MineRL agent&lt;/a> on a macOS. This is a continuation of &lt;a href="https://jmodeler.github.io/post/resolving-install-errors-with-minerl/">this post&lt;/a>, which looks at resolving install errors on the &lt;code>minerl&lt;/code> package.&lt;/p>
+&lt;p>I borrow heavily from &lt;a href="https://github.com/minerllabs/minerl/issues/659#issuecomment-1306635414">this github issue comment&lt;/a>.&lt;/p>
+&lt;ol style="list-style-type: decimal">
+&lt;li>&lt;p>Clone the repository using the terminal command below&lt;/p>
+&lt;pre>&lt;code> git clone https://github.com/minerllabs/minerl.git&lt;/code>&lt;/pre>
+&lt;p>This will create a &lt;code>minerl&lt;/code> directory. Make sure that the path to the cloned repository does not have spaces in it (i.e. the path should &lt;strong>not&lt;/strong> be &lt;code>/Users/&amp;lt;username&amp;gt;/minerl folder/minerl&lt;/code> – you will get &lt;code>file not found&lt;/code> errors in the next few steps otherwise)&lt;/p>&lt;/li>
+&lt;li>&lt;p>Open the patch file in the directory &lt;code>minerl/scripts/mcp_patch.diff&lt;/code>, and replace version number &lt;code>3.2.1&lt;/code> to &lt;code>3.3.1&lt;/code> for &lt;code>lwjgl-opengl&lt;/code> (&lt;a href="https://github.com/minerllabs/minerl/blob/03510486957633676d269bf83115a84499ef7f47/scripts/mcp_patch.diff#L314">github link&lt;/a> to part of the file where the version number should be replaced)&lt;/p>&lt;/li>
+&lt;li>&lt;p>From inside the &lt;code>minerl&lt;/code> folder on terminal, run the following command:&lt;/p>
+&lt;pre>&lt;code> pip3 install .&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>&lt;p>If the installation fails, please go to this &lt;a href="https://jmodeler.github.io/post/resolving-install-errors-with-minerl/">post&lt;/a> and see if the steps outlined there can help.&lt;/p>&lt;/li>
+&lt;li>&lt;p>If the installation is successful, navigate to the &lt;code>minerl/minerl/MCP-Reborn&lt;/code> folder and open the &lt;code>launchClient.sh&lt;/code> file in a text editor of choice. Modify a line close to the end of the file that starts with &lt;code>Java ....&lt;/code>, so that the new line becomes:&lt;/p>
+&lt;pre>&lt;code> java -Xmx$maxMem -XstartOnFirstThread -jar $fatjar --envPort=$port&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>&lt;p>Navigate to &lt;code>MCP-Reborn/src/main/java/net/minecraft/client/MainWindow.java&lt;/code>, and make the following changes:&lt;/p>
+&lt;ul>
+&lt;li>&lt;p>Comment out the following line (add a &lt;code>//&lt;/code> to the left of this line)&lt;/p>
+&lt;pre>&lt;code> GLFW.glfwSetWindowIcon(this.handle, buffer);&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>&lt;p>Comment out the body of the &lt;code>checkGlfwError&lt;/code> method, it should look like this after commenting out the body:&lt;/p>
+&lt;pre>&lt;code> public static void checkGlfwError(BiConsumer&amp;lt;Integer, String&amp;gt; glfwErrorConsumer) {
+/* RenderSystem.assertThread(RenderSystem::isInInitPhase);
+try (MemoryStack memorystack = MemoryStack.stackPush()) {
+PointerBuffer pointerbuffer = memorystack.mallocPointer(1);
+int i = GLFW.glfwGetError(pointerbuffer);
+if (i != 0) {
+long j = pointerbuffer.get();
+String s = j == 0L ? &amp;quot;&amp;quot; : MemoryUtil.memUTF8(j);
+glfwErrorConsumer.accept(i, s);
+}
+} */
+}&lt;/code>&lt;/pre>
+&lt;p>&lt;strong>DO NOT&lt;/strong> comment out/delete the method declaration, else the next step will fail.&lt;/p>&lt;/li>
+&lt;/ul>&lt;/li>
+&lt;li>&lt;p>Navigate to the &lt;code>minerl/minerl/MCP-Reborn&lt;/code> folder in terminal and rebuild &lt;code>MCP-Reborn&lt;/code> using the command below:&lt;/p>
+&lt;pre>&lt;code> ./gradlew clean build shadowJar&lt;/code>&lt;/pre>
+&lt;p>You should see a success message like the one below:
+&lt;img src="build_success.png" alt="Build Success" />&lt;/p>&lt;/li>
+&lt;li>&lt;p>Find the location where the &lt;code>minerl&lt;/code> package was installed. If you use &lt;code>pyenv&lt;/code> like I do, you can use the &lt;code>pyenv which python&lt;/code> command in terminal, to get the version of python being used by the system. For example, if the version number is &lt;code>3.11.2&lt;/code>, then the location of the &lt;code>minerl&lt;/code> package should be:&lt;/p>
+&lt;pre>&lt;code> /Users/&amp;lt;username&amp;gt;/.pyenv/versions/3.11.2/lib/python3.11/site-packages/minerl&lt;/code>&lt;/pre>&lt;/li>
+&lt;li>&lt;p>Navigate to the &lt;code>minerl&lt;/code> folder above, and replace the &lt;code>MCP-Reborn&lt;/code> folder in it with the &lt;code>MCP-Reborn&lt;/code> folder you just built in step 7 above.&lt;/p>&lt;/li>
+&lt;li>&lt;p>Follow the steps to &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html">build your first agent&lt;/a>, this should work now and you should see something like this:
+&lt;img src="first_agent_run.png" alt="First Agent" />&lt;/p>&lt;/li>
+&lt;/ol></description></item><item><title>Resolving Install Errors with MineRL</title><link>https://jmodeler.github.io/post/resolving-install-errors-with-minerl/</link><pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/resolving-install-errors-with-minerl/</guid><description>
 &lt;p>In this post, I’ll resolve an error that one might face when trying to install the &lt;code>minerl&lt;/code> Python package. The instructions to install this package can be &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/index.html">found here&lt;/a>.&lt;/p>
 &lt;ol style="list-style-type: decimal">
 &lt;li>Using the instructions above, when I used the install command (&lt;code>pip3 install git+https://github.com/minerllabs/minerl&lt;/code>), I got the following error (only the relevant part is shown here):&lt;/li>
@@ -49,7 +90,7 @@ openjdk version &amp;quot;14.0.2&amp;quot; 2020-07-14
 OpenJDK Runtime Environment (build 14.0.2+12-46)
 OpenJDK 64-Bit Server VM (build 14.0.2+12-46, mixed mode, sharing)&lt;/code>&lt;/pre>
 &lt;ol start="4" style="list-style-type: decimal">
-&lt;li>My system was using the wrong version of Java! I used the &lt;a href="https://gist.github.com/schnell18/bcb9833f725be22f6acd01f94b486392">instructions here&lt;/a>, to remove the other version of Java. These were the exact commands I used:&lt;/li>
+&lt;li>My system was using the wrong version of Java (it should be using &lt;code>1.8._&lt;/code>)! I used the &lt;a href="https://gist.github.com/schnell18/bcb9833f725be22f6acd01f94b486392">instructions here&lt;/a>, to remove the other version of Java. These were the exact commands I used:&lt;/li>
 &lt;/ol>
 &lt;pre>&lt;code> $ sudo rm -fr /Library/Java/JavaVirtualMachines/openjdk-14.0.2.jdk/
 $ sudo rm -fr /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
@@ -74,7 +115,7 @@ method, because a wheel could not be built for it. pip 23.1 will enforce this be
 A possible replacement is to fix the wheel build issue reported above.
 Discussion can be found at https://github.com/pypa/pip/issues/8368&lt;/code>&lt;/pre>
 &lt;ol start="8" style="list-style-type: decimal">
-&lt;li>Create your &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html">first agent&lt;/a> and check if everything is working properly.&lt;/li>
+&lt;li>Create your &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html">first agent&lt;/a> and check if everything is working properly. If the example linked does not work, refer to &lt;a href="https://jmodeler.github.io/post/resolving-errors-when-creating-your-first-minerl-agent/">this post&lt;/a>, or &lt;a href="https://github.com/minerllabs/minerl/issues/659#issuecomment-1306635414">this github issue comment&lt;/a>.&lt;/li>
 &lt;/ol></description></item><item><title>Setting up Python to Run on Rmarkdown</title><link>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</link><pubDate>Tue, 21 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/</guid><description>
 &lt;p>I use the &lt;a href="https://github.com/wowchemy/starter-hugo-academic">Hugo academic template&lt;/a> along with Rstudio’s &lt;a href="https://github.com/rstudio/blogdown">Blogdown&lt;/a> package to generate and deploy this website to &lt;a href="https://pages.github.com/">github pages&lt;/a>. I use this setup to generate blog posts (via &lt;a href="https://rmarkdown.rstudio.com/">Rmarkdown&lt;/a>) that render &lt;span class="math inline">\(\LaTeX\)&lt;/span> math and output from R code.&lt;/p>
 &lt;p>Sometimes, I’d like to run Python code inside Rmarkdown too, and this is &lt;a href="https://bookdown.org/yihui/rmarkdown-cookbook/eng-python.html">supported&lt;/a>, via the &lt;a href="https://cran.r-project.org/web/packages/reticulate/index.html">reticulate&lt;/a> package. That said, the following steps need to be followed to make sure everything runs smoothly (all of these steps worked on a macOS Ventura operating system)&lt;/p>
