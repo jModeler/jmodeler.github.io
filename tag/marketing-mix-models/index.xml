@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Marketing Mix Models | The Journeyman Modeler</title><link>https://jmodeler.github.io/tag/marketing-mix-models/</link><atom:link href="https://jmodeler.github.io/tag/marketing-mix-models/index.xml" rel="self" type="application/rss+xml"/><description>Marketing Mix Models</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sat, 25 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Marketing Mix Models</title><link>https://jmodeler.github.io/tag/marketing-mix-models/</link></image><item><title>Resolving Install Errors for the lightweight_mmm Python Package</title><link>https://jmodeler.github.io/post/resolving-install-errors-for-the-lightweight-mmm-python-package/</link><pubDate>Sat, 25 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/resolving-install-errors-for-the-lightweight-mmm-python-package/</guid><description>
+&lt;p>To experiment with different specifications of a marketing mix model, I tried installing the &lt;a href="https://github.com/google/lightweight_mmm">lightweight_mmm&lt;/a> Python package from Google. When using the standard &lt;code>pip3 install lightweight_mmm&lt;/code> command in terminal, I was hitting this error:&lt;/p>
+&lt;pre>&lt;code> × Getting requirements to build wheel did not run successfully.
+│ exit code: 1
+╰─&amp;gt; [66 lines of output]
+The Meson build system
+Version: 0.62.2
+Source dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273
+Build dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273/.mesonpy-ur2kyhcf/build
+Build type: native build
+Project name: SciPy
+Project version: 1.9.1
+C compiler for the host machine: cc (clang 14.0.0 &amp;quot;Apple clang version 14.0.0 (clang-1400.0.29.202)&amp;quot;)
+C linker for the host machine: cc ld64 820.1
+C++ compiler for the host machine: c++ (clang 14.0.0 &amp;quot;Apple clang version 14.0.0 (clang-1400.0.29.202)&amp;quot;)
+C++ linker for the host machine: c++ ld64 820.1
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Compiler for C supports arguments -Wno-unused-but-set-variable: YES
+Library m found: YES
+Fortran compiler for the host machine: gfortran (gcc 8.2.0 &amp;quot;GNU Fortran (GCC) 8.2.0&amp;quot;)
+Fortran linker for the host machine: gfortran ld64 820.1
+Program cython found: YES (/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-build-env-gddbg9u0/overlay/bin/cython)
+Program pythran found: YES (/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-build-env-gddbg9u0/overlay/bin/pythran)
+Program cp found: YES (/bin/cp)
+Program python found: YES (/Users/&amp;lt;username&amp;gt;/.pyenv/versions/3.11.2/bin/python3.11)
+Found pkg-config: /usr/local/bin/pkg-config (0.29.2)
+Library npymath found: YES
+Library npyrandom found: YES
+Found CMake: /usr/local/bin/cmake (3.26.0)
+Run-time dependency openblas found: NO (tried pkgconfig, framework and cmake)
+Run-time dependency openblas found: NO (tried pkgconfig, framework and cmake)
+../../scipy/meson.build:130:0: ERROR: Dependency &amp;quot;OpenBLAS&amp;quot; not found, tried pkgconfig, framework and cmake&lt;/code>&lt;/pre>
+&lt;p>I tried to install &lt;code>openblas&lt;/code> using homebrew, but it was already installed:&lt;/p>
+&lt;pre>&lt;code>$ brew install openblas
+==&amp;gt; Downloading https://formulae.brew.sh/api/formula.jws.json
+######################################################################## 100.0%
+==&amp;gt; Downloading https://formulae.brew.sh/api/cask.jws.json
+Warning: openblas 0.3.21 is already installed and up-to-date.
+To reinstall 0.3.21, run:
+brew reinstall openblas&lt;/code>&lt;/pre>
+&lt;p>So maybe the build process was failing because the compiler couldn’t find it on the system. On some searching, I found this &lt;a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/7906#issuecomment-1478618523">github issue&lt;/a> that discussed the same problem. Essentially, we get more information on &lt;code>openblas&lt;/code>, using &lt;code>brew info openblas&lt;/code> in the terminal which should show us this output:&lt;/p>
+&lt;pre>&lt;code>==&amp;gt; openblas: stable 0.3.21 (bottled), HEAD [keg-only]
+Optimized BLAS library
+https://www.openblas.net/
+/usr/local/Cellar/openblas/0.3.21 (23 files, 130MB)
+Poured from bottle on 2023-02-11 at 08:52:47
+From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/openblas.rb
+License: BSD-3-Clause
+==&amp;gt; Dependencies
+Required: gcc ✔
+==&amp;gt; Options
+--HEAD
+Install HEAD version
+==&amp;gt; Caveats
+openblas is keg-only, which means it was not symlinked into /usr/local,
+because macOS provides BLAS in Accelerate.framework.
+For compilers to find openblas you may need to set:
+export LDFLAGS=&amp;quot;-L/usr/local/opt/openblas/lib&amp;quot;
+export CPPFLAGS=&amp;quot;-I/usr/local/opt/openblas/include&amp;quot;
+For pkg-config to find openblas you may need to set:
+export PKG_CONFIG_PATH=&amp;quot;/usr/local/opt/openblas/lib/pkgconfig&amp;quot;
+==&amp;gt; Analytics
+install: 1,074 (30 days), 63,095 (90 days), 515,454 (365 days)
+install-on-request: 171 (30 days), 10,278 (90 days), 85,564 (365 days)
+build-error: 4 (30 days)&lt;/code>&lt;/pre>
+&lt;p>In the output above, we find the options to be set for compilers to find &lt;code>openblas&lt;/code>. I run these commands in the terminal:&lt;/p>
+&lt;pre>&lt;code>$ export LDFLAGS=&amp;quot;-L/usr/local/opt/openblas/lib&amp;quot;
+$ export CPPFLAGS=&amp;quot;-I/usr/local/opt/openblas/include&amp;quot;
+$ export PKG_CONFIG_PATH=&amp;quot;/usr/local/opt/openblas/lib/pkgconfig&amp;quot;&lt;/code>&lt;/pre>
+&lt;p>I now try installing &lt;code>lightweight_mmm&lt;/code> using &lt;code>pip3 install lightweight_mmm&lt;/code> in the terminal, and this time the installation gets past the step it was failing, but runs for a long time and fails again:&lt;/p>
+&lt;pre>&lt;code> Using cached scipy-1.6.1.tar.gz (27.3 MB)
+Installing build dependencies ... done
+Getting requirements to build wheel ... done
+Preparing metadata (pyproject.toml) ... error
+error: subprocess-exited-with-error
+× Preparing metadata (pyproject.toml) did not run successfully.
+│ exit code: 1
+╰─&amp;gt; [119 lines of output]
+setup.py:461: UserWarning: Unrecognized setuptools command (&amp;#39;dist_info --egg-base /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-modern-metadata-_yaq83ex&amp;#39;), proceeding with generating Cython sources and expanding templates
+warnings.warn(&amp;quot;Unrecognized setuptools command (&amp;#39;{}&amp;#39;), proceeding with &amp;quot;
+setup.py:563: DeprecationWarning:
+`numpy.distutils` is deprecated since NumPy 1.23.0, as a result
+of the deprecation of `distutils` itself. It will be removed for
+Python &amp;gt;= 3.12. For older Python versions it will remain present.
+It is recommended to use `setuptools &amp;lt; 60.0` for those Python versions.
+For more details, see:
+https://numpy.org/devdocs/reference/distutils_status_migration.html
+from numpy.distutils.core import setup
+Running from SciPy source directory.
+INFO: lapack_opt_info:
+INFO: lapack_armpl_info:
+INFO: customize UnixCCompiler
+INFO: libraries armpl_lp64_mp not found in [&amp;#39;/Users/&amp;lt;username&amp;gt;/.pyenv/versions/3.11.2/lib&amp;#39;, &amp;#39;/usr/local/lib&amp;#39;, &amp;#39;/usr/lib&amp;#39;]
+INFO: NOT AVAILABLE
+...&lt;/code>&lt;/pre>
+&lt;p>On further searching, it appears &lt;a href="https://github.com/docker-library/python/issues/558">that the problem&lt;/a> could be the version of python I’m currently using (3.11.2).&lt;/p>
+&lt;p>I tried using a version of Python &amp;lt; &lt;code>3.9&lt;/code> and checked if this was working. First, using the &lt;a href="https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/">instructions here&lt;/a>, I used &lt;code>pyenv&lt;/code> to install version &lt;code>3.8.16&lt;/code>, with the &lt;code>--enable-shared&lt;/code> option:&lt;/p>
+&lt;pre>&lt;code> $ env PYTHON_CONFIGURE_OPTS=&amp;quot;--enable-shared&amp;quot; pyenv install 3.8.16&lt;/code>&lt;/pre>
+&lt;p>Next, I set this to be the global Python version&lt;/p>
+&lt;pre>&lt;code> $ pyenv global 3.8.16&lt;/code>&lt;/pre>
+&lt;p>I now try installing the package again using &lt;code>pip3 install lightweight_mmm&lt;/code>, and this time it works:&lt;/p>
+&lt;pre>&lt;code>Installing collected packages: typing-extensions, tensorboard-plugin-wit, pytz, pyasn1, libclang, flatbuffers, zipp, wrapt, wheel, urllib3, tqdm, threadpoolctl, termcolor, tensorflow-io-gcs-filesystem, tensorflow-estimator, tensorboard-data-server, six, rsa, pyparsing, pyasn1-modules, protobuf, pillow, packaging, oauthlib, numpy, MarkupSafe, kiwisolver, keras, joblib, immutabledict, idna, grpcio, gast, fonttools, cycler, charset-normalizer, certifi, cachetools, absl-py, werkzeug, scipy, requests, python-dateutil, patsy, opt_einsum, multipledispatch, importlib-metadata, h5py, google-pasta, google-auth, contourpy, cftime, astunparse, scikit-learn, requests-oauthlib, pandas, netcdf4, matplotlib, markdown, jaxlib, jax, xarray, statsmodels, seaborn, numpyro, google-auth-oauthlib, tensorboard, arviz, tensorflow, lightweight_mmm
+Running setup.py install for jax ... done
+Successfully installed MarkupSafe-2.1.2 absl-py-1.4.0 arviz-0.11.2 astunparse-1.6.3 cachetools-5.3.0 certifi-2022.12.7 cftime-1.6.2 charset-normalizer-3.1.0 contourpy-1.0.7 cycler-0.11.0 flatbuffers-23.3.3 fonttools-4.39.2 gast-0.4.0 google-auth-2.16.3 google-auth-oauthlib-0.4.6 google-pasta-0.2.0 grpcio-1.51.3 h5py-3.8.0 idna-3.4 immutabledict-2.2.3 importlib-metadata-6.1.0 jax-0.4.6 jaxlib-0.4.6 joblib-1.2.0 keras-2.11.0 kiwisolver-1.4.4 libclang-16.0.0 lightweight_mmm-0.1.7 markdown-3.4.3 matplotlib-3.6.1 multipledispatch-0.6.0 netcdf4-1.6.3 numpy-1.24.2 numpyro-0.11.0 oauthlib-3.2.2 opt_einsum-3.3.0 packaging-23.0 pandas-1.5.3 patsy-0.5.3 pillow-9.4.0 protobuf-3.19.6 pyasn1-0.4.8 pyasn1-modules-0.2.8 pyparsing-3.0.9 python-dateutil-2.8.2 pytz-2023.2 requests-2.28.2 requests-oauthlib-1.3.1 rsa-4.9 scikit-learn-1.2.2 scipy-1.10.1 seaborn-0.11.1 six-1.16.0 statsmodels-0.13.5 tensorboard-2.11.2 tensorboard-data-server-0.6.1 tensorboard-plugin-wit-1.8.1 tensorflow-2.11.1 tensorflow-estimator-2.11.0 tensorflow-io-gcs-filesystem-0.31.0 termcolor-2.2.0 threadpoolctl-3.1.0 tqdm-4.65.0 typing-extensions-3.10.0.2 urllib3-1.26.15 werkzeug-2.2.3 wheel-0.40.0 wrapt-1.15.0 xarray-2023.1.0 zipp-3.15.0&lt;/code>&lt;/pre>
+&lt;p>While searching for a fix, I found &lt;a href="https://pyreadiness.org/3.9/">this website&lt;/a> that looks at Python 3.9 support for the 360 most downloaded packages on &lt;a href="https://pyreadiness.org/3.9/">PyPi&lt;/a>.&lt;/p></description></item></channel></rss>
