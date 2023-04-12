@@ -1,4 +1,35 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reference | The Journeyman Modeler</title><link>https://jmodeler.github.io/category/reference/</link><atom:link href="https://jmodeler.github.io/category/reference/index.xml" rel="self" type="application/rss+xml"/><description>Reference</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Sat, 25 Mar 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Reference</title><link>https://jmodeler.github.io/category/reference/</link></image><item><title>Resolving Install Errors for the lightweight_mmm Python Package</title><link>https://jmodeler.github.io/post/resolving-install-errors-for-the-lightweight-mmm-python-package/</link><pubDate>Sat, 25 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/resolving-install-errors-for-the-lightweight-mmm-python-package/</guid><description>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reference | The Journeyman Modeler</title><link>https://jmodeler.github.io/category/reference/</link><atom:link href="https://jmodeler.github.io/category/reference/index.xml" rel="self" type="application/rss+xml"/><description>Reference</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Wed, 12 Apr 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>Reference</title><link>https://jmodeler.github.io/category/reference/</link></image><item><title>Resolving Errors When Loading the lldb Debugger</title><link>https://jmodeler.github.io/post/resolving-errors-when-loading-the-lldb-debugger/</link><pubDate>Wed, 12 Apr 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/resolving-errors-when-loading-the-lldb-debugger/</guid><description>
+&lt;p>From time to time, I work with &lt;span class="math inline">\(\texttt{C}\)&lt;/span> code, and I use the &lt;code>lldb&lt;/code> debugger to step through the code. Recently, after a Mac OS update, I started seeing this error when attempting to start the lldb debugger in terminal:&lt;/p>
+&lt;pre>&lt;code>$ lldb
+Traceback (most recent call last):
+File &amp;quot;&amp;lt;string&amp;gt;&amp;quot;, line 1, in &amp;lt;module&amp;gt;
+File &amp;quot;/usr/local/Cellar/llvm/15.0.7_1/libexec/python3.11/site-packages/lldb/__init__.py&amp;quot;, line 96, in &amp;lt;module&amp;gt;
+import six
+ModuleNotFoundError: No module named &amp;#39;six&amp;#39;&lt;/code>&lt;/pre>
+&lt;p>The error message says that a module (&lt;code>six&lt;/code>) is missing. The other issue, is that this module is missing on a version of python that is &lt;em>not&lt;/em> the global version set by &lt;code>pyenv&lt;/code>. I check the versions of pyenv on my system:&lt;/p>
+&lt;pre>&lt;code>$ pyenv versions
+system
+* 3.8.16 (set by /Users/&amp;lt;username&amp;gt;/.pyenv/version)
+3.9.1
+3.11.2&lt;/code>&lt;/pre>
+&lt;p>I’m guessing &lt;code>lldb&lt;/code> uses the &lt;code>system&lt;/code> version of Python. A simple &lt;code>pip3 install six&lt;/code> will not fix the issue, since this will install this package for Python &lt;code>3.8.16&lt;/code>, instead of the &lt;code>system&lt;/code> version. I now use &lt;code>pyenv&lt;/code> to set the local version of python to &lt;code>system&lt;/code>:&lt;/p>
+&lt;pre>&lt;code>$ pyenv local system
+$ pyenv versions
+* system (set by /Users/sandeep/.python-version)
+3.8.16
+3.9.1
+3.11.2&lt;/code>&lt;/pre>
+&lt;p>I now install &lt;code>six&lt;/code>:&lt;/p>
+&lt;pre>&lt;code>$ pip3 install six
+Collecting six
+Using cached six-1.16.0-py2.py3-none-any.whl (11 kB)
+Installing collected packages: six
+Successfully installed six-1.16.0&lt;/code>&lt;/pre>
+&lt;p>And I try launching &lt;code>lldb&lt;/code> on terminal again:&lt;/p>
+&lt;pre>&lt;code>% lldb
+(lldb)&lt;/code>&lt;/pre>
+&lt;p>.. which takes me to the &lt;code>(lldb)&lt;/code> prompt without any issues.&lt;/p>
+&lt;p>Make sure you “reset” the default python version to be used to the version you had before (in my case this would be version &lt;code>3.8.16&lt;/code>)&lt;/p></description></item><item><title>Resolving Install Errors for the lightweight_mmm Python Package</title><link>https://jmodeler.github.io/post/resolving-install-errors-for-the-lightweight-mmm-python-package/</link><pubDate>Sat, 25 Mar 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/resolving-install-errors-for-the-lightweight-mmm-python-package/</guid><description>
 &lt;p>To experiment with different specifications of a marketing mix model, I tried installing the &lt;a href="https://github.com/google/lightweight_mmm">lightweight_mmm&lt;/a> Python package from Google. When using the standard &lt;code>pip3 install lightweight_mmm&lt;/code> command in terminal, I was hitting this error:&lt;/p>
 &lt;pre>&lt;code> × Getting requirements to build wheel did not run successfully.
 │ exit code: 1
