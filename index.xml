@@ -10,7 +10,7 @@ Click on the &lt;strong>Slides&lt;/strong> button above to view the built-in sli
 &lt;li>&lt;strong>Embed&lt;/strong> your slides (e.g. Google Slides) or presentation video on this page using &lt;a href="https://wowchemy.com/docs/writing-markdown-latex/" target="_blank" rel="noopener">shortcodes&lt;/a>.&lt;/li>
 &lt;/ul>
 &lt;p>Further event details, including &lt;a href="https://wowchemy.com/docs/writing-markdown-latex/" target="_blank" rel="noopener">page elements&lt;/a> such as image galleries, can be added to the body of this page.&lt;/p></description></item><item><title>Resolving Errors When Loading the lldb Debugger</title><link>https://jmodeler.github.io/post/resolving-errors-when-loading-the-lldb-debugger/</link><pubDate>Wed, 12 Apr 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/resolving-errors-when-loading-the-lldb-debugger/</guid><description>
-&lt;p>From time to time, I work with &lt;span class="math inline">\(\texttt{C}\)&lt;/span> code, and I use the &lt;code>lldb&lt;/code> debugger to step through the code. Recently, after a Mac OS update, I started seeing this error when attempting to start the lldb debugger in terminal:&lt;/p>
+&lt;p>From time to time, I work with &lt;code>C&lt;/code> code, and I use the &lt;code>lldb&lt;/code> debugger to step through the code. Recently, after a Mac OS update, I started seeing this error when attempting to start the lldb debugger in terminal:&lt;/p>
 &lt;pre>&lt;code>$ lldb
 Traceback (most recent call last):
 File &amp;quot;&amp;lt;string&amp;gt;&amp;quot;, line 1, in &amp;lt;module&amp;gt;
