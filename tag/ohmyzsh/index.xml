@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ohmyzsh | The Journeyman Modeler</title><link>https://jmodeler.github.io/tag/ohmyzsh/</link><atom:link href="https://jmodeler.github.io/tag/ohmyzsh/index.xml" rel="self" type="application/rss+xml"/><description>ohmyzsh</description><generator>Wowchemy (https://wowchemy.com)</generator><language>en-us</language><lastBuildDate>Fri, 11 Aug 2023 00:00:00 +0000</lastBuildDate><image><url>https://jmodeler.github.io/media/icon_hu0b7a4cb9992c9ac0e91bd28ffd38dd00_9727_512x512_fill_lanczos_center_3.png</url><title>ohmyzsh</title><link>https://jmodeler.github.io/tag/ohmyzsh/</link></image><item><title>Making Terminal in RStudio Cooler (via ohmyzsh)</title><link>https://jmodeler.github.io/post/making-terminal-in-rstudio-cooler-via-ohmyzsh/</link><pubDate>Fri, 11 Aug 2023 00:00:00 +0000</pubDate><guid>https://jmodeler.github.io/post/making-terminal-in-rstudio-cooler-via-ohmyzsh/</guid><description>
+&lt;p>I’ve been using &lt;a href="https://ohmyz.sh/">ohmyzsh&lt;/a> with the &lt;a href="https://github.com/romkatv/powerlevel10k">powerlevel10k&lt;/a> theme to enhance my terminal experience, as I find myself spending more time on it while working on a few projects. A screeshot of this “enhanced” terminal is shown below:
+&lt;img src="terminal_ohmyzsh_p10k.png" alt="terminal_with_ohmyzsh_powerlevel10k" />&lt;/p>
+&lt;p>I was wondering if I could get the terminal within &lt;a href="https://posit.co/products/open-source/rstudio/">RStudio&lt;/a> to use the same theme. Turns out that can be done, by following the steps below (Note that these steps are applicable to RStudio &lt;strong>version 2022.12.0+353 “Elsbeth Geranium” Release (7d165dcfc1b6d300eb247738db2c7076234f6ef0, 2022-12-03) for macOS&lt;/strong>. These steps also assume that you’ve already installed ohmyzsh and the powerlevel10k theme. If not, please follow the instructions &lt;a href="https://v-char.medium.com/now-let-customize-your-native-macos-terminal-with-oh-my-zsh-and-powerlevel10k-b48b9c30d39f">here&lt;/a> first):&lt;/p>
+&lt;ol style="list-style-type: decimal">
+&lt;li>Go to “Tools &amp;gt; Global Options…”, and choose “Terminal” on the left side of the window that appears:
+&lt;img src="terminal_setting_init.png" alt="terminal_setting_initial" />&lt;/li>
+&lt;li>As shown in the image above, change the “New terminals open with:” setting from “Bash” to “Zsh”, and then click “Apply”:
+&lt;img src="new_terminal_setting.png" alt="new_terminal_setting" />&lt;/li>
+&lt;li>Once you make this change and open a new terminal within RStudio, you might see something like this:
+&lt;img src="terminal_rstudio_init.png" alt="terminal_rstudio_initial" />&lt;/li>
+&lt;li>We see that the fonts are not rendering as expected within the terminal. This is similar to the issue other users were seeing with &lt;a href="https://github.com/romkatv/powerlevel10k/issues/671">terminal within vscode&lt;/a>. Follow the steps on &lt;a href="https://github.com/romkatv/powerlevel10k/issues/671#issuecomment-621031981">this post&lt;/a> to install the missing fonts on your system.&lt;/li>
+&lt;li>Once you’ve installed the fonts, restart RStudio and go to “Tools &amp;gt; Global Options…”. Choose “Appearance” on the left. You should see something like this:
+&lt;img src="appearance_screen.png" alt="RStudio_appearance_popup" />&lt;/li>
+&lt;li>Under “Editor font:” choose “MesloLGS-NF-Regular” as shown below:
+&lt;img src="appearance_setting.png" alt="font_setting" />&lt;/li>
+&lt;li>Click on “Apply”. RStudio should now refresh, and the terminal should now show all the icons:
+&lt;img src="terminal_final.png" alt="terminal_rstudio_final" />&lt;/li>
+&lt;/ol></description></item></channel></rss>
