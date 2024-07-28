@@ -1,0 +1,42 @@
+---
+title: Completing Projects at Work
+author: jModeler
+date: '2023-03-19'
+slug: completing-projects-at-work
+categories:
+  - Productivity
+tags:
+  - Productivity
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2023-03-19T08:28:39-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+This is a post inspired by a conversation I had with a colleague, Ryan. Over a very short period, he had completed an impressive portfolio of work projects, and always had something better in the pipeline. I asked him what he did when starting on anything, and he very kindly shared his method to get (most) things done at work (and in life, where applicable). In the following post, anything **bold** is input from him.
+
+Ryan’s method to do anything in life (abstract version):
+
+1. Determine what is being asked of you (or what you want to achieve). What problem are you trying to solve? Do not fall victim to the [XY problem](https://en.wikipedia.org/wiki/XY_problem), be very clear about the deliverable expected. Check and re-check (or re-assess, in case this is a personal goal) with your boss/business partner/end goal **regularly**.
+2. With a clear deliverable in mind, now clearly formulate the steps to be taken to get closer to said deliverable
+3. Now, do you have all the skills/knowledge to do the steps yourself? Great! Make a plan to work on each step and stick to it. **Try to make a plan on how much work will be required time wise to progress through each step. This will also help you learn how good (or bad) you are at estimating time/specific tasks.**
+**I highly recommend reading [this blog post](https://archive.fo/kHhdM) about what to tackle first. He recommends basically making the smallest version of what you need that includes all the component parts. This helps you discover compatibility/integration issues up front that can wreck a project if they’re discovered late.**
+4. If you see there are gaps in your knowledge, you have two options:
+
+    - Learn everything you need to know to plug the knowledge gap (**generally terrifying and not recommended**)
+    - Find someone else who had the same problem and try to replicate what they’ve done. Google is your friend! (**generally where I start, using a [tracer bullet](https://archive.fo/x5C54)**). Once you've found a solution, follow the process outlined in step 3. and make progress on your work.
+    
+5. As you keep working on your steps, DOCUMENT EVERYTHING. This will help you do the following:
+
+    - If you need to (or want to) move on to another project, you can hand this over to someone else and easily create a succession plan.
+    - If this project is a personal goal, you have a record of what you did. This will serve as a reference when you need to redo something like this in the future.
+    - **If your memory is anything like mine, it’s not great and you work on a lot. Your own documentation will help you know why you did something**.
+    - **It helps guide others through how to learn a topic**.
+    - **It can serve as a record of what work was done which can be useful as an archive, or for ideas for other work. Was one process a nightmare that you spent half your time on? Maybe that should be tackled next.**
+

@@ -1,0 +1,188 @@
+---
+title: Numerical Integration with Sparse Grids
+author: jmodeler
+date: '2023-03-20'
+slug: numerical-integration-with-sparse-grids
+categories:
+  - Scientific Computing
+tags:
+  - Numerical Integration
+  - Sparse Grids
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2023-03-20T07:55:39-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+bibliography: [numint.bib]
+link-citations: true
+math: true
+---
+---
+nocite: '@*'
+...
+
+I recently read a paper [@heiss2008likelihood] that advocated the use of certain techniques (Sparse Grids, SG henceforth) in numerical integration to calculate likelihood functions, as opposed to using Monte Carlo (MC henceforth) methods for the same. While approximating integrals with MC methods are simpler to implement, they might lead to integral values with considerable simulation error [@skrainka2011high]. This post attempts to demonstrate the claim in @skrainka2011high using two very simple integrals, to which we already know the value. I attempt to compare the outcomes from using MC and SG.
+
+The integrals I'll be evaluating are: 
+\begin{equation}
+\int_{-\infty}^{\infty} \left( \sum_{i=1}^{5} x_i \right) dF_{X}   (\#eq:sumint) 
+\end{equation}
+
+
+and
+\begin{equation}
+\int_{-\infty}^{\infty} \left( \prod_{i=1}^{5} x_i^2 \right) dF_{X} (\#eq:prodint)
+\end{equation}
+
+where $X = \{x_i\}_{i=1}^{5}$ is a five dimensional random variable, which is distributed according to the multivariate standard normal:
+
+\begin{equation}
+X \sim N\left( \left[ \begin{array}
+{r}
+0  \\
+0  \\
+0  \\
+0  \\
+0  \\
+\end{array}\right], \left[ \begin{array}
+{rrrrr}
+1 & 0 & 0 & 0 & 0   \\
+0 & 1 & 0 & 0 & 0  \\
+0 & 0 & 1 & 0 & 0  \\
+0 & 0 & 0 & 1 & 0  \\
+0 & 0 & 0 & 0 & 1  \\
+\end{array}\right] \right)
+\end{equation}
+
+Given the distribution of $X$, the values of the integrals above are easily obtained from standard results (the value of \@ref(eq:sumint) is $0$ and that of \@ref(eq:prodint) is $1$) respectively.
+
+I write some utility functions in R to compute the integrands above:
+
+```{r, eval=T}
+#function to compute the sum of components of the random vector
+s <- function(x)
+{
+  return(sum(x))
+}
+
+#function to compute the square product of the components of the random vector
+p <- function(x)
+{
+  return(prod(x^2))
+}
+```
+I now write a function that:
+
+* Simulates a certain number of draws from the distribution of the random variable $X$
+* Computes the integrand function using each of these draws as input
+* Takes the average of the values computed in the previous step
+
+This function, in effect, would give us the approximate value of the integral via MC methodology.
+
+The code is provided below, note that I use the <tt>[mvtnorm](https://cran.r-project.org/web/packages/mvtnorm/index.html)</tt> package to create random draws.
+
+```{r, eval=T}
+library(mvtnorm)
+
+#Function to calculate the MC approximation for the integral
+mc_int <- function(s, n, mu, sigma)
+{
+  #generate random draws
+  x <- rmvnorm(n, mean = mu, sigma = sigma)
+  #now get the integral
+  mc_int_n <- mean(apply(x, 1, s))
+  return(mc_int_n)
+}
+
+set.seed(100)
+n <- 1000
+mc_val <- mc_int(s, n, mu = rep(0,5), sigma = diag(5))
+mc_val
+```
+
+The result, `r round(mc_val,5)` is not far off from the true value of $0$ at first glance, however, we need to compare this to the result from the SG approach.
+
+R has a package that generates sparse grids for numerical integration as described in @heiss2008likelihood, called <tt>[SparseGrid](https://cran.r-project.org/web/packages/SparseGrid/index.html)</tt>. We now use the nodes and weights generated from this package to approximate the first integral.
+I re-use some of the code provided in the documentation for the <tt>[SparseGrid](https://cran.r-project.org/web/packages/SparseGrid/vignettes/SparseGrid.pdf)</tt> package in R.
+
+
+```{r, eval=T}
+library(SparseGrid)
+
+#generate sparse grids for a 5 dimensional RV with accuracy level 2
+sg <- createSparseGrid(type='KPN', dimension=5, k=2)
+
+
+sg_int <- function(func, sg, ...)
+{
+  gx <- apply(sg$nodes, 1, function(x) {func(x, ...)})
+  return(sum(gx * sg$weights))
+}
+
+sg_val <- sg_int(s, sg)
+sg_val
+```
+
+The result here is exactly `r sg_val`. In light of this finding, the value obtained from the MC approach, in comparison, is a little off, and tends to show a high variance in output:
+
+```{r, eval=T}
+set.seed(100)
+
+mc_int(s, n, mu = rep(0,5), sigma = diag(5))
+
+mc_int(s, n, mu = rep(0,5), sigma = diag(5))
+
+mc_int(s, n, mu = rep(0,5), sigma = diag(5))
+
+mc_int(s, n, mu = rep(0,5), sigma = diag(5))
+
+mc_int(s, n, mu = rep(0,5), sigma = diag(5))
+```
+
+In the third case, there is a $-12\%$ error(!) in the value of the computed integral when compared to the result from the SG approach. The SG approach, in addition, shows no such variation in repeated runs, since the grid values and weights are fixed for a given accuracy level and dimension (of the variable being integrated).
+
+I repeat the calculations for the second integral, as shown below
+
+MC approach:
+```{r, eval=T}
+set.seed(100)
+n <- 1000
+mc_val <- mc_int(p, n, mu = rep(0,5), sigma = diag(5))
+mc_val
+```
+
+SG approach:
+```{r, eval=T}
+#generate sparse grids for a 5 dimensional RV with accuracy level 6
+sg <- createSparseGrid(type='KPN', dimension=5, k=6)
+sg_val <- sg_int(p, sg)
+sg_val
+```
+
+Once again, the SG approach gives us an exact value (note that the value of $k$, the accuracy level, has gone up, since the integrand is a higher order function). Again, the difference of the results between the two approaches doesn't seem that large. However, variability of the results from the MC approach is still a concern, as shown below:
+
+```{r, eval=T}
+set.seed(100)
+
+mc_int(p, n, mu = rep(0,5), sigma = diag(5))
+
+mc_int(p, n, mu = rep(0,5), sigma = diag(5))
+
+mc_int(p, n, mu = rep(0,5), sigma = diag(5))
+
+mc_int(p, n, mu = rep(0,5), sigma = diag(5))
+
+mc_int(p, n, mu = rep(0,5), sigma = diag(5))
+```
+
+In the second case, there is a  roughly $53\%$ (!!) error when compared to the true value of the integral. This variability could be worse with more complicated integrands. One suggestion to reduce variability in MC methods is to increase the number of draws, but that would entail a lot of calculations and result in longer runtimes. 
+
+To conclude, we have shown with this simple example how results from numerical integration using MC methods have high variability, and more often than not, it would be good idea to increase the number of draws being used to approximate an integral, or use a different method altogether (SG).
+
+
+## References

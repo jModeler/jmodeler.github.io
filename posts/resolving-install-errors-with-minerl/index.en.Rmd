@@ -1,0 +1,117 @@
+---
+title: Resolving Install Errors with MineRL
+author: R package build
+date: '2023-03-22'
+slug: resolving-install-errors-with-minerl
+categories:
+  - Reference
+  - Reinforcement Learning
+tags:
+  - Python
+  - Setup
+  - MineRL
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2023-03-22T12:08:40-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+---
+
+In this post, I'll resolve an error that one might face when trying to install the `minerl` Python package. The instructions to install this package can be [found here](https://minerl.readthedocs.io/en/latest/tutorials/index.html).
+
+1. Using the instructions above, when I used the install command (`pip3 install git+https://github.com/minerllabs/minerl`), I got the following error (only the relevant part is shown here):
+```
+          Note: Some input files use or override a deprecated API.
+      Note: Recompile with -Xlint:deprecation for details.
+      Note: Some input files use unchecked or unsafe operations.
+      Note: Recompile with -Xlint:unchecked for details.
+      100 errors
+      only showing the first 100 errors, of 2866 total; use -Xmaxerrs if you would like to see more
+
+      > Task :compileJava FAILED
+
+      FAILURE: Build failed with an exception.
+
+      * What went wrong:
+      Execution failed for task ':compileJava'.
+      > Compilation failed; see the compiler error output for details.
+
+      * Try:
+      Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+      * Get more help at https://help.gradle.org
+
+      Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+      Use '--warning-mode all' to show the individual deprecation warnings.
+      See https://docs.gradle.org/6.8.1/userguide/command_line_interface.html#sec:command_line_warnings
+
+      BUILD FAILED in 21s
+      10 actionable tasks: 10 executed
+      Traceback (most recent call last):
+        File "<string>", line 2, in <module>
+        File "<pip-setuptools-caller>", line 34, in <module>
+        File "/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py", line 214, in <module>
+          prep_mcp()
+        File "/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py", line 198, in prep_mcp
+          subprocess.check_call('{} clean build shadowJar'.format(gradlew).split(' '), cwd=workdir)
+        File "/Users/<username>/.pyenv/versions/3.11.2/lib/python3.11/subprocess.py", line 413, in check_call
+          raise CalledProcessError(retcode, cmd)
+      subprocess.CalledProcessError: Command '['./gradlew', 'clean', 'build', 'shadowJar']' returned non-zero exit status 1.
+      [end of output]
+
+  note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+```
+
+2. Searching for the error message (`error: metadata-generation-failed`) took me to a bunch of websites that provided other options to try:
+    - From the [install page](https://minerl.readthedocs.io/en/latest/tutorials/index.html), I tried providing the `--user` option in the install command, that did not work, and I got the same error. This was the command I used: `pip3 install git+https://github.com/minerllabs/minerl --user`
+    - From [this stackoverflow page](https://stackoverflow.com/questions/74188013/python-pygame-not-installing), I used the `--pre` option in the install command, that didn't work either. This was the command I used: `pip3 install git+https://github.com/minerllabs/minerl --pre`
+    - From [this page](https://bobbyhadz.com/blog/python-error-metadata-generation-failed-encountered-error), I learnt about using the `--use-deprecated` option, but that did not work too. This was the command I used: `pip3 install git+https://github.com/minerllabs/minerl --use-deprecated=legacy-resolver`
+
+3. Going back to the `minerl` [install page](https://minerl.readthedocs.io/en/latest/tutorials/index.html), I checked the Java version, hoping that this was the issue:
+
+```
+      $ java -version
+      openjdk version "14.0.2" 2020-07-14
+      OpenJDK Runtime Environment (build 14.0.2+12-46)
+      OpenJDK 64-Bit Server VM (build 14.0.2+12-46, mixed mode, sharing)
+```
+
+4. My system was using the wrong version of Java (it should be using `1.8._`)! I used the [instructions here](https://gist.github.com/schnell18/bcb9833f725be22f6acd01f94b486392), to remove the other version of Java. These were the exact commands I used:
+
+```
+      $ sudo rm -fr /Library/Java/JavaVirtualMachines/openjdk-14.0.2.jdk/
+      $ sudo rm -fr /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
+      $ sudo rm -fr /Library/PreferencePanes/JavaControlPanel.prefPane
+```
+
+5. If you encounter this error on a macOS, and the Java version is the cause, check your Java version using the `java -version` command on terminal, and navigate to the `/Library/Java/JavaVirtualMachines/` folder to find the other versions of Java on your machine. Then use the `sudo` commands above to delete the appropriate folders. After deleting the other Java folder on my machine, typing `java -version` in my terminal gave me the following result:
+
+```
+      $ java -version
+      openjdk version "1.8.0_292"
+      OpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_292-b10)
+      OpenJDK 64-Bit Server VM (AdoptOpenJDK)(build 25.292-b10, mixed mode)
+```
+
+
+6. After doing this, the install command (`pip3 install git+https://github.com/minerllabs/minerl`), worked fine on the terminal. I did see some error messages (around installation of the Python package `gym`), but it didn't appear to affect the installation:
+
+```
+    Failed to build gym
+    Installing collected packages: PyWavelets, Pyro4, opencv-python, matplotlib-inline, lxml, 
+    jinja2, jedi, inflection, idna, humanfriendly, flaky, dill, decorator, cloudpickle, charset-normalizer, 
+    certifi, asttokens, stack-data, requests, imagehash, gym, coloredlogs, ipython, minerl
+      Running setup.py install for gym ... done
+      DEPRECATION: gym was installed using the legacy 'setup.py install'
+      method, because a wheel could not be built for it. pip 23.1 will enforce this behaviour change. 
+      A possible replacement is to fix the wheel build issue reported above.
+      Discussion can be found at https://github.com/pypa/pip/issues/8368
+```
+
+7. Create your [first agent](https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html) and check if everything is working properly. If the example linked does not work, refer to [this post](https://jmodeler.github.io/post/resolving-errors-when-creating-your-first-minerl-agent/), or [this github issue comment](https://github.com/minerllabs/minerl/issues/659#issuecomment-1306635414).

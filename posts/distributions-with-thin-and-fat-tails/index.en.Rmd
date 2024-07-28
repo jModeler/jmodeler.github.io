@@ -1,0 +1,91 @@
+---
+title: Distributions with Thin and Fat Tails
+author: R package build
+date: '2023-03-21'
+slug: distributions-with-thin-and-fat-tails
+categories:
+  - Risk
+tags:
+  - Insurance
+  - Nassim Taleb
+  - Fat Tails
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2023-03-21T12:34:21-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+bibliography: [taleb.bib]
+link-citations: true
+math: true
+---
+---
+nocite: '@*'
+...
+
+In this post, we'll explore a key difference between thin and fat tailed distributions, and what this means in the world of insurance and risk management. These results are from Chapter 3 of @taleb2020fattails. 
+
+```{r setup, echo=FALSE}
+# setup for using python code later in the page
+library(reticulate)
+use_python("/Users/swarnalatha/.pyenv/shims/python")
+```
+
+In the world of thin tails (i.e. data that are Gaussian distributed), as the sample of data gets larger, no single data point can change the properties of the entire sample (Taleb calls this "Mediocristan"). Conversely, in data from fat tailed distributions (i.e. data from a distribution whose tail decays like a [power law](https://en.wikipedia.org/wiki/Power_law)), a single data point (or rare events) can disproportionately impact the properties of a sample (Taleb calls this "Extremistan"). The next section explores data from a standard normal distribution, and how likely it is to observe a tail event in such data.
+
+## Gaussian Data (Mediocristan)
+**Summary:** In data that are normally (Gaussian) distributed, it is more likely to observe several smaller "bad" events that one massive "tail" event. For insurability, the losses need to come from many smaller bad events than a single tail event. This is true in the case of Gaussian data.
+
+Taleb gives the example of checking the total height of two individuals randomly drawn from a sample of people (the heights are assumed to be normally distributed, or our sample is from Mediocristan). If the total height is 4.1m, (a tail event), it is more likely that the individual heights are 2.05m each than one being 10cm and the other being 4m.
+
+Mathematically stated, if $X$ is a large value generated from a Gaussian distribution (Mediocristan), it is more likely to observe a value greater than this twice, than observing a random value that is greater than $2X$. Let us verify this by drawing a few sample values from the standard normal distribution. 
+
+```{python, echo=TRUE, eval=TRUE}
+
+import scipy.stats as dist
+# standard normal distribution
+st_norm = dist.norm(0,1)
+# get the probability of observing a value that is more than 3 standard 
+# deviations away from the mean, i.e. 3
+p_x = 1 - st_norm.cdf(3)
+# get the probability of observing a value that is more than 6 = 3*2 standard 
+# deviations away from the mean
+p_2x = 1 - st_norm.cdf(6)
+# print the probability of values
+print("Probability of observing two values that are 3 standard deviations \n away from the mean: {0:.3E}".format(p_x * p_x))
+print("Probability of observing a single value that is 6 standard deviations \n away from the mean: {0:.3E}".format(p_2x))
+```
+
+As expected, in the Gaussian world, it is more likely to observe a series of smaller tail events, than a single large tail event, that modifies the properties of the data sample. If these tail events are associated with losses, then for insurability, the losses need to come from many (smaller) events than a single (large) one, which leads to financial ruin. The formal conditions for this were discussed in @cramer1959mathematical.
+
+## Data from a Pareto Distribution (Extremistan)
+**Summary:** In data that are from [subexponential distributions](https://en.wikipedia.org/wiki/Heavy-tailed_distribution) (like the [pareto](https://en.wikipedia.org/wiki/Pareto_distribution)), it is more likely to observe one massive "tail" event than several smaller "bad" events. These are not insurable, since there is a risk of catastrophe. 
+
+Let's repeat the probability calculation exercise we did earlier, but now for the pareto distribution:
+
+```{python, echo=TRUE, eval=TRUE}
+
+# set the shape parameter for the pareto distribution
+b = 3
+# get the pareto distribution object from dist, alias for scipy.stats
+st_pareto = dist.pareto(b)
+# get the probability of observing a value that is thrice the mean, i.e. 4.5
+p_x = 1 - st_pareto.cdf(4.5)
+# get the probability of observing a value that is 6 times the mean, i.e. 9
+p_2x = 1 - st_pareto.cdf(9)
+# print the probability of values
+print("Probability of observing two values that are thrice the mean: {0:.3E}".format(p_x * p_x))
+print("Probability of observing a single value that is 6 times the mean: {0:.3E}".format(p_2x))
+```
+
+Note that the `pareto()` method in `scipy` takes the shape parameter `b` as input, as [explained here](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.pareto.html). 
+
+As we can see, the probability of observing a single large tail event is higher than observing a series of smaller tail events. If large tail events are considered to be bad and lead to financial ruin, this makes such cases uninsurable. 
+
+To drive the point home, Taleb gives another example of checking the total income of two individuals randomly drawn from a sample of people (the incomes are assumed to be subexponentially distributed, or our sample is from Extremistan). If the total income is `$36 Million`, (a tail event), it is more likely that the individual incomes are `$35,999,000` and `$1000` than both incomes being `$18 Million` each.
+
+## References

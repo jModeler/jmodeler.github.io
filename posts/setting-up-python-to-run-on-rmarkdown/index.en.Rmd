@@ -1,0 +1,100 @@
+---
+title: Setting up Python to Run on Rmarkdown
+author: R package build
+date: '2023-03-21'
+slug: setting-up-python-to-run-on-rmarkdown
+categories:
+  - Productivity
+  - Reference
+tags:
+  - Python
+  - Blogdown
+  - Hugo
+subtitle: ''
+summary: ''
+authors: []
+lastmod: '2023-03-21T13:53:32-04:00'
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+projects: []
+bibliography: []
+link-citations: true
+math: true
+---
+---
+nocite: '@*'
+...
+
+I use the [Hugo academic template](https://github.com/wowchemy/starter-hugo-academic) along with Rstudio's [Blogdown](https://github.com/rstudio/blogdown) package to generate and deploy this website to [github pages](https://pages.github.com/). I use this setup to generate blog posts (via [Rmarkdown](https://rmarkdown.rstudio.com/)) that render $\LaTeX$ math and output from R code. 
+
+Sometimes, I'd like to run Python code inside Rmarkdown too, and this is [supported](https://bookdown.org/yihui/rmarkdown-cookbook/eng-python.html), via the [reticulate](https://cran.r-project.org/web/packages/reticulate/index.html) package. That said, the following steps need to be followed to make sure everything runs smoothly (all of these steps worked on a macOS Ventura operating system)
+
+1. In your Rmarkdown file, always have this code chunk to setup Python use for later:
+
+```{r setup, echo=TRUE, eval=FALSE}
+# setup for using python code later in the page
+# import the reticulate package
+library(reticulate)
+# specify the version of python to use
+use_python("/Users/<username>/.pyenv/shims/python")
+```
+
+2. Note: In the chunk above, replace `<username>` with your username. In addition, I use `pyenv` to manage python versions on my system, as [explained here](https://blog.teclado.com/how-to-use-pyenv-manage-python-versions/). If you don't have `pyenv` already, be sure to set it up using the instructions in the previous link.
+
+3. You might hit an error when you run a python code chunk in Rmarkdown:
+
+```
+    Error: '/Users/<username>/.pyenv/shims/python' was not built with a shared library.
+    reticulate can only bind to copies of Python built with '--enable-shared'.
+    Execution halted
+    Error : Failed to render content/post/<name_of_post>/index.en.Rmd
+```
+
+4. This just means I must build a version of python with the `--enable-shared` flag. I do this using `pyenv`. 
+
+5. First, choose a version of python that you want to use. You can do this by going to the terminal and typing
+
+```
+    pyenv install --list
+```
+6. This should show you a long output, some of them will be python versions, as shown below:
+
+```
+    ...
+    3.10.1
+    3.10.2
+    3.10.3
+    3.10.4
+    3.10.5
+    3.10.6
+    3.10.7
+    3.10.8
+    3.10.9
+    3.10.10
+    3.11.0
+    ...
+
+```
+
+7. Choose an appropriate version and use the command below to install said version, like so (in the example below, I choose to install 3.11.0):
+
+```
+    env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.11.0
+```
+
+8. In the previous step, note the `--enable-shared` option has now been added
+9. We now want to set this Python version to be the global Python version. Type the following command (replace 3.11.0 in the command below with the version you installed):
+```
+    pyenv global 3.11.0
+```
+10. You can also check if the global version set is the correct version using the following command:
+
+```
+    pyenv versions
+```
+10. If you're using python packages (i.e. `numpy`, `pandas`, etc.) in your code chunks, make sure to install them first (i.e. by using `pip3 install numpy`, `pip3 install pandas`, etc. in the terminal)
+
+11. With all of this set up, you should no longer see the error above when you knit Rmarkdown documents with Python code chunks in them. 
