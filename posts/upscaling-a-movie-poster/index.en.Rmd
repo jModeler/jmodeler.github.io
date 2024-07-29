@@ -30,7 +30,7 @@ projects: []
   5. Below is the code I used to do this. Note that the original image is in the same folder as the notebook that contained this code.
   
       ```
-      # import packagea needed
+      # import packages needed
       from super_image import DrlnModel, ImageLoader
       from PIL import Image
       
