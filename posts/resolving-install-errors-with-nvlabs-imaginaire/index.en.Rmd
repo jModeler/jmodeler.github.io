@@ -1,0 +1,67 @@
+---
+title: Resolving Install Errors with NVlabs imaginaire
+author: jmodeler
+date: '2024-07-30'
+slug: resolving-install-errors-with-nvlabs-imaginaire
+categories: 
+  - AI
+  - Python
+  - Package install
+tags:
+  - Python
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+**TL;DR:** I need to install the [NVlabs imaginaire package](https://github.com/NVlabs/imaginaire) for a project (more details in a later post). I walk through the installation steps and how to resolve any errors you might encounter.
+
+  1. I need to install the [NVlabs imaginaire package](https://github.com/NVlabs/imaginaire), I follow the instructions [here](https://github.com/NVlabs/imaginaire/blob/master/INSTALL.md). 
+  
+  2. As explained in a [previous post](https://jmodeler.github.io/posts/setting-up-python-to-run-on-rmarkdown/), I use `pyenv` to handle various versions of python and I'm currently using version `3.10.5`:
+  
+  ```
+      $ pyenv versions
+      system
+    * 3.10.5 (set by /Users/<username>/.pyenv/version)
+      3.11.4
+      3.12.3
+  ```
+  
+  
+  3. First make sure you have the latest version of pip by running the following command in terminal:
+  
+  ```
+      pip install --upgrade pip
+  ```
+  
+  4. For installing the package, I'm using the following commands in terminal (as shared [here](https://github.com/NVlabs/imaginaire/blob/master/INSTALL.md)):
+  
+  ```
+      git clone https://github.com/nvlabs/imaginaire
+      cd imaginaire
+      bash scripts/install.sh
+      bash scripts/test_training.sh
+  ```
+
+  5. I hit the following error:
+  
+  ```
+      Traceback (most recent call last):
+      File "/Users/<username>/imaginaire/imaginaire/model_utils/gancraft/voxlib/setup.py", line 6, in <module>
+        from torch.utils.cpp_extension import BuildExtension, CUDAExtension
+    ModuleNotFoundError: No module named 'torch'
+    make: *** [all] Error 1
+  ```
+  
+  6. It appears the package `torch` is missing. I use `pip` to install this package. 
+  
+  ```
+      pip install torch
+  ```
+  
+  7. I try running `bash scripts/install.sh` again. 
+  **NOTE**. I have to install the pre-reqs (`CUDA 11.1` and `cudnn`) and it looks like this will not work on [MAC OSX](https://developer.nvidia.com/nvidia-cuda-toolkit-11_1_0-developer-tools-mac-hosts). 
+  
+  

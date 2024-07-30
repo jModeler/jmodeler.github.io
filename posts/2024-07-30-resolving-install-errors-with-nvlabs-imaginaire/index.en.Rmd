@@ -1,0 +1,28 @@
+---
+title: Resolving Install Errors with NVlabs imaginaire
+author: jmodeler
+date: '2024-07-30'
+slug: resolving-install-errors-with-nvlabs-imaginaire
+categories: 
+  - AI
+  - Python
+  - Package install
+tags:
+  - Python
+authors: []
+description: ''
+externalLink: ''
+series: []
+---
+
+**TL;DR:** I need to install the [NVlabs imaginaire package](https://github.com/NVlabs/imaginaire) for a project (more details in a later post). I walk through the installation steps and how to resolve any errors you might encounter.
+
+  1. I need to install the [NVlabs imaginaire package](https://github.com/NVlabs/imaginaire), I follow the instructions [here](https://github.com/NVlabs/imaginaire/blob/master/INSTALL.md). I'm reproducing the commands used in the terminal below:
+  
+  ```
+  git clone https://github.com/nvlabs/imaginaire
+  cd imaginaire
+  bash scripts/install.sh
+  bash scripts/test_training.sh
+  ```
+  
