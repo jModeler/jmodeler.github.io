@@ -1,5 +1,53 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reinforcement Learning on The Journeyman Modeler</title><link>http://jmodeler.github.io/categories/reinforcement-learning/</link><description>Recent content in Reinforcement Learning on The Journeyman Modeler</description><generator>Hugo</generator><language>en</language><lastBuildDate>Thu, 23 Mar 2023 18:59:47 -0400</lastBuildDate><atom:link href="http://jmodeler.github.io/categories/reinforcement-learning/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Errors when Creating Your First MineRL Agent</title><link>http://jmodeler.github.io/posts/resolving-errors-when-creating-your-first-minerl-agent/</link><pubDate>Thu, 23 Mar 2023 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/resolving-errors-when-creating-your-first-minerl-agent/</guid><description>In this post, I lay out the steps to follow to resolve the errors you see when creating your first MineRL agent on a macOS. This is a continuation of this post, which looks at resolving install errors on the minerl package.
-I borrow heavily from this github issue comment.
-Clone the repository using the terminal command below
-git clone https://github.com/minerllabs/minerl.git This will create a minerl directory. Make sure that the path to the cloned repository does not have spaces in it (i.</description></item><item><title>Resolving Install Errors with MineRL</title><link>http://jmodeler.github.io/posts/resolving-install-errors-with-minerl/</link><pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/resolving-install-errors-with-minerl/</guid><description>In this post, I&amp;rsquo;ll resolve an error that one might face when trying to install the minerl Python package. The instructions to install this package can be found here.
-Using the instructions above, when I used the install command (pip3 install git+https://github.com/minerllabs/minerl), I got the following error (only the relevant part is shown here): Note: Some input files use or override a deprecated API. Note: Recompile with -Xlint:deprecation for details. Note: Some input files use unchecked or unsafe operations.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Reinforcement Learning on The Journeyman Modeler</title><link>http://jmodeler.github.io/categories/reinforcement-learning/</link><description>Recent content in Reinforcement Learning on The Journeyman Modeler</description><generator>Hugo</generator><language>en</language><lastBuildDate>Thu, 23 Mar 2023 18:59:47 -0400</lastBuildDate><atom:link href="http://jmodeler.github.io/categories/reinforcement-learning/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Errors when Creating Your First MineRL Agent</title><link>http://jmodeler.github.io/posts/resolving-errors-when-creating-your-first-minerl-agent/</link><pubDate>Thu, 23 Mar 2023 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/resolving-errors-when-creating-your-first-minerl-agent/</guid><description>&lt;p>In this post, I lay out the steps to follow to resolve the errors you see when creating your &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html" class="external-link" target="_blank" rel="noopener">first MineRL agent&lt;/a> on a macOS. This is a continuation of &lt;a href="https://jmodeler.github.io/post/resolving-install-errors-with-minerl/" class="external-link" target="_blank" rel="noopener">this post&lt;/a>, which looks at resolving install errors on the &lt;code>minerl&lt;/code> package.&lt;/p>
+&lt;p>I borrow heavily from &lt;a href="https://github.com/minerllabs/minerl/issues/659#issuecomment-1306635414" class="external-link" target="_blank" rel="noopener">this github issue comment&lt;/a>.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Clone the repository using the terminal command below&lt;/p>
+&lt;pre tabindex="0">&lt;code> git clone https://github.com/minerllabs/minerl.git
+&lt;/code>&lt;/pre>&lt;p>This will create a &lt;code>minerl&lt;/code> directory. Make sure that the path to the cloned repository does not have spaces in it (i.e. the path should &lt;strong>not&lt;/strong> be &lt;code>/Users/&amp;lt;username&amp;gt;/minerl folder/minerl&lt;/code> &amp;ndash; you will get &lt;code>file not found&lt;/code> errors in the next few steps otherwise)&lt;/p></description></item><item><title>Resolving Install Errors with MineRL</title><link>http://jmodeler.github.io/posts/resolving-install-errors-with-minerl/</link><pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/resolving-install-errors-with-minerl/</guid><description>&lt;p>In this post, I&amp;rsquo;ll resolve an error that one might face when trying to install the &lt;code>minerl&lt;/code> Python package. The instructions to install this package can be &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/index.html" class="external-link" target="_blank" rel="noopener">found here&lt;/a>.&lt;/p>
+&lt;ol>
+&lt;li>Using the instructions above, when I used the install command (&lt;code>pip3 install git+https://github.com/minerllabs/minerl&lt;/code>), I got the following error (only the relevant part is shown here):&lt;/li>
+&lt;/ol>
+&lt;pre tabindex="0">&lt;code> Note: Some input files use or override a deprecated API.
+ Note: Recompile with -Xlint:deprecation for details.
+ Note: Some input files use unchecked or unsafe operations.
+ Note: Recompile with -Xlint:unchecked for details.
+ 100 errors
+ only showing the first 100 errors, of 2866 total; use -Xmaxerrs if you would like to see more
+
+ &amp;gt; Task :compileJava FAILED
+
+ FAILURE: Build failed with an exception.
+
+ * What went wrong:
+ Execution failed for task &amp;#39;:compileJava&amp;#39;.
+ &amp;gt; Compilation failed; see the compiler error output for details.
+
+ * Try:
+ Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+
+ * Get more help at https://help.gradle.org
+
+ Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+ Use &amp;#39;--warning-mode all&amp;#39; to show the individual deprecation warnings.
+ See https://docs.gradle.org/6.8.1/userguide/command_line_interface.html#sec:command_line_warnings
+
+ BUILD FAILED in 21s
+ 10 actionable tasks: 10 executed
+ Traceback (most recent call last):
+ File &amp;#34;&amp;lt;string&amp;gt;&amp;#34;, line 2, in &amp;lt;module&amp;gt;
+ File &amp;#34;&amp;lt;pip-setuptools-caller&amp;gt;&amp;#34;, line 34, in &amp;lt;module&amp;gt;
+ File &amp;#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&amp;#34;, line 214, in &amp;lt;module&amp;gt;
+ prep_mcp()
+ File &amp;#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&amp;#34;, line 198, in prep_mcp
+ subprocess.check_call(&amp;#39;{} clean build shadowJar&amp;#39;.format(gradlew).split(&amp;#39; &amp;#39;), cwd=workdir)
+ File &amp;#34;/Users/&amp;lt;username&amp;gt;/.pyenv/versions/3.11.2/lib/python3.11/subprocess.py&amp;#34;, line 413, in check_call
+ raise CalledProcessError(retcode, cmd)
+ subprocess.CalledProcessError: Command &amp;#39;[&amp;#39;./gradlew&amp;#39;, &amp;#39;clean&amp;#39;, &amp;#39;build&amp;#39;, &amp;#39;shadowJar&amp;#39;]&amp;#39; returned non-zero exit status 1.
+ [end of output]
+
+ note: This error originates from a subprocess, and is likely not a problem with pip.
+error: metadata-generation-failed
+&lt;/code>&lt;/pre>&lt;ol start="2">
+&lt;li>
+&lt;p>Searching for the error message (&lt;code>error: metadata-generation-failed&lt;/code>) took me to a bunch of websites that provided other options to try:&lt;/p></description></item></channel></rss>

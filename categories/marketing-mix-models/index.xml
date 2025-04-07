@@ -1,2 +1,34 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Marketing Mix Models on The Journeyman Modeler</title><link>http://jmodeler.github.io/categories/marketing-mix-models/</link><description>Recent content in Marketing Mix Models on The Journeyman Modeler</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 25 Mar 2023 22:39:40 -0400</lastBuildDate><atom:link href="http://jmodeler.github.io/categories/marketing-mix-models/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Install Errors for the lightweight_mmm Python Package</title><link>http://jmodeler.github.io/posts/resolving-install-errors-for-the-lightweight-mmm-python-package/</link><pubDate>Sat, 25 Mar 2023 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/resolving-install-errors-for-the-lightweight-mmm-python-package/</guid><description>To experiment with different specifications of a marketing mix model, I tried installing the lightweight_mmm Python package from Google. When using the standard pip3 install lightweight_mmm command in terminal, I was hitting this error:
-× Getting requirements to build wheel did not run successfully. │ exit code: 1 ╰─&amp;gt; [66 lines of output] The Meson build system Version: 0.62.2 Source dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273 Build dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273/.mesonpy-ur2kyhcf/build Build type: native build Project name: SciPy Project version: 1.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Marketing Mix Models on The Journeyman Modeler</title><link>http://jmodeler.github.io/categories/marketing-mix-models/</link><description>Recent content in Marketing Mix Models on The Journeyman Modeler</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 25 Mar 2023 22:39:40 -0400</lastBuildDate><atom:link href="http://jmodeler.github.io/categories/marketing-mix-models/index.xml" rel="self" type="application/rss+xml"/><item><title>Resolving Install Errors for the lightweight_mmm Python Package</title><link>http://jmodeler.github.io/posts/resolving-install-errors-for-the-lightweight-mmm-python-package/</link><pubDate>Sat, 25 Mar 2023 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/resolving-install-errors-for-the-lightweight-mmm-python-package/</guid><description>&lt;p>To experiment with different specifications of a marketing mix model, I tried installing the &lt;a href="https://github.com/google/lightweight_mmm" class="external-link" target="_blank" rel="noopener">lightweight_mmm&lt;/a> Python package from Google. When using the standard &lt;code>pip3 install lightweight_mmm&lt;/code> command in terminal, I was hitting this error:&lt;/p>
+&lt;pre tabindex="0">&lt;code> × Getting requirements to build wheel did not run successfully.
+ │ exit code: 1
+ ╰─&amp;gt; [66 lines of output]
+ The Meson build system
+ Version: 0.62.2
+ Source dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273
+ Build dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273/.mesonpy-ur2kyhcf/build
+ Build type: native build
+ Project name: SciPy
+ Project version: 1.9.1
+ C compiler for the host machine: cc (clang 14.0.0 &amp;#34;Apple clang version 14.0.0 (clang-1400.0.29.202)&amp;#34;)
+ C linker for the host machine: cc ld64 820.1
+ C++ compiler for the host machine: c++ (clang 14.0.0 &amp;#34;Apple clang version 14.0.0 (clang-1400.0.29.202)&amp;#34;)
+ C++ linker for the host machine: c++ ld64 820.1
+ Host machine cpu family: x86_64
+ Host machine cpu: x86_64
+ Compiler for C supports arguments -Wno-unused-but-set-variable: YES
+ Library m found: YES
+ Fortran compiler for the host machine: gfortran (gcc 8.2.0 &amp;#34;GNU Fortran (GCC) 8.2.0&amp;#34;)
+ Fortran linker for the host machine: gfortran ld64 820.1
+ Program cython found: YES (/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-build-env-gddbg9u0/overlay/bin/cython)
+ Program pythran found: YES (/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-build-env-gddbg9u0/overlay/bin/pythran)
+ Program cp found: YES (/bin/cp)
+ Program python found: YES (/Users/&amp;lt;username&amp;gt;/.pyenv/versions/3.11.2/bin/python3.11)
+ Found pkg-config: /usr/local/bin/pkg-config (0.29.2)
+ Library npymath found: YES
+ Library npyrandom found: YES
+ Found CMake: /usr/local/bin/cmake (3.26.0)
+ Run-time dependency openblas found: NO (tried pkgconfig, framework and cmake)
+ Run-time dependency openblas found: NO (tried pkgconfig, framework and cmake)
+
+ ../../scipy/meson.build:130:0: ERROR: Dependency &amp;#34;OpenBLAS&amp;#34; not found, tried pkgconfig, framework and cmake
+&lt;/code>&lt;/pre>&lt;p>I tried to install &lt;code>openblas&lt;/code> using homebrew, but it was already installed:&lt;/p></description></item></channel></rss>
