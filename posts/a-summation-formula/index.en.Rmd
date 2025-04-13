@@ -40,7 +40,7 @@ When $i = 2$, $j$ can take the values $3, 4, \dots n$ (Since the product $X_2X_1
 
 When $i = 3$, $j$ can take the values $4, 5, \dots n$. This gives us $(n-3)$ terms.
 
-Continuing this way till $i= (n-1)$, $j$ can now take the value $n$. This gives us 1 term ($X_{n-1} X_{n}$). 
+Continuing this way till $i= (n-1)$, $j$ can now take the value $n$. This gives us 1 term. 
 
 From the reasoning above, the number of terms $S$ is given by:
 
