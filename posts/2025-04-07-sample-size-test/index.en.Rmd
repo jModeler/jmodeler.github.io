@@ -1,14 +1,26 @@
 ---
-title: Sample Size Test
+title: A Summation Formula
 author: jModeler
 date: '2025-04-07'
-slug: []
-categories: []
-tags: []
+slug: a-summation-formula
+categories:
+  - math
+tags:
+  - math
 authors: []
 description: ''
 externalLink: ''
 series: []
+math: true
 ---
+---
+nocite: '@*'
+...
 
-Test Post Successful!
+This post derives a closed for solution particular sum that appears in the derviation of a result in another post.
+
+Say we have real numbers $X_i$ such that 
+\begin{align}
+X_i = x \,\, \forall i 
+ (\#eq:setup) 
+\end{align}

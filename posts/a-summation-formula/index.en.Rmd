@@ -1,0 +1,61 @@
+---
+title: A Summation Formula
+author: jModeler
+date: '2025-04-07'
+slug: a-summation-formula
+categories:
+  - math
+tags:
+  - math
+authors: []
+description: ''
+externalLink: ''
+series: []
+math: true
+nocite: '@*'
+---
+
+This post derives a closed form solution for particular sum that appears in the derivation of a result in another post.
+
+Say we have real numbers $X_i$ such that 
+\begin{align}
+X_i = x \,\, \forall i (\#eq:setup) 
+\end{align}
+
+And we want to find the sum 
+\begin{align}
+\mathop{\sum\sum}_{\substack{i \ne j}} X_i X_j  \,\,\,\, i,j \in {1, 2, \dots , n} (\#eq:sum) 
+\end{align}
+
+From \@ref(eq:setup), the sum in \@ref(eq:sum) boils down to:
+\begin{align}
+\mathop{\sum\sum}_{\substack{i \ne j}} x^2 (\#eq:sum2) 
+\end{align}
+
+This now means we need to find the number of terms such that $i \ne j$, let's call this $S$. The final sum will be $Sx^2$. We now attempt to determine the value of $S$.
+
+When $i = 1$, $j$ can take the values $2, 3, \dots n$. This gives us $(n-1)$ terms. 
+
+When $i = 2$, $j$ can take the values $3, 4, \dots n$ (Since the product $X_2X_1$ is already captured when $i =1 \,\&\, j = 2$, we do not include that here). This gives us $(n-2)$ terms.
+
+When $i = 3$, $j$ can take the values $4, 5, \dots n$. This gives us $(n-3)$ terms.
+
+Continuing this way till $i= (n-1)$, $j$ can now take the value $n$. This gives us 1 term ($X_{n-1} X_{n}$). 
+
+From the reasoning above, the number of terms $S$ is given by:
+
+\begin{align}
+S = (n-1) + (n-2) + (n-3) + \dots + 1 (\#eq:nterms)
+\end{align}
+
+From a [standard result](https://en.wikipedia.org/wiki/Summation#Powers_and_logarithm_of_arithmetic_progressions), \@ref(eq:nterms) has a closed form solution:
+
+\begin{align}
+S = \frac{n(n-1)}{2} (\#eq:ntermsvalue)
+\end{align}
+
+From this, we have the final sum = $Sx^2 = \frac{n(n-1)}{2} x^2$, hence
+
+\begin{align}
+\mathop{\sum\sum}_{\substack{i \ne j}} X_i X_j = \frac{n(n-1)}{2} x^2  \,\,\,\, i,j \in {1, 2, \dots , n} \,\,\,\, \& \,\,\,\, X_i = x \,\, \forall i  \nonumber
+\end{align}

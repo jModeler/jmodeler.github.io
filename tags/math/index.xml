@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Math on The Journeyman Modeler</title><link>http://jmodeler.github.io/tags/math/</link><description>Recent content in Math on The Journeyman Modeler</description><generator>Hugo</generator><language>en</language><lastBuildDate>Mon, 07 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://jmodeler.github.io/tags/math/index.xml" rel="self" type="application/rss+xml"/><item><title>A Summation Formula</title><link>http://jmodeler.github.io/posts/a-summation-formula/</link><pubDate>Mon, 07 Apr 2025 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/a-summation-formula/</guid><description>&lt;p>This post derives a closed form solution for particular sum that appears in the derivation of a result in another post.&lt;/p>
+&lt;p>Say we have real numbers &lt;code>\(X_i\)&lt;/code> such that
+&lt;code>\begin{align} X_i = x \,\, \forall i \tag{1} \end{align}&lt;/code>&lt;/p>
+&lt;p>And we want to find the sum
+&lt;code>\begin{align} \mathop{\sum\sum}_{\substack{i \ne j}} X_i X_j \,\,\,\, i,j \in {1, 2, \dots , n} \tag{2} \end{align}&lt;/code>&lt;/p>
+&lt;p>From (1), the sum in (2) boils down to:
+&lt;code>\begin{align} \mathop{\sum\sum}_{\substack{i \ne j}} x^2 \tag{3} \end{align}&lt;/code>&lt;/p></description></item></channel></rss>
