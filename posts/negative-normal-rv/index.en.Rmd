@@ -47,4 +47,4 @@ Using [Leibniz integral rule](https://en.wikipedia.org/wiki/Leibniz_integral_rul
 \end{align}
 
 
-This is nothing but the density function for a normall distributed random variable with mean $-\mu$ and variance $\sigma^2$, hence $Y = N(-\mu, \sigma^2)$
+This is nothing but the density function for a Normally distributed random variable with mean $-\mu$ and variance $\sigma^2$, hence $Y = N(-\mu, \sigma^2)$

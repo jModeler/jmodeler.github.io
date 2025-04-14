@@ -23,7 +23,9 @@ Say we have Independent and Identically Distributed (IID) Normal random variable
 \bar{X} = \frac{1}{n}\sum^{n}_{i=1} X_i
 \end{align}
 
-From a [standard result](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), $\bar{X}$ is also normally distributed. Once we have the mean and variance of $\bar{X}$, we can completely specify its distribution.
+We want the distribution of $\bar{X}$.
+
+From a [standard result](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), $\bar{X}$ is also Normally distributed. Once we have the mean and variance of $\bar{X}$, we can completely specify its distribution.
 
 For the mean of $\bar{X}$, note that $E(X_i) = \mu$ we then have:
 \begin{align}
