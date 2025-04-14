@@ -16,3 +16,50 @@ series: []
 ---
 
 In this post I derive a result that will be used in another post. 
+
+Say we have Independent and Identically Distributed (IID) Normal random variables $X_i \sim N(\mu, \sigma^2)$, and we have 
+
+\begin{align}
+\bar{X} = \frac{1}{n}\sum^{n}_{i=1} X_i
+\end{align}
+
+From a [standard result](https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables), $\bar{X}$ is also normally distributed. Once we have the mean and variance of $\bar{X}$, we can completely specify its distribution.
+
+For the mean of $\bar{X}$, note that $E(X_i) = \mu$ we then have:
+\begin{align}
+E(\bar{X}) = & \frac{1}{n} E\left(\sum^{n}_{i=1} X_i \right) \\
+           = & \frac{1}{n} \left(\sum^{n}_{i=1} E(X_i) \right) \\
+           = & \frac{1}{n} n\mu = \mu
+\end{align}
+
+For the variance of $\bar{X}$, we need the following identities:
+\begin{align}
+Var(X_i) = & E(X_i^2) - E(X_i)^2 = E(X_i^2) - \mu^2  (\#eq:var) \\
+Cov(X_i, X_j) = & E(X_i X_j) - E(X_i)E(X_j) = 0 \,\,\,\, \forall \,\,\,\, i \neq j  (\#eq:cov) \\
+              \implies & E(X_i X_j) = E(X_i)E(X_j) = \mu^2 \,\,\,\, \forall \,\,\,\, i \neq j (\#eq:cov2)
+\end{align}
+
+Where \@ref(eq:cov) follows from the Indepenence assumption and \@ref(eq:cov2) follows from the Identical Distribution assumption. 
+
+We now derive the variance of $\bar{X}$:
+\begin{align}
+Var(\bar{X}) = & E(\bar{X}^2) - E(\bar{X})^2  \\
+             = & E\left(\frac{1}{n^2}\left(\sum^{n}_{i=1} X_i \right)^2\right) - \mu^2 \\
+             = & E\left(\frac{1}{n^2}\left(\sum^{n}_{i=1} X_i^2 + 2\mathop{\sum\sum}_{\substack{i \ne j}} X_i X_j \right)\right) - \mu^2 \\
+             = & \frac{1}{n^2}\left(\sum^{n}_{i=1} E(X_i^2) + 2\mathop{\sum\sum}_{\substack{i \ne j}} E(X_i X_j) \right) - \mu^2 (\#eq:svar)
+\end{align}
+
+We know from \@ref(eq:cov2) that $E(X_i X_j) = \mu^2$, so $\mathop{\sum\sum}_{\substack{i \ne j}} E(X_i X_j) = \mathop{\sum\sum}_{\substack{i \ne j}} \mu^2$. From a [previous post](https://jmodeler.github.io/posts/a-summation-formula/), we have $\mathop{\sum\sum}_{\substack{i \ne j}} \mu^2 = \frac{n(n-1)}{2}\mu^2$. 
+
+Also from \@ref(eq:var) we have $Var(X_i) = E(X_i^2) - \mu^2 \implies E(X_i^2) = Var(X_i) + \mu^2 = \sigma^2 + \mu^2$. Putting this back in \@ref(eq:svar) gives us:
+
+\begin{align}
+Var(\bar{X}) = & \frac{1}{n^2}\left(\sum^{n}_{i=1} E(X_i^2) + 2\mathop{\sum\sum}_{\substack{i \ne j}} E(X_i X_j) \right) - \mu^2 \\
+             = & \frac{1}{n^2}\left(\sum^{n}_{i=1} (\sigma^2 + \mu^2) + 2 \frac{n(n-1)}{2}\mu^2 \right) - \mu^2 \\
+             = & \frac{1}{n^2}\left(n (\sigma^2 + \mu^2) +  n(n-1)\mu^2 \right) - \mu^2 \\
+             = & \frac{1}{n^2}\left(n \sigma^2 +  n^2\mu^2 \right) - \mu^2 \\
+             = & \frac{\sigma^2}{n} + \mu^2 - \mu^2 \\
+             = & \frac{\sigma^2}{n}
+\end{align}
+
+Hence, we have $\bar{X} \sim N(\mu, \sigma^2/n)$.
