@@ -1,0 +1,48 @@
+---
+title: Distribution Of The Negative of A Normally Distributed Random Variable
+author: jModeler
+date: '2025-04-14'
+slug: negative-normal-rv
+categories:
+  - math
+  - probability
+tags:
+  - math
+  - probability
+authors: []
+description: ''
+externalLink: ''
+series: []
+math: true
+nocite: '@*'
+---
+
+In this post, I derive the distribution of the negative of a normally distributed random variable. Let's say we have $X \sim N(\mu, \sigma^2)$, and we want to find the distribution of $Y=-X$.
+
+I start with the identity:
+\begin{align}
+  P(Y \le y) = P(-X \le y) = P(X \ge -y) = 1 - P(X \le -y)
+\end{align}
+
+Since $X \sim N(\mu, \sigma^2)$, we have
+\begin{align}
+P(X \le -y) = \int^{-y}_{-\infty} \frac{1}{\sqrt{2\pi\sigma^2}} \exp^{-\frac{(x-\mu)^2}{2\sigma^2}}  dx
+\end{align}
+
+Which gives us
+\begin{align}
+  P(Y \le y) = 1 - P(X \le -y) = 1 - \int^{-y}_{-\infty} \frac{1}{\sqrt{2\pi\sigma^2}} \exp^{-\frac{(x-\mu)^2}{2\sigma^2}}  dx
+\end{align}
+
+Using [Leibniz integral rule](https://en.wikipedia.org/wiki/Leibniz_integral_rule), we have
+
+\begin{align}
+  f_{Y}(y) = \frac{\partial P(Y \le y)}{\partial y} = &  -  \frac{1}{\sqrt{2\pi\sigma^2}} \exp^{-\frac{(-y-\mu)^2}{2\sigma^2}} \left(\frac{\partial (-y)}{\partial y}\right) \\
+           = & - \frac{1}{\sqrt{2\pi\sigma^2}} \exp^{-\frac{(-y-\mu)^2}{2\sigma^2}} (-1) \\
+           = &  \frac{1}{\sqrt{2\pi\sigma^2}} \exp^{-\frac{(-y-\mu)^2}{2\sigma^2}} \\
+           = & \frac{1}{\sqrt{2\pi\sigma^2}} \exp^{-\frac{(y+\mu)^2}{2\sigma^2}} \\
+           = & \frac{1}{\sqrt{2\pi\sigma^2}} \exp^{-\frac{(y-(-\mu))^2}{2\sigma^2}}
+\end{align}
+
+
+This is nothing but the density function for a normall distributed random variable with mean $-\mu$ and variance $\sigma^2$, hence $Y = N(-\mu, \sigma^2)$

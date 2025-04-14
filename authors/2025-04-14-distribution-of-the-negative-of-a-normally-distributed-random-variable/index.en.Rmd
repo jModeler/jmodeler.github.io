@@ -1,0 +1,26 @@
+---
+title: Distribution Of The Negative of A Normally Distributed Random Variable
+author: jModeler
+date: '2025-04-14'
+slug: []
+categories:
+  - math
+  - probability
+tags:
+  - math
+  - probability
+authors: []
+description: ''
+externalLink: ''
+series: []
+math: true
+nocite: '@*'
+---
+
+In this post, I derive the distribution of the negative of a normally distributed random variable. Let's say we have $X \sim N(\mu, \sigma^2)$, and we want to find the distribution of $Y=-X$.
+
+I start with the identity:
+
+\begin{align}
+  P(Y \le y) = P(-X \le y) = P(X \ge -y) = 1 - P(X \le -y)
+\end{align}
