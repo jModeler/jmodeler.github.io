@@ -15,7 +15,7 @@ math: true
 nocite: '@*'
 ---
 
-This post derives a closed form solution for particular sum that appears in the derivation of a result in another post.
+This post derives a closed form solution for particular sum that appears in the derivation of a result in [another post](https://jmodeler.github.io/posts/distribution-sample-mean/).
 
 Say we have real numbers $X_i$ such that 
 \begin{align}
