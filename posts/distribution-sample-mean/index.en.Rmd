@@ -15,7 +15,7 @@ externalLink: ''
 series: []
 ---
 
-In this post I derive a result that will be used in another post. 
+In this post I derive a result that will be used in [another post](https://jmodeler.github.io/posts/2025-04-26-sample-size-and-effect-size/). 
 
 Say we have Independent and Identically Distributed (IID) Normal random variables $X_i \sim N(\mu, \sigma^2)$, and we have 
 

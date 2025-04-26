@@ -17,7 +17,7 @@ math: true
 nocite: '@*'
 ---
 
-This post derives the distribution for an random variable that appears in the derivation of a result in another post.
+This post derives the distribution for an random variable that appears in the derivation of a [result in another post](https://jmodeler.github.io/posts/2025-04-26-sample-size-and-effect-size/).
 
 In this post, I derive the distribution of the negative of a normally distributed random variable. Let's say we have $X \sim N(\mu, \sigma^2)$, and we want to find the distribution of $Y=-X$.
 
