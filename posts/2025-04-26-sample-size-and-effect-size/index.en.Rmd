@@ -96,8 +96,8 @@ sns.set(style="whitegrid")
 sns.lineplot(x=ny, y=t)
 
 # label the axes
-plt.xlabel("Treatment Sample size")
-plt.ylabel("Test Statistic Size")
+plt.xlabel("Treatment Sample Size")
+plt.ylabel("Test Statistic Value")
 
 plt.show()
 ```
