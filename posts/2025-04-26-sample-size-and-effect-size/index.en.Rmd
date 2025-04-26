@@ -51,7 +51,7 @@ We'd like to choose $n_X$ and $n_Y$ in a way that maximizes the test statistic. 
 
 \begin{align}
 \frac{\partial t}{\partial n_Y} = & -\frac{\Delta - (\mu_Y-\mu_X)}{\left(\frac{\sigma_Y^2}{n_Y} + \frac{\sigma_X^2}{N - n_Y}\right)^2} \left(-\frac{\sigma_Y^2}{n_Y^2} + \frac{\sigma_X^2}{(N - n_Y)^2}  \right) = 0 \\
-         = & \left(-\frac{\sigma_Y^2}{n_Y^2} + \frac{\sigma_X^2}{(N - n_Y)^2}  \right) = 0 \\
+         \implies & \left(-\frac{\sigma_Y^2}{n_Y^2} + \frac{\sigma_X^2}{(N - n_Y)^2}  \right) = 0 \\
          \implies & \frac{\sigma_Y^2}{n_Y^2} = \frac{\sigma_X^2}{(N - n_Y)^2} \\
          \implies & \frac{\sigma_Y}{n_Y} = \frac{\sigma_X}{(N - n_Y)} \\
          \implies & \frac{\sigma_Y}{\sigma_X} = \frac{n_Y}{(N - n_Y)} \\
