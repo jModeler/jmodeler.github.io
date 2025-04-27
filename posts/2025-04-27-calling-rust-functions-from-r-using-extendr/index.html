@@ -1,6 +1,6 @@
 <!doctype html><html lang=en><head><title>Calling Rust Functions from R using extendr · The Journeyman Modeler
 </title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><meta name=author content="Journeyman Modeler"><meta name=description content="In this post, I attempt to call a Rust function from an R session and compare the runtime of that function to a similar function written in R.
-The rextendr R library allows us to call rust functions from an R session. As the repository linked above mentions, you “need to setup a working Rust toolchain”.
+The rextendr R library allows us to call rust functions from an R session. As the repository linked above mentions, you &ldquo;need to setup a working Rust toolchain&rdquo;.
 I write a Rust function to get the \(n^{th}\) Fibonacci term, and then compile it using the rust_source() function from the rextendr library, as shown below:"><meta name=keywords content="blog,developer,personal"><meta name=twitter:card content="summary"><meta name=twitter:title content="Calling Rust Functions from R using extendr"><meta name=twitter:description content="In this post, I attempt to call a Rust function from an R session and compare the runtime of that function to a similar function written in R.
 The rextendr R library allows us to call rust functions from an R session. As the repository linked above mentions, you “need to setup a working Rust toolchain”.
 I write a Rust function to get the \(n^{th}\) Fibonacci term, and then compile it using the rust_source() function from the rextendr library, as shown below:"><meta property="og:url" content="http://jmodeler.github.io/posts/2025-04-27-calling-rust-functions-from-r-using-extendr/"><meta property="og:site_name" content="The Journeyman Modeler"><meta property="og:title" content="Calling Rust Functions from R using extendr"><meta property="og:description" content="In this post, I attempt to call a Rust function from an R session and compare the runtime of that function to a similar function written in R.
@@ -13,91 +13,110 @@ I write a Rust function to get the \(n^{th}\) Fibonacci term, and then compile i
 4-minute read</span></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
 <span class=tag><a href=/tags/rust/>Rust</a>
 </span><span class=separator>•</span>
-<span class=tag><a href=/tags/r/>R</a></span></div></div></header><div class=post-content><p>In this post, I attempt to call a <a href=https://www.rust-lang.org/>Rust</a> function from an <a href=https://cran.r-project.org/>R</a> session and compare the runtime of that function to a similar function written in R.</p><p>The <a href=https://github.com/extendr/rextendr>rextendr</a> R library allows us to call rust functions from an R session. As the repository linked above mentions, you “<a href=https://cran.r-project.org/>need to setup a working Rust toolchain</a>”.</p><p>I write a Rust function to get the <code>\(n^{th}\)</code> <a href=https://en.wikipedia.org/wiki/Fibonacci_sequence>Fibonacci term</a>, and then compile it using the <code>rust_source()</code> function from the <code>rextendr</code> library, as shown below:</p><pre class=r><code>library(rextendr)
-library(parallel)
-
-# write code to calculate the nth fibonacci term
-rust_code &lt;- &quot;
-#[extendr]
-fn fibonacci_rust(n:i32) -&gt; i64 {
-  let mut fibn:i64 = 0;
-  if n==0 {
-    return 0;
-  } else if n==1 {
-    return 1;
-  } else {
-    return fibonacci_rust(n-1) + fibonacci_rust(n-2);
-  }
-}
-&quot;
-
-# compile source code
-rust_source(code = rust_code)
-
-# run the rust function
-rust_fn_result = fibonacci_rust(15)
-
-# print the value 
-print(rust_fn_result)</code></pre><pre><code>## [1] 610</code></pre><p>Which is the correct value of the <code>\(15^{th}\)</code> Fibonacci number. Note that the Rust code begins with the <code>#[extendr]</code> preamble, otherwise the function <code>fibonacci_rust()</code> will not be available in the R environment.
-I now create a similar function in R:</p><pre class=r><code># write r function
-fibonacci &lt;- function(n) {
-  if(n==0) {
-    return(0)
-  } else if(n==1) {
-    return(1)
-  } else {
-    return(fibonacci(n-1) + fibonacci(n-2))
-  }
-}
-
-# run the R function
-r_fn_result = fibonacci(15)
-
-# print the value 
-print(r_fn_result)</code></pre><pre><code>## [1] 610</code></pre><p>Which is the correct value again. I now test the runtime of each function for a series of values starting from 1 and ending at 40. In addition, I also give Rust a handicap: I’ll run the R function in parallel, while Rust will run serially.</p><pre class=r><code># set input values
-n &lt;- 1:40
-
-# call rust function, also note the time it takes to run for all inputs
-rust_total_runtime &lt;- system.time({
-  rust_times &lt;- sapply(n, FUN = elapsed_time_rust) 
-})
-
-# running the R function in parallel, since it will take longer as n gets larger
-num_cores &lt;- max(1, detectCores() - 1)
-
-print(num_cores)
-
-# Create a cluster with the specified number of worker processes
-cl &lt;- makeCluster(num_cores)
-
-# Export the helper function to all workers
-clusterExport(cl, varlist = c(&quot;fibonacci&quot;))
-
-# Use parLapply to apply the function in parallel
-r_total_runtime &lt;- system.time({
-  r_times &lt;- parLapply(cl, n, fun = elapsed_time_r)
-})
-
-# Simplify the result into a vector
-r_times &lt;- unlist(r_times)
-
-# stop cluster
-stopCluster(cl)
-
-# print times taken
-print(&quot;Time taken to calculate all fibonacci terms by Rust (serially):&quot;)
-print(rust_total_runtime)
-print(&quot;Time taken to calculate all fibonacci terms by R (in parallel):&quot;)
-print(r_total_runtime)</code></pre><pre><code>## [1] &quot;Time taken to calculate all fibonacci terms by Rust (serially):&quot;</code></pre><pre><code>##    user  system elapsed 
-##   6.028   0.008   6.035</code></pre><pre><code>## [1] &quot;Time taken to calculate all fibonacci terms by R (in parallel):&quot;</code></pre><pre><code>##    user  system elapsed 
-##   0.353   0.302 250.130</code></pre><p><strong>Rust takes 6 seconds to get the first 40 fibonacci terms in serial mode, while R takes 250 seconds (roughly 4 minutes) to do the same thing, <em>in parallel</em>!</strong> (Note: I used 11 cores on my machine for parallel execution).</p><p>Let’s also plot the time taken to calculate each term:</p><pre class=r><code>plot(n, rust_times, type = &quot;l&quot;, col = &quot;#D84B16&quot;, lwd = 2, xlab = &quot;Fibonacci Term Number&quot;, 
-     ylab = &quot;Time Taken (Seconds)&quot;, main = &quot;Rust vs R Time Comparison&quot;,
-     ylim = c(0, max(rust_times, r_times) + 1))
-
-lines(n, r_times, col = &quot;blue&quot;, lwd = 2)
-
-# Add a legend with custom labels for each line
-legend(&quot;topleft&quot;, legend = c(&quot;Rust&quot;, &quot;R&quot;), col = c(&quot;#D84B16&quot;, &quot;blue&quot;), lwd = 2)</code></pre><p><img src=http://jmodeler.github.io/posts/2025-04-27-calling-rust-functions-from-r-using-extendr/index.en_files/figure-html/unnamed-chunk-7-1.png width=672></p><p>While the example of the function I used is trivial, I can see other cases where it might be advantageous to migrate functions to Rust and then call those functions in R (better yet, just <a href=https://www.nature.com/articles/d41586-020-03382-2>do everything in Rust</a> if possible). I could also try optimizing the R function via <a href=https://en.wikipedia.org/wiki/Memoization>memoization</a> and then comparing its performance against its Rust counterpart. I leave that as an exercise for the reader.</p></div><footer></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
+<span class=tag><a href=/tags/r/>R</a></span></div></div></header><div class=post-content><p>In this post, I attempt to call a <a href=https://www.rust-lang.org/ class=external-link target=_blank rel=noopener>Rust</a> function from an <a href=https://cran.r-project.org/ class=external-link target=_blank rel=noopener>R</a> session and compare the runtime of that function to a similar function written in R.</p><p>The <a href=https://github.com/extendr/rextendr class=external-link target=_blank rel=noopener>rextendr</a> R library allows us to call rust functions from an R session. As the repository linked above mentions, you &ldquo;<a href=https://cran.r-project.org/ class=external-link target=_blank rel=noopener>need to setup a working Rust toolchain</a>&rdquo;.</p><p>I write a Rust function to get the <code>\(n^{th}\)</code> <a href=https://en.wikipedia.org/wiki/Fibonacci_sequence class=external-link target=_blank rel=noopener>Fibonacci term</a>, and then compile it using the <code>rust_source()</code> function from the <code>rextendr</code> library, as shown below:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-r data-lang=r><span class=line><span class=cl><span class=nf>library</span><span class=p>(</span><span class=n>rextendr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nf>library</span><span class=p>(</span><span class=n>parallel</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># write code to calculate the nth fibonacci term</span>
+</span></span><span class=line><span class=cl><span class=n>rust_code</span> <span class=o>&lt;-</span> <span class=s>&#34;
+</span></span></span><span class=line><span class=cl><span class=s>#[extendr]
+</span></span></span><span class=line><span class=cl><span class=s>fn fibonacci_rust(n:i32) -&gt; i64 {
+</span></span></span><span class=line><span class=cl><span class=s>  let mut fibn:i64 = 0;
+</span></span></span><span class=line><span class=cl><span class=s>  if n==0 {
+</span></span></span><span class=line><span class=cl><span class=s>    return 0;
+</span></span></span><span class=line><span class=cl><span class=s>  } else if n==1 {
+</span></span></span><span class=line><span class=cl><span class=s>    return 1;
+</span></span></span><span class=line><span class=cl><span class=s>  } else {
+</span></span></span><span class=line><span class=cl><span class=s>    return fibonacci_rust(n-1) + fibonacci_rust(n-2);
+</span></span></span><span class=line><span class=cl><span class=s>  }
+</span></span></span><span class=line><span class=cl><span class=s>}
+</span></span></span><span class=line><span class=cl><span class=s>&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># compile source code</span>
+</span></span><span class=line><span class=cl><span class=nf>rust_source</span><span class=p>(</span><span class=n>code</span> <span class=o>=</span> <span class=n>rust_code</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># run the rust function</span>
+</span></span><span class=line><span class=cl><span class=n>rust_fn_result</span> <span class=o>=</span> <span class=nf>fibonacci_rust</span><span class=p>(</span><span class=m>15</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># print the value </span>
+</span></span><span class=line><span class=cl><span class=nf>print</span><span class=p>(</span><span class=n>rust_fn_result</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>## [1] 610
+</code></pre><p>Which is the correct value of the <code>\(15^{th}\)</code> Fibonacci number. Note that the Rust code begins with the <code>#[extendr]</code> preamble, otherwise the function <code>fibonacci_rust()</code> will not be available in the R environment.
+I now create a similar function in R:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-r data-lang=r><span class=line><span class=cl><span class=c1># write r function</span>
+</span></span><span class=line><span class=cl><span class=n>fibonacci</span> <span class=o>&lt;-</span> <span class=kr>function</span><span class=p>(</span><span class=n>n</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=kr>if</span><span class=p>(</span><span class=n>n</span><span class=o>==</span><span class=m>0</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>return</span><span class=p>(</span><span class=m>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span> <span class=kr>else</span> <span class=kr>if</span><span class=p>(</span><span class=n>n</span><span class=o>==</span><span class=m>1</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>return</span><span class=p>(</span><span class=m>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span> <span class=kr>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kr>return</span><span class=p>(</span><span class=nf>fibonacci</span><span class=p>(</span><span class=n>n</span><span class=m>-1</span><span class=p>)</span> <span class=o>+</span> <span class=nf>fibonacci</span><span class=p>(</span><span class=n>n</span><span class=m>-2</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># run the R function</span>
+</span></span><span class=line><span class=cl><span class=n>r_fn_result</span> <span class=o>=</span> <span class=nf>fibonacci</span><span class=p>(</span><span class=m>15</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># print the value </span>
+</span></span><span class=line><span class=cl><span class=nf>print</span><span class=p>(</span><span class=n>r_fn_result</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>## [1] 610
+</code></pre><p>Which is the correct value again. I now test the runtime of each function for a series of values starting from 1 and ending at 40. In addition, I also give Rust a handicap: I&rsquo;ll run the R function in parallel, while Rust will run serially.</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-r data-lang=r><span class=line><span class=cl><span class=c1># set input values</span>
+</span></span><span class=line><span class=cl><span class=n>n</span> <span class=o>&lt;-</span> <span class=m>1</span><span class=o>:</span><span class=m>40</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># create functions that collect elapsed times</span>
+</span></span><span class=line><span class=cl><span class=n>elapsed_time_rust</span> <span class=o>&lt;-</span> <span class=kr>function</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nf>system.time</span><span class=p>(</span><span class=nf>fibonacci_rust</span><span class=p>(</span><span class=n>x</span><span class=p>))</span><span class=n>[</span><span class=s>&#39;elapsed&#39;</span><span class=n>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>elapsed_time_r</span> <span class=o>&lt;-</span> <span class=kr>function</span><span class=p>(</span><span class=n>x</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>  <span class=nf>system.time</span><span class=p>(</span><span class=nf>fibonacci</span><span class=p>(</span><span class=n>x</span><span class=p>))</span><span class=n>[</span><span class=s>&#39;elapsed&#39;</span><span class=n>]</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># call rust function, also note the time it takes to run for all inputs</span>
+</span></span><span class=line><span class=cl><span class=n>rust_total_runtime</span> <span class=o>&lt;-</span> <span class=nf>system.time</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>  <span class=n>rust_times</span> <span class=o>&lt;-</span> <span class=nf>sapply</span><span class=p>(</span><span class=n>n</span><span class=p>,</span> <span class=n>FUN</span> <span class=o>=</span> <span class=n>elapsed_time_rust</span><span class=p>)</span> 
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># running the R function in parallel, since it will take longer as n gets larger</span>
+</span></span><span class=line><span class=cl><span class=n>num_cores</span> <span class=o>&lt;-</span> <span class=nf>max</span><span class=p>(</span><span class=m>1</span><span class=p>,</span> <span class=nf>detectCores</span><span class=p>()</span> <span class=o>-</span> <span class=m>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nf>print</span><span class=p>(</span><span class=n>num_cores</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Create a cluster with the specified number of worker processes</span>
+</span></span><span class=line><span class=cl><span class=n>cl</span> <span class=o>&lt;-</span> <span class=nf>makeCluster</span><span class=p>(</span><span class=n>num_cores</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Export the helper function to all workers</span>
+</span></span><span class=line><span class=cl><span class=nf>clusterExport</span><span class=p>(</span><span class=n>cl</span><span class=p>,</span> <span class=n>varlist</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=s>&#34;fibonacci&#34;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Use parLapply to apply the function in parallel</span>
+</span></span><span class=line><span class=cl><span class=n>r_total_runtime</span> <span class=o>&lt;-</span> <span class=nf>system.time</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>  <span class=n>r_times</span> <span class=o>&lt;-</span> <span class=nf>parLapply</span><span class=p>(</span><span class=n>cl</span><span class=p>,</span> <span class=n>n</span><span class=p>,</span> <span class=n>fun</span> <span class=o>=</span> <span class=n>elapsed_time_r</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>})</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Simplify the result into a vector</span>
+</span></span><span class=line><span class=cl><span class=n>r_times</span> <span class=o>&lt;-</span> <span class=nf>unlist</span><span class=p>(</span><span class=n>r_times</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># stop cluster</span>
+</span></span><span class=line><span class=cl><span class=nf>stopCluster</span><span class=p>(</span><span class=n>cl</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># print times taken</span>
+</span></span><span class=line><span class=cl><span class=nf>print</span><span class=p>(</span><span class=s>&#34;Time taken to calculate all fibonacci terms by Rust (serially):&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nf>print</span><span class=p>(</span><span class=n>rust_total_runtime</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nf>print</span><span class=p>(</span><span class=s>&#34;Time taken to calculate all fibonacci terms by R (in parallel):&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=nf>print</span><span class=p>(</span><span class=n>r_total_runtime</span><span class=p>)</span>
+</span></span></code></pre></div><pre tabindex=0><code>## [1] &#34;Time taken to calculate all fibonacci terms by Rust (serially):&#34;
+</code></pre><pre tabindex=0><code>##    user  system elapsed 
+##   6.028   0.008   6.035
+</code></pre><pre tabindex=0><code>## [1] &#34;Time taken to calculate all fibonacci terms by R (in parallel):&#34;
+</code></pre><pre tabindex=0><code>##    user  system elapsed 
+##   0.353   0.302 250.130
+</code></pre><p><strong>Rust takes 6 seconds to get the first 40 fibonacci terms in serial mode, while R takes 250 seconds (roughly 4 minutes) to do the same thing, <em>in parallel</em>!</strong> (Note: I used 11 cores on my machine for parallel execution).</p><p>Let&rsquo;s also plot the time taken to calculate each term:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-r data-lang=r><span class=line><span class=cl><span class=nf>plot</span><span class=p>(</span><span class=n>n</span><span class=p>,</span> <span class=n>rust_times</span><span class=p>,</span> <span class=n>type</span> <span class=o>=</span> <span class=s>&#34;l&#34;</span><span class=p>,</span> <span class=n>col</span> <span class=o>=</span> <span class=s>&#34;#D84B16&#34;</span><span class=p>,</span> <span class=n>lwd</span> <span class=o>=</span> <span class=m>2</span><span class=p>,</span> <span class=n>xlab</span> <span class=o>=</span> <span class=s>&#34;Fibonacci Term Number&#34;</span><span class=p>,</span> 
+</span></span><span class=line><span class=cl>     <span class=n>ylab</span> <span class=o>=</span> <span class=s>&#34;Time Taken (Seconds)&#34;</span><span class=p>,</span> <span class=n>main</span> <span class=o>=</span> <span class=s>&#34;Rust vs R Time Comparison&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>     <span class=n>ylim</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=m>0</span><span class=p>,</span> <span class=nf>max</span><span class=p>(</span><span class=n>rust_times</span><span class=p>,</span> <span class=n>r_times</span><span class=p>)</span> <span class=o>+</span> <span class=m>1</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nf>lines</span><span class=p>(</span><span class=n>n</span><span class=p>,</span> <span class=n>r_times</span><span class=p>,</span> <span class=n>col</span> <span class=o>=</span> <span class=s>&#34;blue&#34;</span><span class=p>,</span> <span class=n>lwd</span> <span class=o>=</span> <span class=m>2</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># Add a legend with custom labels for each line</span>
+</span></span><span class=line><span class=cl><span class=nf>legend</span><span class=p>(</span><span class=s>&#34;topleft&#34;</span><span class=p>,</span> <span class=n>legend</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=s>&#34;Rust&#34;</span><span class=p>,</span> <span class=s>&#34;R&#34;</span><span class=p>),</span> <span class=n>col</span> <span class=o>=</span> <span class=nf>c</span><span class=p>(</span><span class=s>&#34;#D84B16&#34;</span><span class=p>,</span> <span class=s>&#34;blue&#34;</span><span class=p>),</span> <span class=n>lwd</span> <span class=o>=</span> <span class=m>2</span><span class=p>)</span>
+</span></span></code></pre></div><img src=http://jmodeler.github.io/posts/2025-04-27-calling-rust-functions-from-r-using-extendr/index.en_files/figure-html/unnamed-chunk-7-1.png width=672><p>While the example of the function I used is trivial, I can see other cases where it might be advantageous to migrate functions to Rust and then call those functions in R (better yet, just <a href=https://www.nature.com/articles/d41586-020-03382-2 class=external-link target=_blank rel=noopener>do everything in Rust</a> if possible). I could also try optimizing the R function via <a href=https://en.wikipedia.org/wiki/Memoization class=external-link target=_blank rel=noopener>memoization</a> and then comparing its performance against its Rust counterpart. I leave that as an exercise for the reader.</p></div><footer></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
 2023 -
 2025
 Journeyman Modeler

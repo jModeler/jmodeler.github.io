@@ -49,7 +49,7 @@ system.time(fibonacci(40))
 
 # collecting times for a plot
 
-# create functions that collects elapsed times
+# create functions that collect elapsed times
 elapsed_time_rust <- function(x) {
   system.time(fibonacci_rust(x))['elapsed']
 }

@@ -84,6 +84,15 @@ Which is the correct value again. I now test the runtime of each function for a 
 # set input values
 n <- 1:40
 
+# create functions that collect elapsed times
+elapsed_time_rust <- function(x) {
+  system.time(fibonacci_rust(x))['elapsed']
+}
+
+elapsed_time_r <- function(x) {
+  system.time(fibonacci(x))['elapsed']
+}
+
 # call rust function, also note the time it takes to run for all inputs
 rust_total_runtime <- system.time({
   rust_times <- sapply(n, FUN = elapsed_time_rust) 
