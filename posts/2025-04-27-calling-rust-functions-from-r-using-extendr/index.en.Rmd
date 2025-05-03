@@ -101,8 +101,6 @@ rust_total_runtime <- system.time({
 # running the R function in parallel, since it will take longer as n gets larger
 num_cores <- max(1, detectCores() - 1)
 
-print(num_cores)
-
 # Create a cluster with the specified number of worker processes
 cl <- makeCluster(num_cores)
 
