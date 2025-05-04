@@ -146,6 +146,6 @@ lines(n, r_times, col = "blue", lwd = 2)
 legend("topleft", legend = c("Rust", "R"), col = c("#D84B16", "blue"), lwd = 2)
 ```
 
-While the example of the function I used is trivial, I can see other cases where it might be advantageous to migrate functions to Rust and then call those functions in R (better yet, just [do everything in Rust](https://www.nature.com/articles/d41586-020-03382-2) if possible). I could also try optimizing the R function via [memoization](https://en.wikipedia.org/wiki/Memoization) and then comparing its performance against its Rust counterpart. I do that in [this post](https://jmodeler.github.io/posts/2025-05-03-calling-rust-functions-from-r-using-extendr-ii/). 
+While the example of the function I used is trivial, I can see other cases where it might be advantageous to migrate functions to Rust and then call those functions in R (better yet, just [do everything in Rust](https://www.nature.com/articles/d41586-020-03382-2) if possible). I could also try optimizing the R function via [memoization](https://en.wikipedia.org/wiki/Memoization) and then comparing its performance against its Rust counterpart. I do that in [this post](https://jmodeler.github.io/posts/2025-05-03-calling-rust-functions-from-r-using-extendr-ii/).
 
 
