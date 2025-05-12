@@ -1,0 +1,42 @@
+---
+title: Inverse of a Transposed Matrix
+author: jModeler
+date: '2025-05-12'
+slug: []
+categories:
+  - math
+tags: []
+authors: []
+description: ''
+externalLink: ''
+series: []
+math: true
+nocite: '@*'
+---
+
+In this post I attempt to prove a very simple identity, that will be used in a later post.
+
+I want to prove that for a square, non-singular matrix $A$, we have (in the steps below, $I$ is the identity matrix:
+
+\begin{align}
+(A^T)^{-1} = (A^{-1})^{T}
+\end{align}
+
+Let $(A^T)^{-1} = B$, we have
+\begin{align}
+(A^T)^{-1} & = B \\
+\implies (A^T)^{-1} A^T & = B A^T \\
+\implies I & = B A^T  (\#eq:multinv)  \\
+\implies I^T & = (BA^T)^T \\
+\implies I & = AB^T (\#eq:transmat) \\
+\implies A^{-1}I & = A^{-1}AB^T \\
+\implies A^{-1} & = B^T \\
+\implies (A^{-1})^T & = (B^T)^T \\
+\implies (A^{-1})^T & = B \\
+\implies (A^{-1})^T & = B = (A^T)^{-1}
+\end{align}
+
+This completes the proof. I use the following identities in the labeled equations above:
+
+- Equation \@ref(eq:multinv) A square, non singular matrix multiplied by its inverse is the identity matrix $(A^T)^{-1} A^T  = I$
+- Equation \@ref(eq:transmat) comes from the [transpose of a matrix product](https://en.wikipedia.org/wiki/Transpose#Products) identity. $(BA^T)^T = AB^T$
