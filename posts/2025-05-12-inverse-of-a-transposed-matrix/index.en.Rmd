@@ -16,7 +16,7 @@ nocite: '@*'
 
 In this post I attempt to prove a very simple identity, that will be used in a later post.
 
-I want to prove that for a square, non-singular matrix $A$, we have (in the steps below, $I$ is the identity matrix:
+I want to prove that for a square, non-singular matrix $A$, we have (in the steps below, $I$ is the identity matrix):
 
 \begin{align}
 (A^T)^{-1} = (A^{-1})^{T}
@@ -38,5 +38,5 @@ Let $(A^T)^{-1} = B$, we have
 
 This completes the proof. I use the following identities in the labeled equations above:
 
-- Equation \@ref(eq:multinv) A square, non singular matrix multiplied by its inverse is the identity matrix $(A^T)^{-1} A^T  = I$
-- Equation \@ref(eq:transmat) comes from the [transpose of a matrix product](https://en.wikipedia.org/wiki/Transpose#Products) identity. $(BA^T)^T = AB^T$
+- Equation \@ref(eq:multinv) A square, non singular matrix multiplied by its inverse is the identity matrix $(A^T)^{-1} A^T  = I$.
+- Equation \@ref(eq:transmat) comes from the [transpose of a matrix product](https://en.wikipedia.org/wiki/Transpose#Products) identity $(BA^T)^T = AB^T$.
