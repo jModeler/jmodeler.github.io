@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Endogeneity on The Journeyman Modeler</title><link>http://jmodeler.github.io/tags/endogeneity/</link><description>Recent content in Endogeneity on The Journeyman Modeler</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sun, 18 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://jmodeler.github.io/tags/endogeneity/index.xml" rel="self" type="application/rss+xml"/><item><title>Omitted Variables Bias -- Simple Example Proof</title><link>http://jmodeler.github.io/posts/2025-05-18-omitted-variables-bias-simple-example-proof/</link><pubDate>Sun, 18 May 2025 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/2025-05-18-omitted-variables-bias-simple-example-proof/</guid><description>&lt;p>In this post, I derive the expression in equation (4) of (&lt;a href="#ref-rossi2014iv" >Rossi 2014&lt;/a>), as shown in the screenshot below.
+&lt;img src="http://jmodeler.github.io/posts/2025-05-18-omitted-variables-bias-simple-example-proof/eq_4.png" alt="Equation 4 from Rossi Paper">&lt;/p>
+&lt;h3 id="setup">
+ Setup
+ &lt;a class="heading-link" href="#setup">
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
+ &lt;span class="sr-only">Link to heading&lt;/span>
+ &lt;/a>
+&lt;/h3>
+&lt;p>The author provides the following system of regression equations:&lt;/p>
+&lt;p>&lt;code>\begin{align} y = &amp;amp; \beta x + \alpha_y v + \epsilon_y \tag{1} \\ x = &amp;amp; \alpha_x v + \epsilon_x \tag{2} \\ E(\epsilon_y|x, v) = &amp;amp; 0 \,\, \&amp;amp; \,\, E(\epsilon_x|x, v) = 0 \,\, \&amp;amp; \,\, \epsilon_y \perp\!\!\!\perp \epsilon_x \tag{3} \end{align}&lt;/code>&lt;/p></description></item></channel></rss>
