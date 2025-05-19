@@ -147,7 +147,7 @@ I now try installing `lightweight_mmm` using `pip3 install lightweight_mmm` in t
 
 On further searching, it appears [that the problem](https://github.com/docker-library/python/issues/558) could be the version of python I'm currently using (3.11.2).
 
-I tried using a version of Python < `3.9` and checked if this was working. First, using the [instructions here](https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/), I used `pyenv` to install version `3.8.16`, with the `--enable-shared` option:
+I tried using a version of Python < `3.9` and checked if this was working. First, using the [instructions here](https://jmodeler.github.io/posts/setting-up-python-to-run-on-rmarkdown/), I used `pyenv` to install version `3.8.16`, with the `--enable-shared` option:
 
 ```zsh
    $ env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.8.16

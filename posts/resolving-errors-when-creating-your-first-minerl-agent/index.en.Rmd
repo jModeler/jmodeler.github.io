@@ -53,7 +53,7 @@ I borrow heavily from [this github issue comment](https://github.com/minerllabs/
      ```zsh
         GLFW.glfwSetWindowIcon(this.handle, buffer);
      ```
-   - Comment out the body of the `checkGlfwError` method, it should look like this after commenting out the body:
+   - Comment out the body of the `checkGlfwError` method, it should look like this after commenting out the body (**DO NOT** comment out/delete the method declaration, else the next step will fail.):
    
      ```zsh
       public static void checkGlfwError(BiConsumer<Integer, String> glfwErrorConsumer) {
@@ -70,7 +70,7 @@ I borrow heavily from [this github issue comment](https://github.com/minerllabs/
       
       }
     ```
-     **DO NOT** comment out/delete the method declaration, else the next step will fail. 
+   
 
 7. Navigate to the `minerl/minerl/MCP-Reborn` folder in terminal and rebuild `MCP-Reborn` using the command below:
    ```

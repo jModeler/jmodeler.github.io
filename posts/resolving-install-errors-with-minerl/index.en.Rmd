@@ -114,4 +114,4 @@ error: metadata-generation-failed
       Discussion can be found at https://github.com/pypa/pip/issues/8368
 ```
 
-7. Create your [first agent](https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html) and check if everything is working properly. If the example linked does not work, refer to [this post](https://jmodeler.github.io/post/resolving-errors-when-creating-your-first-minerl-agent/), or [this github issue comment](https://github.com/minerllabs/minerl/issues/659#issuecomment-1306635414).
+7. Create your [first agent](https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html) and check if everything is working properly. If the example linked does not work, refer to [this post](https://jmodeler.github.io/posts/resolving-errors-when-creating-your-first-minerl-agent/), or [this github issue comment](https://github.com/minerllabs/minerl/issues/659#issuecomment-1306635414).
