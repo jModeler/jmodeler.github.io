@@ -3,51 +3,51 @@
 &lt;ol>
 &lt;li>
 &lt;p>Clone the repository using the terminal command below&lt;/p>
-&lt;pre tabindex="0">&lt;code> git clone https://github.com/minerllabs/minerl.git
-&lt;/code>&lt;/pre>&lt;p>This will create a &lt;code>minerl&lt;/code> directory. Make sure that the path to the cloned repository does not have spaces in it (i.e. the path should &lt;strong>not&lt;/strong> be &lt;code>/Users/&amp;lt;username&amp;gt;/minerl folder/minerl&lt;/code> &amp;ndash; you will get &lt;code>file not found&lt;/code> errors in the next few steps otherwise)&lt;/p></description></item><item><title>Resolving Install Errors with MineRL</title><link>http://jmodeler.github.io/posts/resolving-install-errors-with-minerl/</link><pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/resolving-install-errors-with-minerl/</guid><description>&lt;p>In this post, I&amp;rsquo;ll resolve an error that one might face when trying to install the &lt;code>minerl&lt;/code> Python package. The instructions to install this package can be &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/index.html" class="external-link" target="_blank" rel="noopener">found here&lt;/a>.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-zsh" data-lang="zsh">&lt;span class="line">&lt;span class="cl"> git clone https://github.com/minerllabs/minerl.git
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>This will create a &lt;code>minerl&lt;/code> directory. Make sure that the path to the cloned repository does not have spaces in it (i.e. the path should &lt;strong>not&lt;/strong> be &lt;code>/Users/&amp;lt;username&amp;gt;/minerl folder/minerl&lt;/code> &amp;ndash; you will get &lt;code>file not found&lt;/code> errors in the next few steps otherwise)&lt;/p></description></item><item><title>Resolving Install Errors with MineRL</title><link>http://jmodeler.github.io/posts/resolving-install-errors-with-minerl/</link><pubDate>Wed, 22 Mar 2023 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/resolving-install-errors-with-minerl/</guid><description>&lt;p>In this post, I&amp;rsquo;ll resolve an error that one might face when trying to install the &lt;code>minerl&lt;/code> Python package. The instructions to install this package can be &lt;a href="https://minerl.readthedocs.io/en/latest/tutorials/index.html" class="external-link" target="_blank" rel="noopener">found here&lt;/a>.&lt;/p>
 &lt;ol>
 &lt;li>Using the instructions above, when I used the install command (&lt;code>pip3 install git+https://github.com/minerllabs/minerl&lt;/code>), I got the following error (only the relevant part is shown here):&lt;/li>
 &lt;/ol>
-&lt;pre tabindex="0">&lt;code> Note: Some input files use or override a deprecated API.
- Note: Recompile with -Xlint:deprecation for details.
- Note: Some input files use unchecked or unsafe operations.
- Note: Recompile with -Xlint:unchecked for details.
- 100 errors
- only showing the first 100 errors, of 2866 total; use -Xmaxerrs if you would like to see more
-
- &amp;gt; Task :compileJava FAILED
-
- FAILURE: Build failed with an exception.
-
- * What went wrong:
- Execution failed for task &amp;#39;:compileJava&amp;#39;.
- &amp;gt; Compilation failed; see the compiler error output for details.
-
- * Try:
- Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
-
- * Get more help at https://help.gradle.org
-
- Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
- Use &amp;#39;--warning-mode all&amp;#39; to show the individual deprecation warnings.
- See https://docs.gradle.org/6.8.1/userguide/command_line_interface.html#sec:command_line_warnings
-
- BUILD FAILED in 21s
- 10 actionable tasks: 10 executed
- Traceback (most recent call last):
- File &amp;#34;&amp;lt;string&amp;gt;&amp;#34;, line 2, in &amp;lt;module&amp;gt;
- File &amp;#34;&amp;lt;pip-setuptools-caller&amp;gt;&amp;#34;, line 34, in &amp;lt;module&amp;gt;
- File &amp;#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&amp;#34;, line 214, in &amp;lt;module&amp;gt;
- prep_mcp()
- File &amp;#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&amp;#34;, line 198, in prep_mcp
- subprocess.check_call(&amp;#39;{} clean build shadowJar&amp;#39;.format(gradlew).split(&amp;#39; &amp;#39;), cwd=workdir)
- File &amp;#34;/Users/&amp;lt;username&amp;gt;/.pyenv/versions/3.11.2/lib/python3.11/subprocess.py&amp;#34;, line 413, in check_call
- raise CalledProcessError(retcode, cmd)
- subprocess.CalledProcessError: Command &amp;#39;[&amp;#39;./gradlew&amp;#39;, &amp;#39;clean&amp;#39;, &amp;#39;build&amp;#39;, &amp;#39;shadowJar&amp;#39;]&amp;#39; returned non-zero exit status 1.
- [end of output]
-
- note: This error originates from a subprocess, and is likely not a problem with pip.
-error: metadata-generation-failed
-&lt;/code>&lt;/pre>&lt;ol start="2">
+&lt;div class="highlight">&lt;pre tabindex="0" class="chroma">&lt;code class="language-zsh" data-lang="zsh">&lt;span class="line">&lt;span class="cl"> Note: Some input files use or override a deprecated API.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Note: Recompile with -Xlint:deprecation &lt;span class="k">for&lt;/span> details.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Note: Some input files use unchecked or unsafe operations.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Note: Recompile with -Xlint:unchecked &lt;span class="k">for&lt;/span> details.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">100&lt;/span> errors
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> only showing the first &lt;span class="m">100&lt;/span> errors, of &lt;span class="m">2866&lt;/span> total&lt;span class="p">;&lt;/span> use -Xmaxerrs &lt;span class="k">if&lt;/span> you would like to see more
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;gt; Task :compileJava FAILED
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> FAILURE: Build failed with an exception.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * What went wrong:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Execution failed &lt;span class="k">for&lt;/span> task &lt;span class="s1">&amp;#39;:compileJava&amp;#39;&lt;/span>.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;gt; Compilation failed&lt;span class="p">;&lt;/span> see the compiler error output &lt;span class="k">for&lt;/span> details.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * Try:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> * Get more &lt;span class="nb">help&lt;/span> at https://help.gradle.org
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Use &lt;span class="s1">&amp;#39;--warning-mode all&amp;#39;&lt;/span> to show the individual deprecation warnings.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> See https://docs.gradle.org/6.8.1/userguide/command_line_interface.html#sec:command_line_warnings
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> BUILD FAILED in 21s
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="m">10&lt;/span> actionable tasks: &lt;span class="m">10&lt;/span> executed
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Traceback &lt;span class="o">(&lt;/span>most recent call last&lt;span class="o">)&lt;/span>:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;&amp;lt;string&amp;gt;&amp;#34;&lt;/span>, line 2, in &amp;lt;module&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;&amp;lt;pip-setuptools-caller&amp;gt;&amp;#34;&lt;/span>, line 34, in &amp;lt;module&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&amp;#34;&lt;/span>, line 214, in &amp;lt;module&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> prep_mcp&lt;span class="o">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&amp;#34;&lt;/span>, line 198, in prep_mcp
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> subprocess.check_call&lt;span class="o">(&lt;/span>&lt;span class="s1">&amp;#39;{} clean build shadowJar&amp;#39;&lt;/span>.format&lt;span class="o">(&lt;/span>gradlew&lt;span class="o">)&lt;/span>.split&lt;span class="o">(&lt;/span>&lt;span class="s1">&amp;#39; &amp;#39;&lt;/span>&lt;span class="o">)&lt;/span>, &lt;span class="nv">cwd&lt;/span>&lt;span class="o">=&lt;/span>workdir&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> File &lt;span class="s2">&amp;#34;/Users/&amp;lt;username&amp;gt;/.pyenv/versions/3.11.2/lib/python3.11/subprocess.py&amp;#34;&lt;/span>, line 413, in check_call
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> raise CalledProcessError&lt;span class="o">(&lt;/span>retcode, cmd&lt;span class="o">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> subprocess.CalledProcessError: Command &lt;span class="s1">&amp;#39;[&amp;#39;&lt;/span>./gradlew&lt;span class="s1">&amp;#39;, &amp;#39;&lt;/span>clean&lt;span class="s1">&amp;#39;, &amp;#39;&lt;/span>build&lt;span class="s1">&amp;#39;, &amp;#39;&lt;/span>shadowJar&lt;span class="s1">&amp;#39;]&amp;#39;&lt;/span> returned non-zero &lt;span class="nb">exit&lt;/span> status 1.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">[&lt;/span>end of output&lt;span class="o">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> note: This error originates from a subprocess, and is likely not a problem with pip.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">error: metadata-generation-failed
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;ol start="2">
 &lt;li>
 &lt;p>Searching for the error message (&lt;code>error: metadata-generation-failed&lt;/code>) took me to a bunch of websites that provided other options to try:&lt;/p></description></item></channel></rss>

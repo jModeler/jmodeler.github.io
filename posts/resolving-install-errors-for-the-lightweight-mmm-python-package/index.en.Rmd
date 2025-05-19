@@ -24,7 +24,7 @@ projects: []
 
 To experiment with different specifications of a marketing mix model, I tried installing the [lightweight_mmm](https://github.com/google/lightweight_mmm) Python package from Google. When using the standard `pip3 install lightweight_mmm` command in terminal, I was hitting this error:
 
-```
+```zsh
   × Getting requirements to build wheel did not run successfully.
   │ exit code: 1
   ╰─> [66 lines of output]
@@ -61,7 +61,7 @@ To experiment with different specifications of a marketing mix model, I tried in
 
 I tried to install `openblas` using homebrew, but it was already installed:
 
-```
+```zsh
 $ brew install openblas
 ==> Downloading https://formulae.brew.sh/api/formula.jws.json
 ######################################################################## 100.0%
@@ -74,7 +74,7 @@ To reinstall 0.3.21, run:
 
 So maybe the build process was failing because the compiler couldn't find it on the system. On some searching, I found this [github issue](https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/7906#issuecomment-1478618523) that discussed the same problem. Essentially, we get more information on `openblas`, using `brew info openblas` in the terminal which should show us this output:
 
-```
+```zsh
 ==> openblas: stable 0.3.21 (bottled), HEAD [keg-only]
 Optimized BLAS library
 https://www.openblas.net/
@@ -105,7 +105,7 @@ build-error: 4 (30 days)
 
 In the output above, we find the options to be set for compilers to find `openblas`. I run these commands in the terminal:
 
-```
+```zsh
 $ export LDFLAGS="-L/usr/local/opt/openblas/lib"
 $ export CPPFLAGS="-I/usr/local/opt/openblas/include"
 $ export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"
@@ -113,7 +113,7 @@ $ export PKG_CONFIG_PATH="/usr/local/opt/openblas/lib/pkgconfig"
 
 I now try installing `lightweight_mmm` using `pip3 install lightweight_mmm` in the terminal, and this time the installation gets past the step it was failing, but runs for a long time and fails again:
 
-```
+```zsh
   Using cached scipy-1.6.1.tar.gz (27.3 MB)
   Installing build dependencies ... done
   Getting requirements to build wheel ... done
@@ -149,19 +149,19 @@ On further searching, it appears [that the problem](https://github.com/docker-li
 
 I tried using a version of Python < `3.9` and checked if this was working. First, using the [instructions here](https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/), I used `pyenv` to install version `3.8.16`, with the `--enable-shared` option:
 
-```
+```zsh
    $ env PYTHON_CONFIGURE_OPTS="--enable-shared" pyenv install 3.8.16
 ```
 
 Next, I set this to be the global Python version
 
-```
+```zsh
    $ pyenv global 3.8.16
 ```
 
 I now try installing the package again using `pip3 install lightweight_mmm`, and this time it works:
 
-```
+```zsh
 Installing collected packages: typing-extensions, tensorboard-plugin-wit, pytz, pyasn1, libclang, flatbuffers, zipp, wrapt, wheel, urllib3, tqdm, threadpoolctl, termcolor, tensorflow-io-gcs-filesystem, tensorflow-estimator, tensorboard-data-server, six, rsa, pyparsing, pyasn1-modules, protobuf, pillow, packaging, oauthlib, numpy, MarkupSafe, kiwisolver, keras, joblib, immutabledict, idna, grpcio, gast, fonttools, cycler, charset-normalizer, certifi, cachetools, absl-py, werkzeug, scipy, requests, python-dateutil, patsy, opt_einsum, multipledispatch, importlib-metadata, h5py, google-pasta, google-auth, contourpy, cftime, astunparse, scikit-learn, requests-oauthlib, pandas, netcdf4, matplotlib, markdown, jaxlib, jax, xarray, statsmodels, seaborn, numpyro, google-auth-oauthlib, tensorboard, arviz, tensorflow, lightweight_mmm
   Running setup.py install for jax ... done
 Successfully installed MarkupSafe-2.1.2 absl-py-1.4.0 arviz-0.11.2 astunparse-1.6.3 cachetools-5.3.0 certifi-2022.12.7 cftime-1.6.2 charset-normalizer-3.1.0 contourpy-1.0.7 cycler-0.11.0 flatbuffers-23.3.3 fonttools-4.39.2 gast-0.4.0 google-auth-2.16.3 google-auth-oauthlib-0.4.6 google-pasta-0.2.0 grpcio-1.51.3 h5py-3.8.0 idna-3.4 immutabledict-2.2.3 importlib-metadata-6.1.0 jax-0.4.6 jaxlib-0.4.6 joblib-1.2.0 keras-2.11.0 kiwisolver-1.4.4 libclang-16.0.0 lightweight_mmm-0.1.7 markdown-3.4.3 matplotlib-3.6.1 multipledispatch-0.6.0 netcdf4-1.6.3 numpy-1.24.2 numpyro-0.11.0 oauthlib-3.2.2 opt_einsum-3.3.0 packaging-23.0 pandas-1.5.3 patsy-0.5.3 pillow-9.4.0 protobuf-3.19.6 pyasn1-0.4.8 pyasn1-modules-0.2.8 pyparsing-3.0.9 python-dateutil-2.8.2 pytz-2023.2 requests-2.28.2 requests-oauthlib-1.3.1 rsa-4.9 scikit-learn-1.2.2 scipy-1.10.1 seaborn-0.11.1 six-1.16.0 statsmodels-0.13.5 tensorboard-2.11.2 tensorboard-data-server-0.6.1 tensorboard-plugin-wit-1.8.1 tensorflow-2.11.1 tensorflow-estimator-2.11.0 tensorflow-io-gcs-filesystem-0.31.0 termcolor-2.2.0 threadpoolctl-3.1.0 tqdm-4.65.0 typing-extensions-3.10.0.2 urllib3-1.26.15 werkzeug-2.2.3 wheel-0.40.0 wrapt-1.15.0 xarray-2023.1.0 zipp-3.15.0

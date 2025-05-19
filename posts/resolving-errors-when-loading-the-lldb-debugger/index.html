@@ -17,31 +17,31 @@ $ lldb Traceback (most recent call last): File "<string>", line 1, in <module> F
 <a href=/categories/reference/>Reference</a></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
 <span class=tag><a href=/tags/c/>C</a>
 </span><span class=separator>•</span>
-<span class=tag><a href=/tags/lldb/>Lldb</a></span></div></div></header><div class=post-content><p>From time to time, I work with <code>C</code> code, and I use the <code>lldb</code> debugger to step through the code. Recently, after a Mac OS update, I started seeing this error when attempting to start the lldb debugger in terminal:</p><pre tabindex=0><code>$ lldb
-Traceback (most recent call last):
-  File &#34;&lt;string&gt;&#34;, line 1, in &lt;module&gt;
-  File &#34;/usr/local/Cellar/llvm/15.0.7_1/libexec/python3.11/site-packages/lldb/__init__.py&#34;, line 96, in &lt;module&gt;
-    import six
-ModuleNotFoundError: No module named &#39;six&#39;
-</code></pre><p>The error message says that a module (<code>six</code>) is missing. The other issue, is that this module is missing on a version of python that is <em>not</em> the global version set by <code>pyenv</code>. I check the versions of pyenv on my system:</p><pre tabindex=0><code>$ pyenv versions
-  system
-* 3.8.16 (set by /Users/&lt;username&gt;/.pyenv/version)
-  3.9.1
-  3.11.2
-</code></pre><p>I&rsquo;m guessing <code>lldb</code> uses the <code>system</code> version of Python. A simple <code>pip3 install six</code> will not fix the issue, since this will install this package for Python <code>3.8.16</code>, instead of the <code>system</code> version. I now use <code>pyenv</code> to set the local version of python to <code>system</code>:</p><pre tabindex=0><code>$ pyenv local system
-$ pyenv versions
-* system (set by /Users/sandeep/.python-version)
-  3.8.16
-  3.9.1
-  3.11.2
-</code></pre><p>I now install <code>six</code>:</p><pre tabindex=0><code>$ pip3 install six
-Collecting six
-  Using cached six-1.16.0-py2.py3-none-any.whl (11 kB)
-Installing collected packages: six
-Successfully installed six-1.16.0
-</code></pre><p>And I try launching <code>lldb</code> on terminal again:</p><pre tabindex=0><code>% lldb
-(lldb)
-</code></pre><p>.. which takes me to the <code>(lldb)</code> prompt without any issues.</p><p>Make sure you &ldquo;reset&rdquo; the default python version to be used to the version you had before (in my case this would be version <code>3.8.16</code>)</p></div><footer></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
+<span class=tag><a href=/tags/lldb/>Lldb</a></span></div></div></header><div class=post-content><p>From time to time, I work with <code>C</code> code, and I use the <code>lldb</code> debugger to step through the code. Recently, after a Mac OS update, I started seeing this error when attempting to start the lldb debugger in terminal:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>$ lldb
+</span></span><span class=line><span class=cl>Traceback <span class=o>(</span>most recent call last<span class=o>)</span>:
+</span></span><span class=line><span class=cl>  File <span class=s2>&#34;&lt;string&gt;&#34;</span>, line 1, in &lt;module&gt;
+</span></span><span class=line><span class=cl>  File <span class=s2>&#34;/usr/local/Cellar/llvm/15.0.7_1/libexec/python3.11/site-packages/lldb/__init__.py&#34;</span>, line 96, in &lt;module&gt;
+</span></span><span class=line><span class=cl>    import six
+</span></span><span class=line><span class=cl>ModuleNotFoundError: No module named <span class=s1>&#39;six&#39;</span>
+</span></span></code></pre></div><p>The error message says that a module (<code>six</code>) is missing. The other issue, is that this module is missing on a version of python that is <em>not</em> the global version set by <code>pyenv</code>. I check the versions of pyenv on my system:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>$ pyenv versions
+</span></span><span class=line><span class=cl>  system
+</span></span><span class=line><span class=cl>* 3.8.16 <span class=o>(</span><span class=nb>set</span> by /Users/&lt;username&gt;/.pyenv/version<span class=o>)</span>
+</span></span><span class=line><span class=cl>  3.9.1
+</span></span><span class=line><span class=cl>  3.11.2
+</span></span></code></pre></div><p>I&rsquo;m guessing <code>lldb</code> uses the <code>system</code> version of Python. A simple <code>pip3 install six</code> will not fix the issue, since this will install this package for Python <code>3.8.16</code>, instead of the <code>system</code> version. I now use <code>pyenv</code> to set the local version of python to <code>system</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>$ pyenv <span class=nb>local</span> system
+</span></span><span class=line><span class=cl>$ pyenv versions
+</span></span><span class=line><span class=cl>* system <span class=o>(</span><span class=nb>set</span> by /Users/&lt;username&gt;/.python-version<span class=o>)</span>
+</span></span><span class=line><span class=cl>  3.8.16
+</span></span><span class=line><span class=cl>  3.9.1
+</span></span><span class=line><span class=cl>  3.11.2
+</span></span></code></pre></div><p>I now install <code>six</code>:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>$ pip3 install six
+</span></span><span class=line><span class=cl>Collecting six
+</span></span><span class=line><span class=cl>  Using cached six-1.16.0-py2.py3-none-any.whl <span class=o>(</span><span class=m>11</span> kB<span class=o>)</span>
+</span></span><span class=line><span class=cl>Installing collected packages: six
+</span></span><span class=line><span class=cl>Successfully installed six-1.16.0
+</span></span></code></pre></div><p>And I try launching <code>lldb</code> on terminal again:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>% lldb
+</span></span><span class=line><span class=cl><span class=o>(</span>lldb<span class=o>)</span>
+</span></span></code></pre></div><p>.. which takes me to the <code>(lldb)</code> prompt without any issues.</p><p>Make sure you &ldquo;reset&rdquo; the default python version to be used to the version you had before (in my case this would be version <code>3.8.16</code>)</p></div><footer></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
 2023 -
 2025
 Journeyman Modeler

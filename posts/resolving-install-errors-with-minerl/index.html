@@ -60,67 +60,67 @@ Using the instructions above, when I used the install command (pip3 install git+
 </span><span class=separator>•</span>
 <span class=tag><a href=/tags/setup/>Setup</a>
 </span><span class=separator>•</span>
-<span class=tag><a href=/tags/minerl/>MineRL</a></span></div></div></header><div class=post-content><p>In this post, I&rsquo;ll resolve an error that one might face when trying to install the <code>minerl</code> Python package. The instructions to install this package can be <a href=https://minerl.readthedocs.io/en/latest/tutorials/index.html class=external-link target=_blank rel=noopener>found here</a>.</p><ol><li>Using the instructions above, when I used the install command (<code>pip3 install git+https://github.com/minerllabs/minerl</code>), I got the following error (only the relevant part is shown here):</li></ol><pre tabindex=0><code>          Note: Some input files use or override a deprecated API.
-      Note: Recompile with -Xlint:deprecation for details.
-      Note: Some input files use unchecked or unsafe operations.
-      Note: Recompile with -Xlint:unchecked for details.
-      100 errors
-      only showing the first 100 errors, of 2866 total; use -Xmaxerrs if you would like to see more
-
-      &gt; Task :compileJava FAILED
-
-      FAILURE: Build failed with an exception.
-
-      * What went wrong:
-      Execution failed for task &#39;:compileJava&#39;.
-      &gt; Compilation failed; see the compiler error output for details.
-
-      * Try:
-      Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
-
-      * Get more help at https://help.gradle.org
-
-      Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
-      Use &#39;--warning-mode all&#39; to show the individual deprecation warnings.
-      See https://docs.gradle.org/6.8.1/userguide/command_line_interface.html#sec:command_line_warnings
-
-      BUILD FAILED in 21s
-      10 actionable tasks: 10 executed
-      Traceback (most recent call last):
-        File &#34;&lt;string&gt;&#34;, line 2, in &lt;module&gt;
-        File &#34;&lt;pip-setuptools-caller&gt;&#34;, line 34, in &lt;module&gt;
-        File &#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&#34;, line 214, in &lt;module&gt;
-          prep_mcp()
-        File &#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&#34;, line 198, in prep_mcp
-          subprocess.check_call(&#39;{} clean build shadowJar&#39;.format(gradlew).split(&#39; &#39;), cwd=workdir)
-        File &#34;/Users/&lt;username&gt;/.pyenv/versions/3.11.2/lib/python3.11/subprocess.py&#34;, line 413, in check_call
-          raise CalledProcessError(retcode, cmd)
-      subprocess.CalledProcessError: Command &#39;[&#39;./gradlew&#39;, &#39;clean&#39;, &#39;build&#39;, &#39;shadowJar&#39;]&#39; returned non-zero exit status 1.
-      [end of output]
-
-  note: This error originates from a subprocess, and is likely not a problem with pip.
-error: metadata-generation-failed
-</code></pre><ol start=2><li><p>Searching for the error message (<code>error: metadata-generation-failed</code>) took me to a bunch of websites that provided other options to try:</p><ul><li>From the <a href=https://minerl.readthedocs.io/en/latest/tutorials/index.html class=external-link target=_blank rel=noopener>install page</a>, I tried providing the <code>--user</code> option in the install command, that did not work, and I got the same error. This was the command I used: <code>pip3 install git+https://github.com/minerllabs/minerl --user</code></li><li>From <a href=https://stackoverflow.com/questions/74188013/python-pygame-not-installing class=external-link target=_blank rel=noopener>this stackoverflow page</a>, I used the <code>--pre</code> option in the install command, that didn&rsquo;t work either. This was the command I used: <code>pip3 install git+https://github.com/minerllabs/minerl --pre</code></li><li>From <a href=https://bobbyhadz.com/blog/python-error-metadata-generation-failed-encountered-error class=external-link target=_blank rel=noopener>this page</a>, I learnt about using the <code>--use-deprecated</code> option, but that did not work too. This was the command I used: <code>pip3 install git+https://github.com/minerllabs/minerl --use-deprecated=legacy-resolver</code></li></ul></li><li><p>Going back to the <code>minerl</code> <a href=https://minerl.readthedocs.io/en/latest/tutorials/index.html class=external-link target=_blank rel=noopener>install page</a>, I checked the Java version, hoping that this was the issue:</p></li></ol><pre tabindex=0><code>      $ java -version
-      openjdk version &#34;14.0.2&#34; 2020-07-14
-      OpenJDK Runtime Environment (build 14.0.2+12-46)
-      OpenJDK 64-Bit Server VM (build 14.0.2+12-46, mixed mode, sharing)
-</code></pre><ol start=4><li>My system was using the wrong version of Java (it should be using <code>1.8._</code>)! I used the <a href=https://gist.github.com/schnell18/bcb9833f725be22f6acd01f94b486392 class=external-link target=_blank rel=noopener>instructions here</a>, to remove the other version of Java. These were the exact commands I used:</li></ol><pre tabindex=0><code>      $ sudo rm -fr /Library/Java/JavaVirtualMachines/openjdk-14.0.2.jdk/
-      $ sudo rm -fr /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
-      $ sudo rm -fr /Library/PreferencePanes/JavaControlPanel.prefPane
-</code></pre><ol start=5><li>If you encounter this error on a macOS, and the Java version is the cause, check your Java version using the <code>java -version</code> command on terminal, and navigate to the <code>/Library/Java/JavaVirtualMachines/</code> folder to find the other versions of Java on your machine. Then use the <code>sudo</code> commands above to delete the appropriate folders. After deleting the other Java folder on my machine, typing <code>java -version</code> in my terminal gave me the following result:</li></ol><pre tabindex=0><code>      $ java -version
-      openjdk version &#34;1.8.0_292&#34;
-      OpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_292-b10)
-      OpenJDK 64-Bit Server VM (AdoptOpenJDK)(build 25.292-b10, mixed mode)
-</code></pre><ol start=6><li>After doing this, the install command (<code>pip3 install git+https://github.com/minerllabs/minerl</code>), worked fine on the terminal. I did see some error messages (around installation of the Python package <code>gym</code>), but it didn&rsquo;t appear to affect the installation:</li></ol><pre tabindex=0><code>    Failed to build gym
-    Installing collected packages: PyWavelets, Pyro4, opencv-python, matplotlib-inline, lxml, 
-    jinja2, jedi, inflection, idna, humanfriendly, flaky, dill, decorator, cloudpickle, charset-normalizer, 
-    certifi, asttokens, stack-data, requests, imagehash, gym, coloredlogs, ipython, minerl
-      Running setup.py install for gym ... done
-      DEPRECATION: gym was installed using the legacy &#39;setup.py install&#39;
-      method, because a wheel could not be built for it. pip 23.1 will enforce this behaviour change. 
-      A possible replacement is to fix the wheel build issue reported above.
-      Discussion can be found at https://github.com/pypa/pip/issues/8368
-</code></pre><ol start=7><li>Create your <a href=https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html class=external-link target=_blank rel=noopener>first agent</a> and check if everything is working properly. If the example linked does not work, refer to <a href=https://jmodeler.github.io/post/resolving-errors-when-creating-your-first-minerl-agent/ class=external-link target=_blank rel=noopener>this post</a>, or <a href=https://github.com/minerllabs/minerl/issues/659#issuecomment-1306635414 class=external-link target=_blank rel=noopener>this github issue comment</a>.</li></ol></div><footer></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
+<span class=tag><a href=/tags/minerl/>MineRL</a></span></div></div></header><div class=post-content><p>In this post, I&rsquo;ll resolve an error that one might face when trying to install the <code>minerl</code> Python package. The instructions to install this package can be <a href=https://minerl.readthedocs.io/en/latest/tutorials/index.html class=external-link target=_blank rel=noopener>found here</a>.</p><ol><li>Using the instructions above, when I used the install command (<code>pip3 install git+https://github.com/minerllabs/minerl</code>), I got the following error (only the relevant part is shown here):</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>          Note: Some input files use or override a deprecated API.
+</span></span><span class=line><span class=cl>      Note: Recompile with -Xlint:deprecation <span class=k>for</span> details.
+</span></span><span class=line><span class=cl>      Note: Some input files use unchecked or unsafe operations.
+</span></span><span class=line><span class=cl>      Note: Recompile with -Xlint:unchecked <span class=k>for</span> details.
+</span></span><span class=line><span class=cl>      <span class=m>100</span> errors
+</span></span><span class=line><span class=cl>      only showing the first <span class=m>100</span> errors, of <span class=m>2866</span> total<span class=p>;</span> use -Xmaxerrs <span class=k>if</span> you would like to see more
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      &gt; Task :compileJava FAILED
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      FAILURE: Build failed with an exception.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      * What went wrong:
+</span></span><span class=line><span class=cl>      Execution failed <span class=k>for</span> task <span class=s1>&#39;:compileJava&#39;</span>.
+</span></span><span class=line><span class=cl>      &gt; Compilation failed<span class=p>;</span> see the compiler error output <span class=k>for</span> details.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      * Try:
+</span></span><span class=line><span class=cl>      Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output. Run with --scan to get full insights.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      * Get more <span class=nb>help</span> at https://help.gradle.org
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      Deprecated Gradle features were used in this build, making it incompatible with Gradle 7.0.
+</span></span><span class=line><span class=cl>      Use <span class=s1>&#39;--warning-mode all&#39;</span> to show the individual deprecation warnings.
+</span></span><span class=line><span class=cl>      See https://docs.gradle.org/6.8.1/userguide/command_line_interface.html#sec:command_line_warnings
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      BUILD FAILED in 21s
+</span></span><span class=line><span class=cl>      <span class=m>10</span> actionable tasks: <span class=m>10</span> executed
+</span></span><span class=line><span class=cl>      Traceback <span class=o>(</span>most recent call last<span class=o>)</span>:
+</span></span><span class=line><span class=cl>        File <span class=s2>&#34;&lt;string&gt;&#34;</span>, line 2, in &lt;module&gt;
+</span></span><span class=line><span class=cl>        File <span class=s2>&#34;&lt;pip-setuptools-caller&gt;&#34;</span>, line 34, in &lt;module&gt;
+</span></span><span class=line><span class=cl>        File <span class=s2>&#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&#34;</span>, line 214, in &lt;module&gt;
+</span></span><span class=line><span class=cl>          prep_mcp<span class=o>()</span>
+</span></span><span class=line><span class=cl>        File <span class=s2>&#34;/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-req-build-9xj7s1on/setup.py&#34;</span>, line 198, in prep_mcp
+</span></span><span class=line><span class=cl>          subprocess.check_call<span class=o>(</span><span class=s1>&#39;{} clean build shadowJar&#39;</span>.format<span class=o>(</span>gradlew<span class=o>)</span>.split<span class=o>(</span><span class=s1>&#39; &#39;</span><span class=o>)</span>, <span class=nv>cwd</span><span class=o>=</span>workdir<span class=o>)</span>
+</span></span><span class=line><span class=cl>        File <span class=s2>&#34;/Users/&lt;username&gt;/.pyenv/versions/3.11.2/lib/python3.11/subprocess.py&#34;</span>, line 413, in check_call
+</span></span><span class=line><span class=cl>          raise CalledProcessError<span class=o>(</span>retcode, cmd<span class=o>)</span>
+</span></span><span class=line><span class=cl>      subprocess.CalledProcessError: Command <span class=s1>&#39;[&#39;</span>./gradlew<span class=s1>&#39;, &#39;</span>clean<span class=s1>&#39;, &#39;</span>build<span class=s1>&#39;, &#39;</span>shadowJar<span class=s1>&#39;]&#39;</span> returned non-zero <span class=nb>exit</span> status 1.
+</span></span><span class=line><span class=cl>      <span class=o>[</span>end of output<span class=o>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  note: This error originates from a subprocess, and is likely not a problem with pip.
+</span></span><span class=line><span class=cl>error: metadata-generation-failed
+</span></span></code></pre></div><ol start=2><li><p>Searching for the error message (<code>error: metadata-generation-failed</code>) took me to a bunch of websites that provided other options to try:</p><ul><li>From the <a href=https://minerl.readthedocs.io/en/latest/tutorials/index.html class=external-link target=_blank rel=noopener>install page</a>, I tried providing the <code>--user</code> option in the install command, that did not work, and I got the same error. This was the command I used: <code>pip3 install git+https://github.com/minerllabs/minerl --user</code></li><li>From <a href=https://stackoverflow.com/questions/74188013/python-pygame-not-installing class=external-link target=_blank rel=noopener>this stackoverflow page</a>, I used the <code>--pre</code> option in the install command, that didn&rsquo;t work either. This was the command I used: <code>pip3 install git+https://github.com/minerllabs/minerl --pre</code></li><li>From <a href=https://bobbyhadz.com/blog/python-error-metadata-generation-failed-encountered-error class=external-link target=_blank rel=noopener>this page</a>, I learnt about using the <code>--use-deprecated</code> option, but that did not work too. This was the command I used: <code>pip3 install git+https://github.com/minerllabs/minerl --use-deprecated=legacy-resolver</code></li></ul></li><li><p>Going back to the <code>minerl</code> <a href=https://minerl.readthedocs.io/en/latest/tutorials/index.html class=external-link target=_blank rel=noopener>install page</a>, I checked the Java version, hoping that this was the issue:</p></li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>      $ java -version
+</span></span><span class=line><span class=cl>      openjdk version <span class=s2>&#34;14.0.2&#34;</span> 2020-07-14
+</span></span><span class=line><span class=cl>      OpenJDK Runtime Environment <span class=o>(</span>build 14.0.2+12-46<span class=o>)</span>
+</span></span><span class=line><span class=cl>      OpenJDK 64-Bit Server VM <span class=o>(</span>build 14.0.2+12-46, mixed mode, sharing<span class=o>)</span>
+</span></span></code></pre></div><ol start=4><li>My system was using the wrong version of Java (it should be using <code>1.8._</code>)! I used the <a href=https://gist.github.com/schnell18/bcb9833f725be22f6acd01f94b486392 class=external-link target=_blank rel=noopener>instructions here</a>, to remove the other version of Java. These were the exact commands I used:</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>      $ sudo rm -fr /Library/Java/JavaVirtualMachines/openjdk-14.0.2.jdk/
+</span></span><span class=line><span class=cl>      $ sudo rm -fr /Library/Internet<span class=se>\ </span>Plug-Ins/JavaAppletPlugin.plugin
+</span></span><span class=line><span class=cl>      $ sudo rm -fr /Library/PreferencePanes/JavaControlPanel.prefPane
+</span></span></code></pre></div><ol start=5><li>If you encounter this error on a macOS, and the Java version is the cause, check your Java version using the <code>java -version</code> command on terminal, and navigate to the <code>/Library/Java/JavaVirtualMachines/</code> folder to find the other versions of Java on your machine. Then use the <code>sudo</code> commands above to delete the appropriate folders. After deleting the other Java folder on my machine, typing <code>java -version</code> in my terminal gave me the following result:</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>      $ java -version
+</span></span><span class=line><span class=cl>      openjdk version <span class=s2>&#34;1.8.0_292&#34;</span>
+</span></span><span class=line><span class=cl>      OpenJDK Runtime Environment <span class=o>(</span>AdoptOpenJDK<span class=o>)(</span>build 1.8.0_292-b10<span class=o>)</span>
+</span></span><span class=line><span class=cl>      OpenJDK 64-Bit Server VM <span class=o>(</span>AdoptOpenJDK<span class=o>)(</span>build 25.292-b10, mixed mode<span class=o>)</span>
+</span></span></code></pre></div><ol start=6><li>After doing this, the install command (<code>pip3 install git+https://github.com/minerllabs/minerl</code>), worked fine on the terminal. I did see some error messages (around installation of the Python package <code>gym</code>), but it didn&rsquo;t appear to affect the installation:</li></ol><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>    Failed to build gym
+</span></span><span class=line><span class=cl>    Installing collected packages: PyWavelets, Pyro4, opencv-python, matplotlib-inline, lxml, 
+</span></span><span class=line><span class=cl>    jinja2, jedi, inflection, idna, humanfriendly, flaky, dill, decorator, cloudpickle, charset-normalizer, 
+</span></span><span class=line><span class=cl>    certifi, asttokens, stack-data, requests, imagehash, gym, coloredlogs, ipython, minerl
+</span></span><span class=line><span class=cl>      Running setup.py install <span class=k>for</span> gym ... <span class=k>done</span>
+</span></span><span class=line><span class=cl>      DEPRECATION: gym was installed using the legacy <span class=s1>&#39;setup.py install&#39;</span>
+</span></span><span class=line><span class=cl>      method, because a wheel could not be built <span class=k>for</span> it. pip 23.1 will enforce this behaviour change. 
+</span></span><span class=line><span class=cl>      A possible replacement is to fix the wheel build issue reported above.
+</span></span><span class=line><span class=cl>      Discussion can be found at https://github.com/pypa/pip/issues/8368
+</span></span></code></pre></div><ol start=7><li>Create your <a href=https://minerl.readthedocs.io/en/latest/tutorials/first_agent.html class=external-link target=_blank rel=noopener>first agent</a> and check if everything is working properly. If the example linked does not work, refer to <a href=https://jmodeler.github.io/post/resolving-errors-when-creating-your-first-minerl-agent/ class=external-link target=_blank rel=noopener>this post</a>, or <a href=https://github.com/minerllabs/minerl/issues/659#issuecomment-1306635414 class=external-link target=_blank rel=noopener>this github issue comment</a>.</li></ol></div><footer></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
 2023 -
 2025
 Journeyman Modeler

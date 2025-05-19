@@ -25,7 +25,7 @@ projects: []
 In this post, I'll resolve an error that one might face when trying to install the `minerl` Python package. The instructions to install this package can be [found here](https://minerl.readthedocs.io/en/latest/tutorials/index.html).
 
 1. Using the instructions above, when I used the install command (`pip3 install git+https://github.com/minerllabs/minerl`), I got the following error (only the relevant part is shown here):
-```
+```zsh
           Note: Some input files use or override a deprecated API.
       Note: Recompile with -Xlint:deprecation for details.
       Note: Some input files use unchecked or unsafe operations.
@@ -75,7 +75,7 @@ error: metadata-generation-failed
 
 3. Going back to the `minerl` [install page](https://minerl.readthedocs.io/en/latest/tutorials/index.html), I checked the Java version, hoping that this was the issue:
 
-```
+```zsh
       $ java -version
       openjdk version "14.0.2" 2020-07-14
       OpenJDK Runtime Environment (build 14.0.2+12-46)
@@ -84,7 +84,7 @@ error: metadata-generation-failed
 
 4. My system was using the wrong version of Java (it should be using `1.8._`)! I used the [instructions here](https://gist.github.com/schnell18/bcb9833f725be22f6acd01f94b486392), to remove the other version of Java. These were the exact commands I used:
 
-```
+```zsh
       $ sudo rm -fr /Library/Java/JavaVirtualMachines/openjdk-14.0.2.jdk/
       $ sudo rm -fr /Library/Internet\ Plug-Ins/JavaAppletPlugin.plugin
       $ sudo rm -fr /Library/PreferencePanes/JavaControlPanel.prefPane
@@ -92,7 +92,7 @@ error: metadata-generation-failed
 
 5. If you encounter this error on a macOS, and the Java version is the cause, check your Java version using the `java -version` command on terminal, and navigate to the `/Library/Java/JavaVirtualMachines/` folder to find the other versions of Java on your machine. Then use the `sudo` commands above to delete the appropriate folders. After deleting the other Java folder on my machine, typing `java -version` in my terminal gave me the following result:
 
-```
+```zsh
       $ java -version
       openjdk version "1.8.0_292"
       OpenJDK Runtime Environment (AdoptOpenJDK)(build 1.8.0_292-b10)
@@ -102,7 +102,7 @@ error: metadata-generation-failed
 
 6. After doing this, the install command (`pip3 install git+https://github.com/minerllabs/minerl`), worked fine on the terminal. I did see some error messages (around installation of the Python package `gym`), but it didn't appear to affect the installation:
 
-```
+```zsh
     Failed to build gym
     Installing collected packages: PyWavelets, Pyro4, opencv-python, matplotlib-inline, lxml, 
     jinja2, jedi, inflection, idna, humanfriendly, flaky, dill, decorator, cloudpickle, charset-normalizer, 

@@ -47,110 +47,110 @@ I tried to install openblas using homebrew, but it was already installed:'><meta
 <a href=/categories/bayesian-stats/>Bayesian Stats</a></div><div class=tags><i class="fa-solid fa-tag" aria-hidden=true></i>
 <span class=tag><a href=/tags/bayesian-stats/>Bayesian Stats</a>
 </span><span class=separator>•</span>
-<span class=tag><a href=/tags/marketing-mix-models/>Marketing Mix Models</a></span></div></div></header><div class=post-content><p>To experiment with different specifications of a marketing mix model, I tried installing the <a href=https://github.com/google/lightweight_mmm class=external-link target=_blank rel=noopener>lightweight_mmm</a> Python package from Google. When using the standard <code>pip3 install lightweight_mmm</code> command in terminal, I was hitting this error:</p><pre tabindex=0><code>  × Getting requirements to build wheel did not run successfully.
-  │ exit code: 1
-  ╰─&gt; [66 lines of output]
-      The Meson build system
-      Version: 0.62.2
-      Source dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273
-      Build dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273/.mesonpy-ur2kyhcf/build
-      Build type: native build
-      Project name: SciPy
-      Project version: 1.9.1
-      C compiler for the host machine: cc (clang 14.0.0 &#34;Apple clang version 14.0.0 (clang-1400.0.29.202)&#34;)
-      C linker for the host machine: cc ld64 820.1
-      C++ compiler for the host machine: c++ (clang 14.0.0 &#34;Apple clang version 14.0.0 (clang-1400.0.29.202)&#34;)
-      C++ linker for the host machine: c++ ld64 820.1
-      Host machine cpu family: x86_64
-      Host machine cpu: x86_64
-      Compiler for C supports arguments -Wno-unused-but-set-variable: YES
-      Library m found: YES
-      Fortran compiler for the host machine: gfortran (gcc 8.2.0 &#34;GNU Fortran (GCC) 8.2.0&#34;)
-      Fortran linker for the host machine: gfortran ld64 820.1
-      Program cython found: YES (/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-build-env-gddbg9u0/overlay/bin/cython)
-      Program pythran found: YES (/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-build-env-gddbg9u0/overlay/bin/pythran)
-      Program cp found: YES (/bin/cp)
-      Program python found: YES (/Users/&lt;username&gt;/.pyenv/versions/3.11.2/bin/python3.11)
-      Found pkg-config: /usr/local/bin/pkg-config (0.29.2)
-      Library npymath found: YES
-      Library npyrandom found: YES
-      Found CMake: /usr/local/bin/cmake (3.26.0)
-      Run-time dependency openblas found: NO (tried pkgconfig, framework and cmake)
-      Run-time dependency openblas found: NO (tried pkgconfig, framework and cmake)
-
-      ../../scipy/meson.build:130:0: ERROR: Dependency &#34;OpenBLAS&#34; not found, tried pkgconfig, framework and cmake
-</code></pre><p>I tried to install <code>openblas</code> using homebrew, but it was already installed:</p><pre tabindex=0><code>$ brew install openblas
-==&gt; Downloading https://formulae.brew.sh/api/formula.jws.json
-######################################################################## 100.0%
-==&gt; Downloading https://formulae.brew.sh/api/cask.jws.json
-
-Warning: openblas 0.3.21 is already installed and up-to-date.
-To reinstall 0.3.21, run:
-  brew reinstall openblas
-</code></pre><p>So maybe the build process was failing because the compiler couldn&rsquo;t find it on the system. On some searching, I found this <a href=https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/7906#issuecomment-1478618523 class=external-link target=_blank rel=noopener>github issue</a> that discussed the same problem. Essentially, we get more information on <code>openblas</code>, using <code>brew info openblas</code> in the terminal which should show us this output:</p><pre tabindex=0><code>==&gt; openblas: stable 0.3.21 (bottled), HEAD [keg-only]
-Optimized BLAS library
-https://www.openblas.net/
-/usr/local/Cellar/openblas/0.3.21 (23 files, 130MB)
-  Poured from bottle on 2023-02-11 at 08:52:47
-From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/openblas.rb
-License: BSD-3-Clause
-==&gt; Dependencies
-Required: gcc ✔
-==&gt; Options
---HEAD
-	Install HEAD version
-==&gt; Caveats
-openblas is keg-only, which means it was not symlinked into /usr/local,
-because macOS provides BLAS in Accelerate.framework.
-
-For compilers to find openblas you may need to set:
-  export LDFLAGS=&#34;-L/usr/local/opt/openblas/lib&#34;
-  export CPPFLAGS=&#34;-I/usr/local/opt/openblas/include&#34;
-
-For pkg-config to find openblas you may need to set:
-  export PKG_CONFIG_PATH=&#34;/usr/local/opt/openblas/lib/pkgconfig&#34;
-==&gt; Analytics
-install: 1,074 (30 days), 63,095 (90 days), 515,454 (365 days)
-install-on-request: 171 (30 days), 10,278 (90 days), 85,564 (365 days)
-build-error: 4 (30 days)
-</code></pre><p>In the output above, we find the options to be set for compilers to find <code>openblas</code>. I run these commands in the terminal:</p><pre tabindex=0><code>$ export LDFLAGS=&#34;-L/usr/local/opt/openblas/lib&#34;
-$ export CPPFLAGS=&#34;-I/usr/local/opt/openblas/include&#34;
-$ export PKG_CONFIG_PATH=&#34;/usr/local/opt/openblas/lib/pkgconfig&#34;
-</code></pre><p>I now try installing <code>lightweight_mmm</code> using <code>pip3 install lightweight_mmm</code> in the terminal, and this time the installation gets past the step it was failing, but runs for a long time and fails again:</p><pre tabindex=0><code>  Using cached scipy-1.6.1.tar.gz (27.3 MB)
-  Installing build dependencies ... done
-  Getting requirements to build wheel ... done
-  Preparing metadata (pyproject.toml) ... error
-  error: subprocess-exited-with-error
-
-  × Preparing metadata (pyproject.toml) did not run successfully.
-  │ exit code: 1
-  ╰─&gt; [119 lines of output]
-      setup.py:461: UserWarning: Unrecognized setuptools command (&#39;dist_info --egg-base /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-modern-metadata-_yaq83ex&#39;), proceeding with generating Cython sources and expanding templates
-        warnings.warn(&#34;Unrecognized setuptools command (&#39;{}&#39;), proceeding with &#34;
-      setup.py:563: DeprecationWarning:
-
-        `numpy.distutils` is deprecated since NumPy 1.23.0, as a result
-        of the deprecation of `distutils` itself. It will be removed for
-        Python &gt;= 3.12. For older Python versions it will remain present.
-        It is recommended to use `setuptools &lt; 60.0` for those Python versions.
-        For more details, see:
-          https://numpy.org/devdocs/reference/distutils_status_migration.html
-
-
-        from numpy.distutils.core import setup
-      Running from SciPy source directory.
-      INFO: lapack_opt_info:
-      INFO: lapack_armpl_info:
-      INFO: customize UnixCCompiler
-      INFO:   libraries armpl_lp64_mp not found in [&#39;/Users/&lt;username&gt;/.pyenv/versions/3.11.2/lib&#39;, &#39;/usr/local/lib&#39;, &#39;/usr/lib&#39;]
-      INFO:   NOT AVAILABLE
-      ...
-</code></pre><p>On further searching, it appears <a href=https://github.com/docker-library/python/issues/558 class=external-link target=_blank rel=noopener>that the problem</a> could be the version of python I&rsquo;m currently using (3.11.2).</p><p>I tried using a version of Python &lt; <code>3.9</code> and checked if this was working. First, using the <a href=https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/ class=external-link target=_blank rel=noopener>instructions here</a>, I used <code>pyenv</code> to install version <code>3.8.16</code>, with the <code>--enable-shared</code> option:</p><pre tabindex=0><code>   $ env PYTHON_CONFIGURE_OPTS=&#34;--enable-shared&#34; pyenv install 3.8.16
-</code></pre><p>Next, I set this to be the global Python version</p><pre tabindex=0><code>   $ pyenv global 3.8.16
-</code></pre><p>I now try installing the package again using <code>pip3 install lightweight_mmm</code>, and this time it works:</p><pre tabindex=0><code>Installing collected packages: typing-extensions, tensorboard-plugin-wit, pytz, pyasn1, libclang, flatbuffers, zipp, wrapt, wheel, urllib3, tqdm, threadpoolctl, termcolor, tensorflow-io-gcs-filesystem, tensorflow-estimator, tensorboard-data-server, six, rsa, pyparsing, pyasn1-modules, protobuf, pillow, packaging, oauthlib, numpy, MarkupSafe, kiwisolver, keras, joblib, immutabledict, idna, grpcio, gast, fonttools, cycler, charset-normalizer, certifi, cachetools, absl-py, werkzeug, scipy, requests, python-dateutil, patsy, opt_einsum, multipledispatch, importlib-metadata, h5py, google-pasta, google-auth, contourpy, cftime, astunparse, scikit-learn, requests-oauthlib, pandas, netcdf4, matplotlib, markdown, jaxlib, jax, xarray, statsmodels, seaborn, numpyro, google-auth-oauthlib, tensorboard, arviz, tensorflow, lightweight_mmm
-  Running setup.py install for jax ... done
-Successfully installed MarkupSafe-2.1.2 absl-py-1.4.0 arviz-0.11.2 astunparse-1.6.3 cachetools-5.3.0 certifi-2022.12.7 cftime-1.6.2 charset-normalizer-3.1.0 contourpy-1.0.7 cycler-0.11.0 flatbuffers-23.3.3 fonttools-4.39.2 gast-0.4.0 google-auth-2.16.3 google-auth-oauthlib-0.4.6 google-pasta-0.2.0 grpcio-1.51.3 h5py-3.8.0 idna-3.4 immutabledict-2.2.3 importlib-metadata-6.1.0 jax-0.4.6 jaxlib-0.4.6 joblib-1.2.0 keras-2.11.0 kiwisolver-1.4.4 libclang-16.0.0 lightweight_mmm-0.1.7 markdown-3.4.3 matplotlib-3.6.1 multipledispatch-0.6.0 netcdf4-1.6.3 numpy-1.24.2 numpyro-0.11.0 oauthlib-3.2.2 opt_einsum-3.3.0 packaging-23.0 pandas-1.5.3 patsy-0.5.3 pillow-9.4.0 protobuf-3.19.6 pyasn1-0.4.8 pyasn1-modules-0.2.8 pyparsing-3.0.9 python-dateutil-2.8.2 pytz-2023.2 requests-2.28.2 requests-oauthlib-1.3.1 rsa-4.9 scikit-learn-1.2.2 scipy-1.10.1 seaborn-0.11.1 six-1.16.0 statsmodels-0.13.5 tensorboard-2.11.2 tensorboard-data-server-0.6.1 tensorboard-plugin-wit-1.8.1 tensorflow-2.11.1 tensorflow-estimator-2.11.0 tensorflow-io-gcs-filesystem-0.31.0 termcolor-2.2.0 threadpoolctl-3.1.0 tqdm-4.65.0 typing-extensions-3.10.0.2 urllib3-1.26.15 werkzeug-2.2.3 wheel-0.40.0 wrapt-1.15.0 xarray-2023.1.0 zipp-3.15.0
-</code></pre><p>While searching for a fix, I found <a href=https://pyreadiness.org/3.9/ class=external-link target=_blank rel=noopener>this website</a> that looks at Python 3.9 support for the 360 most downloaded packages on <a href=https://pyreadiness.org/3.9/ class=external-link target=_blank rel=noopener>PyPi</a>. This is a great reference to understand which packages (of the top 360) still do not support Python 3.9 (or later versions).</p></div><footer></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
+<span class=tag><a href=/tags/marketing-mix-models/>Marketing Mix Models</a></span></div></div></header><div class=post-content><p>To experiment with different specifications of a marketing mix model, I tried installing the <a href=https://github.com/google/lightweight_mmm class=external-link target=_blank rel=noopener>lightweight_mmm</a> Python package from Google. When using the standard <code>pip3 install lightweight_mmm</code> command in terminal, I was hitting this error:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>  × Getting requirements to build wheel did not run successfully.
+</span></span><span class=line><span class=cl>  │ <span class=nb>exit</span> code: <span class=m>1</span>
+</span></span><span class=line><span class=cl>  ╰─&gt; <span class=o>[</span><span class=m>66</span> lines of output<span class=o>]</span>
+</span></span><span class=line><span class=cl>      The Meson build system
+</span></span><span class=line><span class=cl>      Version: 0.62.2
+</span></span><span class=line><span class=cl>      Source dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273
+</span></span><span class=line><span class=cl>      Build dir: /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-install-yc6ribm7/scipy_ae66ccfb8522422ab91e65b44570f273/.mesonpy-ur2kyhcf/build
+</span></span><span class=line><span class=cl>      Build type: native build
+</span></span><span class=line><span class=cl>      Project name: SciPy
+</span></span><span class=line><span class=cl>      Project version: 1.9.1
+</span></span><span class=line><span class=cl>      C compiler <span class=k>for</span> the host machine: cc <span class=o>(</span>clang 14.0.0 <span class=s2>&#34;Apple clang version 14.0.0 (clang-1400.0.29.202)&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>      C linker <span class=k>for</span> the host machine: cc ld64 820.1
+</span></span><span class=line><span class=cl>      C++ compiler <span class=k>for</span> the host machine: c++ <span class=o>(</span>clang 14.0.0 <span class=s2>&#34;Apple clang version 14.0.0 (clang-1400.0.29.202)&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>      C++ linker <span class=k>for</span> the host machine: c++ ld64 820.1
+</span></span><span class=line><span class=cl>      Host machine cpu family: x86_64
+</span></span><span class=line><span class=cl>      Host machine cpu: x86_64
+</span></span><span class=line><span class=cl>      Compiler <span class=k>for</span> C supports arguments -Wno-unused-but-set-variable: YES
+</span></span><span class=line><span class=cl>      Library m found: YES
+</span></span><span class=line><span class=cl>      Fortran compiler <span class=k>for</span> the host machine: gfortran <span class=o>(</span>gcc 8.2.0 <span class=s2>&#34;GNU Fortran (GCC) 8.2.0&#34;</span><span class=o>)</span>
+</span></span><span class=line><span class=cl>      Fortran linker <span class=k>for</span> the host machine: gfortran ld64 820.1
+</span></span><span class=line><span class=cl>      Program cython found: YES <span class=o>(</span>/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-build-env-gddbg9u0/overlay/bin/cython<span class=o>)</span>
+</span></span><span class=line><span class=cl>      Program pythran found: YES <span class=o>(</span>/private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-build-env-gddbg9u0/overlay/bin/pythran<span class=o>)</span>
+</span></span><span class=line><span class=cl>      Program cp found: YES <span class=o>(</span>/bin/cp<span class=o>)</span>
+</span></span><span class=line><span class=cl>      Program python found: YES <span class=o>(</span>/Users/&lt;username&gt;/.pyenv/versions/3.11.2/bin/python3.11<span class=o>)</span>
+</span></span><span class=line><span class=cl>      Found pkg-config: /usr/local/bin/pkg-config <span class=o>(</span>0.29.2<span class=o>)</span>
+</span></span><span class=line><span class=cl>      Library npymath found: YES
+</span></span><span class=line><span class=cl>      Library npyrandom found: YES
+</span></span><span class=line><span class=cl>      Found CMake: /usr/local/bin/cmake <span class=o>(</span>3.26.0<span class=o>)</span>
+</span></span><span class=line><span class=cl>      Run-time dependency openblas found: NO <span class=o>(</span>tried pkgconfig, framework and cmake<span class=o>)</span>
+</span></span><span class=line><span class=cl>      Run-time dependency openblas found: NO <span class=o>(</span>tried pkgconfig, framework and cmake<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>      ../../scipy/meson.build:130:0: ERROR: Dependency <span class=s2>&#34;OpenBLAS&#34;</span> not found, tried pkgconfig, framework and cmake
+</span></span></code></pre></div><p>I tried to install <code>openblas</code> using homebrew, but it was already installed:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>$ brew install <span class=nv>openblas</span>
+</span></span><span class=line><span class=cl><span class=o>==</span>&gt; Downloading https://formulae.brew.sh/api/formula.jws.json
+</span></span><span class=line><span class=cl><span class=c1>######################################################################## 100.0%</span>
+</span></span><span class=line><span class=cl><span class=o>==</span>&gt; Downloading https://formulae.brew.sh/api/cask.jws.json
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Warning: openblas 0.3.21 is already installed and up-to-date.
+</span></span><span class=line><span class=cl>To reinstall 0.3.21, run:
+</span></span><span class=line><span class=cl>  brew reinstall openblas
+</span></span></code></pre></div><p>So maybe the build process was failing because the compiler couldn&rsquo;t find it on the system. On some searching, I found this <a href=https://github.com/AUTOMATIC1111/stable-diffusion-webui/issues/7906#issuecomment-1478618523 class=external-link target=_blank rel=noopener>github issue</a> that discussed the same problem. Essentially, we get more information on <code>openblas</code>, using <code>brew info openblas</code> in the terminal which should show us this output:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl><span class=o>==</span>&gt; openblas: stable 0.3.21 <span class=o>(</span>bottled<span class=o>)</span>, HEAD <span class=o>[</span>keg-only<span class=o>]</span>
+</span></span><span class=line><span class=cl>Optimized BLAS library
+</span></span><span class=line><span class=cl>https://www.openblas.net/
+</span></span><span class=line><span class=cl>/usr/local/Cellar/openblas/0.3.21 <span class=o>(</span><span class=m>23</span> files, 130MB<span class=o>)</span>
+</span></span><span class=line><span class=cl>  Poured from bottle on 2023-02-11 at 08:52:47
+</span></span><span class=line><span class=cl>From: https://github.com/Homebrew/homebrew-core/blob/HEAD/Formula/openblas.rb
+</span></span><span class=line><span class=cl>License: BSD-3-Clause
+</span></span><span class=line><span class=cl><span class=o>==</span>&gt; Dependencies
+</span></span><span class=line><span class=cl>Required: gcc ✔
+</span></span><span class=line><span class=cl><span class=o>==</span>&gt; Options
+</span></span><span class=line><span class=cl>--HEAD
+</span></span><span class=line><span class=cl>	Install HEAD <span class=nv>version</span>
+</span></span><span class=line><span class=cl><span class=o>==</span>&gt; Caveats
+</span></span><span class=line><span class=cl>openblas is keg-only, which means it was not symlinked into /usr/local,
+</span></span><span class=line><span class=cl>because macOS provides BLAS in Accelerate.framework.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>For compilers to find openblas you may need to set:
+</span></span><span class=line><span class=cl>  <span class=nb>export</span> <span class=nv>LDFLAGS</span><span class=o>=</span><span class=s2>&#34;-L/usr/local/opt/openblas/lib&#34;</span>
+</span></span><span class=line><span class=cl>  <span class=nb>export</span> <span class=nv>CPPFLAGS</span><span class=o>=</span><span class=s2>&#34;-I/usr/local/opt/openblas/include&#34;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>For pkg-config to find openblas you may need to set:
+</span></span><span class=line><span class=cl>  <span class=nb>export</span> <span class=nv>PKG_CONFIG_PATH</span><span class=o>=</span><span class=s2>&#34;/usr/local/opt/openblas/lib/pkgconfig&#34;</span>
+</span></span><span class=line><span class=cl><span class=o>==</span>&gt; Analytics
+</span></span><span class=line><span class=cl>install: 1,074 <span class=o>(</span><span class=m>30</span> days<span class=o>)</span>, 63,095 <span class=o>(</span><span class=m>90</span> days<span class=o>)</span>, 515,454 <span class=o>(</span><span class=m>365</span> days<span class=o>)</span>
+</span></span><span class=line><span class=cl>install-on-request: <span class=m>171</span> <span class=o>(</span><span class=m>30</span> days<span class=o>)</span>, 10,278 <span class=o>(</span><span class=m>90</span> days<span class=o>)</span>, 85,564 <span class=o>(</span><span class=m>365</span> days<span class=o>)</span>
+</span></span><span class=line><span class=cl>build-error: <span class=m>4</span> <span class=o>(</span><span class=m>30</span> days<span class=o>)</span>
+</span></span></code></pre></div><p>In the output above, we find the options to be set for compilers to find <code>openblas</code>. I run these commands in the terminal:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>$ <span class=nb>export</span> <span class=nv>LDFLAGS</span><span class=o>=</span><span class=s2>&#34;-L/usr/local/opt/openblas/lib&#34;</span>
+</span></span><span class=line><span class=cl>$ <span class=nb>export</span> <span class=nv>CPPFLAGS</span><span class=o>=</span><span class=s2>&#34;-I/usr/local/opt/openblas/include&#34;</span>
+</span></span><span class=line><span class=cl>$ <span class=nb>export</span> <span class=nv>PKG_CONFIG_PATH</span><span class=o>=</span><span class=s2>&#34;/usr/local/opt/openblas/lib/pkgconfig&#34;</span>
+</span></span></code></pre></div><p>I now try installing <code>lightweight_mmm</code> using <code>pip3 install lightweight_mmm</code> in the terminal, and this time the installation gets past the step it was failing, but runs for a long time and fails again:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>  Using cached scipy-1.6.1.tar.gz <span class=o>(</span>27.3 MB<span class=o>)</span>
+</span></span><span class=line><span class=cl>  Installing build dependencies ... <span class=k>done</span>
+</span></span><span class=line><span class=cl>  Getting requirements to build wheel ... <span class=k>done</span>
+</span></span><span class=line><span class=cl>  Preparing metadata <span class=o>(</span>pyproject.toml<span class=o>)</span> ... error
+</span></span><span class=line><span class=cl>  error: subprocess-exited-with-error
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  × Preparing metadata <span class=o>(</span>pyproject.toml<span class=o>)</span> did not run successfully.
+</span></span><span class=line><span class=cl>  │ <span class=nb>exit</span> code: <span class=m>1</span>
+</span></span><span class=line><span class=cl>  ╰─&gt; <span class=o>[</span><span class=m>119</span> lines of output<span class=o>]</span>
+</span></span><span class=line><span class=cl>      setup.py:461: UserWarning: Unrecognized setuptools <span class=nb>command</span> <span class=o>(</span><span class=s1>&#39;dist_info --egg-base /private/var/folders/ly/3d_s7td56qb7rn4qc2c6tmvm0000gn/T/pip-modern-metadata-_yaq83ex&#39;</span><span class=o>)</span>, proceeding with generating Cython sources and expanding templates
+</span></span><span class=line><span class=cl>        warnings.warn<span class=o>(</span><span class=s2>&#34;Unrecognized setuptools command (&#39;{}&#39;), proceeding with &#34;</span>
+</span></span><span class=line><span class=cl>      setup.py:563: DeprecationWarning:
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=sb>`</span>numpy.distutils<span class=sb>`</span> is deprecated since NumPy 1.23.0, as a result
+</span></span><span class=line><span class=cl>        of the deprecation of <span class=sb>`</span>distutils<span class=sb>`</span> itself. It will be removed <span class=k>for</span>
+</span></span><span class=line><span class=cl>        Python &gt;<span class=o>=</span> 3.12. For older Python versions it will remain present.
+</span></span><span class=line><span class=cl>        It is recommended to use <span class=sb>`</span>setuptools &lt; 60.0<span class=sb>`</span> <span class=k>for</span> those Python versions.
+</span></span><span class=line><span class=cl>        For more details, see:
+</span></span><span class=line><span class=cl>          https://numpy.org/devdocs/reference/distutils_status_migration.html
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        from numpy.distutils.core import setup
+</span></span><span class=line><span class=cl>      Running from SciPy <span class=nb>source</span> directory.
+</span></span><span class=line><span class=cl>      INFO: lapack_opt_info:
+</span></span><span class=line><span class=cl>      INFO: lapack_armpl_info:
+</span></span><span class=line><span class=cl>      INFO: customize UnixCCompiler
+</span></span><span class=line><span class=cl>      INFO:   libraries armpl_lp64_mp not found in <span class=o>[</span><span class=s1>&#39;/Users/&lt;username&gt;/.pyenv/versions/3.11.2/lib&#39;</span>, <span class=s1>&#39;/usr/local/lib&#39;</span>, <span class=s1>&#39;/usr/lib&#39;</span><span class=o>]</span>
+</span></span><span class=line><span class=cl>      INFO:   NOT AVAILABLE
+</span></span><span class=line><span class=cl>      ...
+</span></span></code></pre></div><p>On further searching, it appears <a href=https://github.com/docker-library/python/issues/558 class=external-link target=_blank rel=noopener>that the problem</a> could be the version of python I&rsquo;m currently using (3.11.2).</p><p>I tried using a version of Python &lt; <code>3.9</code> and checked if this was working. First, using the <a href=https://jmodeler.github.io/post/setting-up-python-to-run-on-rmarkdown/ class=external-link target=_blank rel=noopener>instructions here</a>, I used <code>pyenv</code> to install version <code>3.8.16</code>, with the <code>--enable-shared</code> option:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>   $ env <span class=nv>PYTHON_CONFIGURE_OPTS</span><span class=o>=</span><span class=s2>&#34;--enable-shared&#34;</span> pyenv install 3.8.16
+</span></span></code></pre></div><p>Next, I set this to be the global Python version</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>   $ pyenv global 3.8.16
+</span></span></code></pre></div><p>I now try installing the package again using <code>pip3 install lightweight_mmm</code>, and this time it works:</p><div class=highlight><pre tabindex=0 class=chroma><code class=language-zsh data-lang=zsh><span class=line><span class=cl>Installing collected packages: typing-extensions, tensorboard-plugin-wit, pytz, pyasn1, libclang, flatbuffers, zipp, wrapt, wheel, urllib3, tqdm, threadpoolctl, termcolor, tensorflow-io-gcs-filesystem, tensorflow-estimator, tensorboard-data-server, six, rsa, pyparsing, pyasn1-modules, protobuf, pillow, packaging, oauthlib, numpy, MarkupSafe, kiwisolver, keras, joblib, immutabledict, idna, grpcio, gast, fonttools, cycler, charset-normalizer, certifi, cachetools, absl-py, werkzeug, scipy, requests, python-dateutil, patsy, opt_einsum, multipledispatch, importlib-metadata, h5py, google-pasta, google-auth, contourpy, cftime, astunparse, scikit-learn, requests-oauthlib, pandas, netcdf4, matplotlib, markdown, jaxlib, jax, xarray, statsmodels, seaborn, numpyro, google-auth-oauthlib, tensorboard, arviz, tensorflow, lightweight_mmm
+</span></span><span class=line><span class=cl>  Running setup.py install <span class=k>for</span> jax ... <span class=k>done</span>
+</span></span><span class=line><span class=cl>Successfully installed MarkupSafe-2.1.2 absl-py-1.4.0 arviz-0.11.2 astunparse-1.6.3 cachetools-5.3.0 certifi-2022.12.7 cftime-1.6.2 charset-normalizer-3.1.0 contourpy-1.0.7 cycler-0.11.0 flatbuffers-23.3.3 fonttools-4.39.2 gast-0.4.0 google-auth-2.16.3 google-auth-oauthlib-0.4.6 google-pasta-0.2.0 grpcio-1.51.3 h5py-3.8.0 idna-3.4 immutabledict-2.2.3 importlib-metadata-6.1.0 jax-0.4.6 jaxlib-0.4.6 joblib-1.2.0 keras-2.11.0 kiwisolver-1.4.4 libclang-16.0.0 lightweight_mmm-0.1.7 markdown-3.4.3 matplotlib-3.6.1 multipledispatch-0.6.0 netcdf4-1.6.3 numpy-1.24.2 numpyro-0.11.0 oauthlib-3.2.2 opt_einsum-3.3.0 packaging-23.0 pandas-1.5.3 patsy-0.5.3 pillow-9.4.0 protobuf-3.19.6 pyasn1-0.4.8 pyasn1-modules-0.2.8 pyparsing-3.0.9 python-dateutil-2.8.2 pytz-2023.2 requests-2.28.2 requests-oauthlib-1.3.1 rsa-4.9 scikit-learn-1.2.2 scipy-1.10.1 seaborn-0.11.1 six-1.16.0 statsmodels-0.13.5 tensorboard-2.11.2 tensorboard-data-server-0.6.1 tensorboard-plugin-wit-1.8.1 tensorflow-2.11.1 tensorflow-estimator-2.11.0 tensorflow-io-gcs-filesystem-0.31.0 termcolor-2.2.0 threadpoolctl-3.1.0 tqdm-4.65.0 typing-extensions-3.10.0.2 urllib3-1.26.15 werkzeug-2.2.3 wheel-0.40.0 wrapt-1.15.0 xarray-2023.1.0 zipp-3.15.0
+</span></span></code></pre></div><p>While searching for a fix, I found <a href=https://pyreadiness.org/3.9/ class=external-link target=_blank rel=noopener>this website</a> that looks at Python 3.9 support for the 360 most downloaded packages on <a href=https://pyreadiness.org/3.9/ class=external-link target=_blank rel=noopener>PyPi</a>. This is a great reference to understand which packages (of the top 360) still do not support Python 3.9 (or later versions).</p></div><footer></footer></article><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.css integrity=sha384-vKruj+a13U8yHIkAyGgK1J3ArTLzrFGBbBc0tDp4ad/EyewESeXE/Iv67Aj8gKZ0 crossorigin=anonymous><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/katex.min.js integrity=sha384-PwRUT/YqbnEjkZO0zZxNqcxACrXe+j766U2amXcgMg5457rve2Y7I6ZJSm2A0mS4 crossorigin=anonymous></script><script defer src=https://cdn.jsdelivr.net/npm/katex@0.16.4/dist/contrib/auto-render.min.js integrity=sha384-+VBxd3r6XgURycqtZ117nYw44OOcIax56Z4dCRWbxyPt0Koah1uHoK0o4+/RRE05 crossorigin=anonymous onload='renderMathInElement(document.body,{delimiters:[{left:"$$",right:"$$",display:!0},{left:"$",right:"$",display:!1},{left:"\\(",right:"\\)",display:!1},{left:"\\[",right:"\\]",display:!0}]})'></script></section></div><footer class=footer><section class=container>©
 2023 -
 2025
 Journeyman Modeler

@@ -23,7 +23,7 @@ math: true
 
 From time to time, I work with `C` code, and I use the `lldb` debugger to step through the code. Recently, after a Mac OS update, I started seeing this error when attempting to start the lldb debugger in terminal:
 
-```
+```zsh
 $ lldb
 Traceback (most recent call last):
   File "<string>", line 1, in <module>
@@ -34,7 +34,7 @@ ModuleNotFoundError: No module named 'six'
 
 The error message says that a module (`six`) is missing. The other issue, is that this module is missing on a version of python that is _not_ the global version set by `pyenv`. I check the versions of pyenv on my system:
 
-```
+```zsh
 $ pyenv versions
   system
 * 3.8.16 (set by /Users/<username>/.pyenv/version)
@@ -44,10 +44,10 @@ $ pyenv versions
 
 I'm guessing `lldb` uses the `system` version of Python. A simple `pip3 install six` will not fix the issue, since this will install this package for Python `3.8.16`, instead of the `system` version. I now use `pyenv` to set the local version of python to `system`:
 
-```
+```zsh
 $ pyenv local system
 $ pyenv versions
-* system (set by /Users/sandeep/.python-version)
+* system (set by /Users/<username>/.python-version)
   3.8.16
   3.9.1
   3.11.2
@@ -55,7 +55,7 @@ $ pyenv versions
 
 I now install `six`:
 
-```
+```zsh
 $ pip3 install six
 Collecting six
   Using cached six-1.16.0-py2.py3-none-any.whl (11 kB)
@@ -65,11 +65,11 @@ Successfully installed six-1.16.0
 
 And I try launching `lldb` on terminal again:
 
-```
+```zsh
 % lldb
 (lldb)
 ```
 
-.. which takes me to the `(lldb)` prompt without any issues. 
+.. which takes me to the `(lldb)` prompt without any issues.
 
 Make sure you "reset" the default python version to be used to the version you had before (in my case this would be version `3.8.16`)
