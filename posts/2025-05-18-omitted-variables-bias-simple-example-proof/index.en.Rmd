@@ -70,7 +70,7 @@ z = & \gamma x + \epsilon_z \\
 \implies \epsilon_z = & z - \gamma x
 \end{align}
 
-I want to choose $\gamma$ in such a way that $E(\epsilon_z'\epsilon_z)$ is minimized (ideally we want $E(\epsilon_z'\epsilon_z) = 0$ or as close to $0$ as possible). Said another way, we want to choose our coefficient $\gamma$ that the expected value of the sum of squared error terms $\epsilon_{z,i}$ as close to zero as possible (which it the smallest value the sum of squared real numbers can take). When this is true, I have $E(z|x)= E(\alpha_y v + \epsilon_y|x) = \gamma x$. Since $\epsilon_z = z - \gamma x$, I have 
+I want to choose $\gamma$ in such a way that $E(\epsilon_z'\epsilon_z)$ is minimized (ideally we want $E(\epsilon_z'\epsilon_z) = 0$ or as close to $0$ as possible). Said another way, we want to choose our coefficient $\gamma$ so that the expected value of the sum of squared error terms $\epsilon_{z,i}$ as close to zero as possible ($0$ the smallest value the sum of squared real numbers can take). When this is true, I have $E(z|x)= E(\alpha_y v + \epsilon_y|x) = \gamma x$. Since $\epsilon_z = z - \gamma x$, I have 
 
 \begin{align}
 E(\epsilon_z'\epsilon_z) = & E((z - \gamma x)'(z - \gamma x)) \\
