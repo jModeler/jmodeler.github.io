@@ -15,7 +15,7 @@ externalLink: ''
 series: []
 ---
 
-In this post, I provide a fictional and real example of cases where the omitted variables bias can lead to incorrect learnings. I leverage the [rust package](https://github.com/jModeler/marketing-iv-methods-examination) I created to provide values in the fictional example.
+In this post, I provide a fictional and a real example of omitted variables bias, leading to spurious results. I leverage the [rust package](https://github.com/jModeler/marketing-iv-methods-examination) I created to provide values in the fictional example.
 
 ## 1. A Surprising Discovery
 
