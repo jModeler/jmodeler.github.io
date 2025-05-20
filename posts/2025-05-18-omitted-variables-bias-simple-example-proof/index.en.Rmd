@@ -118,7 +118,7 @@ From \@ref(eq:gammaex), \@ref(eq:num) and \@ref(eq:den), I have:
 Which completes the proof.
 
 ### Conclusion
-In this post, I derive the expression for the bias in the coefficient of $x$, when you regress $y$ on $x$ without including the other independent variable $v$. This is called the omitted variable bias, and depending on the nature of this bias, the regression could come back with spurious results, something I'll discuss in another post.
+In this post, I derive the expression for the bias in the coefficient of $x$, when you regress $y$ on $x$ without including the other independent variable $v$. This is called the omitted variable bias, and depending on the nature of this bias, the regression could come back with spurious results, something I'll discuss in [another post](https://jmodeler.github.io/posts/2025-05-20-when-prices-increase-demand-a-cautionary-tale-about-omitted-variable-bias/).
 
 
 # References
