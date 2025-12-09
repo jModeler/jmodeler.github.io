@@ -1,30 +1,30 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Statistics on The Journeyman Modeler</title><link>http://jmodeler.github.io/tags/statistics/</link><description>Recent content in Statistics on The Journeyman Modeler</description><generator>Hugo</generator><language>en</language><lastBuildDate>Tue, 20 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://jmodeler.github.io/tags/statistics/index.xml" rel="self" type="application/rss+xml"/><item><title>When Prices "Increase" Demand: A Cautionary Tale About Omitted Variable Bias</title><link>http://jmodeler.github.io/posts/2025-05-20-when-prices-increase-demand-a-cautionary-tale-about-omitted-variable-bias/</link><pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/2025-05-20-when-prices-increase-demand-a-cautionary-tale-about-omitted-variable-bias/</guid><description>&lt;p>In this post, I provide a fictional and a real example of omitted variables bias, leading to spurious results. I leverage the &lt;a href="https://github.com/jModeler/marketing-iv-methods-examination" class="external-link" target="_blank" rel="noopener">rust package&lt;/a> I created to provide values in the fictional example.&lt;/p>
-&lt;h2 id="1-a-surprising-discovery">
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Statistics on The Journeyman Modeler</title><link>http://jmodeler.github.io/tags/statistics/</link><description>Recent content in Statistics on The Journeyman Modeler</description><generator>Hugo</generator><language>en</language><lastBuildDate>Tue, 20 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://jmodeler.github.io/tags/statistics/index.xml" rel="self" type="application/rss+xml"/><item><title>When Prices "Increase" Demand: A Cautionary Tale About Omitted Variable Bias</title><link>http://jmodeler.github.io/posts/2025-05-20-when-prices-increase-demand-a-cautionary-tale-about-omitted-variable-bias/</link><pubDate>Tue, 20 May 2025 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/2025-05-20-when-prices-increase-demand-a-cautionary-tale-about-omitted-variable-bias/</guid><description>&lt;p&gt;In this post, I provide a fictional and a real example of omitted variables bias, leading to spurious results. I leverage the &lt;a href="https://github.com/jModeler/marketing-iv-methods-examination" class="external-link" target="_blank" rel="noopener"&gt;rust package&lt;/a&gt; I created to provide values in the fictional example.&lt;/p&gt;
+&lt;h2 id="1-a-surprising-discovery"&gt;
  1. A Surprising Discovery
- &lt;a class="heading-link" href="#1-a-surprising-discovery">
- &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
- &lt;span class="sr-only">Link to heading&lt;/span>
- &lt;/a>
-&lt;/h2>
-&lt;p>An eager analyst bursts into a meeting with their manager, excited to share a &lt;em>mind-blowing&lt;/em> insight.&lt;/p>
-&lt;blockquote>
-&lt;p>&amp;ldquo;I&amp;rsquo;ve just run a regression of units sold on price,&amp;rdquo; they say.
-&amp;ldquo;And guess what? The coefficient on price is &lt;strong>positive&lt;/strong>.&amp;rdquo;&lt;/p></description></item><item><title>Omitted Variables Bias -- Simple Example Proof</title><link>http://jmodeler.github.io/posts/2025-05-18-omitted-variables-bias-simple-example-proof/</link><pubDate>Sun, 18 May 2025 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/2025-05-18-omitted-variables-bias-simple-example-proof/</guid><description>&lt;p>In this post, I derive the expression in equation (4) of (&lt;a href="#ref-rossi2014iv" >Rossi 2014&lt;/a>), as shown in the screenshot below.
-&lt;img src="http://jmodeler.github.io/posts/2025-05-18-omitted-variables-bias-simple-example-proof/eq_4.png" alt="Equation 4 from Rossi Paper">&lt;/p>
-&lt;h3 id="setup">
+ &lt;a class="heading-link" href="#1-a-surprising-discovery"&gt;
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"&gt;&lt;/i&gt;
+ &lt;span class="sr-only"&gt;Link to heading&lt;/span&gt;
+ &lt;/a&gt;
+&lt;/h2&gt;
+&lt;p&gt;An eager analyst bursts into a meeting with their manager, excited to share a &lt;em&gt;mind-blowing&lt;/em&gt; insight.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;I&amp;rsquo;ve just run a regression of units sold on price,&amp;rdquo; they say.
+&amp;ldquo;And guess what? The coefficient on price is &lt;strong&gt;positive&lt;/strong&gt;.&amp;rdquo;&lt;/p&gt;</description></item><item><title>Omitted Variables Bias -- Simple Example Proof</title><link>http://jmodeler.github.io/posts/2025-05-18-omitted-variables-bias-simple-example-proof/</link><pubDate>Sun, 18 May 2025 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/2025-05-18-omitted-variables-bias-simple-example-proof/</guid><description>&lt;p&gt;In this post, I derive the expression in equation (4) of (&lt;a href="#ref-rossi2014iv" &gt;Rossi 2014&lt;/a&gt;), as shown in the screenshot below.
+&lt;img src="http://jmodeler.github.io/posts/2025-05-18-omitted-variables-bias-simple-example-proof/eq_4.png" alt="Equation 4 from Rossi Paper"&gt;&lt;/p&gt;
+&lt;h3 id="setup"&gt;
  Setup
- &lt;a class="heading-link" href="#setup">
- &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
- &lt;span class="sr-only">Link to heading&lt;/span>
- &lt;/a>
-&lt;/h3>
-&lt;p>The author provides the following system of regression equations:&lt;/p>
-&lt;p>&lt;code>\begin{align} y = &amp;amp; \beta x + \alpha_y v + \epsilon_y \tag{1} \\ x = &amp;amp; \alpha_x v + \epsilon_x \tag{2} \\ E(\epsilon_y|x, v) = &amp;amp; 0 \,\, \&amp;amp; \,\, E(\epsilon_x|x, v) = 0 \,\, \&amp;amp; \,\, \epsilon_y \perp\!\!\!\perp \epsilon_x \tag{3} \end{align}&lt;/code>&lt;/p></description></item><item><title>Sample Size and Effect Size</title><link>http://jmodeler.github.io/posts/2025-04-26-sample-size-and-effect-size/</link><pubDate>Sat, 26 Apr 2025 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/2025-04-26-sample-size-and-effect-size/</guid><description>&lt;p>In this post, I show how the sample size of the treatment and control samples in an A/B test affect the impact size. The assumption here is that the population variances of both samples are known, and the responses of the individual units in these samples are Independent and Identically Distributed (IID), which simplifies this demonstration.&lt;/p>
-&lt;h3 id="setup">
+ &lt;a class="heading-link" href="#setup"&gt;
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"&gt;&lt;/i&gt;
+ &lt;span class="sr-only"&gt;Link to heading&lt;/span&gt;
+ &lt;/a&gt;
+&lt;/h3&gt;
+&lt;p&gt;The author provides the following system of regression equations:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;\begin{align} y = &amp;amp; \beta x + \alpha_y v + \epsilon_y \tag{1} \\ x = &amp;amp; \alpha_x v + \epsilon_x \tag{2} \\ E(\epsilon_y|x, v) = &amp;amp; 0 \,\, \&amp;amp; \,\, E(\epsilon_x|x, v) = 0 \,\, \&amp;amp; \,\, \epsilon_y \perp\!\!\!\perp \epsilon_x \tag{3} \end{align}&lt;/code&gt;&lt;/p&gt;</description></item><item><title>Sample Size and Effect Size</title><link>http://jmodeler.github.io/posts/2025-04-26-sample-size-and-effect-size/</link><pubDate>Sat, 26 Apr 2025 00:00:00 +0000</pubDate><guid>http://jmodeler.github.io/posts/2025-04-26-sample-size-and-effect-size/</guid><description>&lt;p&gt;In this post, I show how the sample size of the treatment and control samples in an A/B test affect the impact size. The assumption here is that the population variances of both samples are known, and the responses of the individual units in these samples are Independent and Identically Distributed (IID), which simplifies this demonstration.&lt;/p&gt;
+&lt;h3 id="setup"&gt;
  Setup
- &lt;a class="heading-link" href="#setup">
- &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading">&lt;/i>
- &lt;span class="sr-only">Link to heading&lt;/span>
- &lt;/a>
-&lt;/h3>
-&lt;p>Let&amp;rsquo;s say the responses in the control sample are &lt;code>\(X_i \sim N(\mu_X, \sigma_X^2)\)&lt;/code> and the responses in the treatment sample are &lt;code>\(Y_i \sim N(\mu_Y, \sigma_Y^2)\)&lt;/code>. We want to check if the mean response of the treatment is significantly different from the mean response of the control sample (i.e. we want to check if &lt;code>\(\bar{Y} - \bar{X}\)&lt;/code> is statistically different from &lt;code>\(0\)&lt;/code>).&lt;/p></description></item></channel></rss>
+ &lt;a class="heading-link" href="#setup"&gt;
+ &lt;i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"&gt;&lt;/i&gt;
+ &lt;span class="sr-only"&gt;Link to heading&lt;/span&gt;
+ &lt;/a&gt;
+&lt;/h3&gt;
+&lt;p&gt;Let&amp;rsquo;s say the responses in the control sample are &lt;code&gt;\(X_i \sim N(\mu_X, \sigma_X^2)\)&lt;/code&gt; and the responses in the treatment sample are &lt;code&gt;\(Y_i \sim N(\mu_Y, \sigma_Y^2)\)&lt;/code&gt;. We want to check if the mean response of the treatment is significantly different from the mean response of the control sample (i.e. we want to check if &lt;code&gt;\(\bar{Y} - \bar{X}\)&lt;/code&gt; is statistically different from &lt;code&gt;\(0\)&lt;/code&gt;).&lt;/p&gt;</description></item></channel></rss>
