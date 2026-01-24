@@ -21,7 +21,8 @@ image:
 projects: []
 ---
 
-I've been using [ohmyzsh](https://ohmyz.sh/) with the [powerlevel10k](https://github.com/romkatv/powerlevel10k) theme to enhance my terminal experience, as I find myself spending more time on it while working on a few projects. A screeshot of this "enhanced" terminal is shown below:
+I've been using [ohmyzsh](https://ohmyz.sh/) with the [powerlevel10k](https://github.com/romkatv/powerlevel10k) theme to enhance my terminal experience, as I find myself spending more time on it while working on a few projects. A screenshot of this "enhanced" terminal is shown below:
+
 ![terminal_with_ohmyzsh_powerlevel10k](terminal_ohmyzsh_p10k.png)
 
 I was wondering if I could get the terminal within [RStudio](https://posit.co/products/open-source/rstudio/) to use the same theme. Turns out that can be done, by following the steps below (Note that these steps are applicable to RStudio **version 2022.12.0+353 "Elsbeth Geranium" Release (7d165dcfc1b6d300eb247738db2c7076234f6ef0, 2022-12-03) for macOS**. These steps also assume that you've already installed ohmyzsh and the powerlevel10k theme. If not, please follow the instructions [here](https://v-char.medium.com/now-let-customize-your-native-macos-terminal-with-oh-my-zsh-and-powerlevel10k-b48b9c30d39f) first):
