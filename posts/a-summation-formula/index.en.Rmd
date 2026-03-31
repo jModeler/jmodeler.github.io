@@ -24,15 +24,15 @@ X_i = x \,\, \forall i (\#eq:setup)
 
 And we want to find the sum 
 \begin{align}
-\mathop{\sum\sum}_{\substack{i \ne j}} X_i X_j  \,\,\,\, i,j \in {1, 2, \dots , n} (\#eq:sum) 
+\mathop{\sum\sum}_{\substack{i \ne j, \, j > i}} X_i X_j  \,\,\,\, i,j \in {1, 2, \dots , n} (\#eq:sum) 
 \end{align}
 
 From \@ref(eq:setup), the sum in \@ref(eq:sum) boils down to:
 \begin{align}
-\mathop{\sum\sum}_{\substack{i \ne j}} x^2 (\#eq:sum2) 
+\mathop{\sum\sum}_{\substack{i \ne j, \, j > i}} x^2 (\#eq:sum2) 
 \end{align}
 
-This now means we need to find the number of terms such that $i \ne j$, let's call this $S$. The final sum will be $Sx^2$. We now attempt to determine the value of $S$.
+This now means we need to find the number of terms such that $i \ne j$ and $j > i$, let's call this $S$. The final sum will be $Sx^2$. We now attempt to determine the value of $S$.
 
 When $i = 1$, $j$ can take the values $2, 3, \dots n$. This gives us $(n-1)$ terms. 
 
@@ -57,5 +57,5 @@ S = \frac{n(n-1)}{2} (\#eq:ntermsvalue)
 From this, we have the final sum = $Sx^2 = \frac{n(n-1)}{2} x^2$, hence
 
 \begin{align}
-\mathop{\sum\sum}_{\substack{i \ne j}} X_i X_j = \frac{n(n-1)}{2} x^2  \,\,\,\, i,j \in {1, 2, \dots , n} \,\,\,\, \& \,\,\,\, X_i = x \,\, \forall i  \nonumber
+\mathop{\sum\sum}_{\substack{i \ne j, \, j > i}} X_i X_j = \frac{n(n-1)}{2} x^2  \,\,\,\, i,j \in {1, 2, \dots , n} \,\,\,\, \& \,\,\,\, X_i = x \,\, \forall i  \nonumber
 \end{align}

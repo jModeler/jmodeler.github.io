@@ -20,6 +20,6 @@
 &lt;p&gt;Say we have real numbers &lt;code&gt;\(X_i\)&lt;/code&gt; such that
 &lt;code&gt;\begin{align} X_i = x \,\, \forall i \tag{1} \end{align}&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;And we want to find the sum
-&lt;code&gt;\begin{align} \mathop{\sum\sum}_{\substack{i \ne j}} X_i X_j \,\,\,\, i,j \in {1, 2, \dots , n} \tag{2} \end{align}&lt;/code&gt;&lt;/p&gt;
+&lt;code&gt;\begin{align} \mathop{\sum\sum}_{\substack{i \ne j, \, j &amp;gt; i}} X_i X_j \,\,\,\, i,j \in {1, 2, \dots , n} \tag{2} \end{align}&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;From (1), the sum in (2) boils down to:
-&lt;code&gt;\begin{align} \mathop{\sum\sum}_{\substack{i \ne j}} x^2 \tag{3} \end{align}&lt;/code&gt;&lt;/p&gt;</description></item></channel></rss>
+&lt;code&gt;\begin{align} \mathop{\sum\sum}_{\substack{i \ne j, \, j &amp;gt; i}} x^2 \tag{3} \end{align}&lt;/code&gt;&lt;/p&gt;</description></item></channel></rss>
